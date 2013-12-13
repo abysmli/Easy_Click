@@ -1,0 +1,61 @@
+<div class="user_name_bar">
+  <% if (user) { %>
+  <p style="color: #666666;"><%= user.name %></p>
+  <a style="color: #999999; font-weight: normal;" href="/logout">- 退出登录</a>
+  <% } else { %>
+  <p style="color: #666666;">您尚未登录</p>
+  <% } %>
+</div>
+
+<div data-role="fieldcontain">
+  <div style="margin-bottom:0.5em;" class="user_container">
+    <p style="color: #FF7900; display:inline; line-height:160%; font-size:0.8em;">在此设定关键词，当新发布的资讯或淘宝中包含它们，您可以立刻在此收到通知。</p>
+    <div class="key_setting_button">
+      <a data-transition="slide" style="text-decoration:none; font-weight: normal; text-shadow: none; color: white;" href="<% if (user) { %> /key_setting <% } else { %>#login_reg_selector<% } %>">设定</a>
+    </div>
+  </div>
+</div>
+
+<% if (user) { %>
+<% messages.forEach(function(message, index) { %>
+<div id="message_box_<%= message.uid %>" data-role="fieldcontain">
+  <div class="message_block">
+    <p>来自: <em><%= message.sender %></em> 的消息</p>
+    <img  id="img_<%= message.uid %>" alt="" src="/img/icon_img/icon_recov.png"></img>
+    <pre><%= message.message %><em><%= message.date.toISOString().replace(/T/, ' ').replace(/\..+/, '') %></em></pre>
+  </div>
+</div>
+<% }) %>
+<% } else { %>
+<div data-role="fieldcontain">
+  <div class="message_block">
+    <p>消息提示(示例)</p>
+    <pre>亲爱的用户，您设定的 <span>新宿区 洗衣机</span> 有新的消息啦！快点这里查看详情吧。<em>09:13</em></pre>
+  </div>
+</div>
+<div data-role="fieldcontain">
+  <div class="message_block">
+    <p>消息提示(示例)</p>
+    <pre>亲爱的用户，您设定的 <span>文京区 电冰箱</span> 有新的消息啦！快点这里查看详情吧。<em>08:55</em></pre>
+  </div>
+</div>
+<% } %>
+
+<script>
+$(document).one("pageinit","#messagebox_page", function( event ) {
+<% if (user) { %>
+  <% messages.forEach(function(message, index) { %>
+    $("#img_<%= message.uid %>").click(function(){
+      $.get("/remove_messages/<%= message.uid %>");
+      $("#message_box_<%= message.uid %>").hide();
+    });
+    $("#message_box_<%= message.uid %>").hover(function(){
+      $("#img_<%= message.uid %>").fadeIn();
+    },function(){
+      $("#img_<%= message.uid %>").fadeOut();
+    });
+    $("#img_<%= message.uid %>").hide();
+  <% }) %>
+<% } %>
+});
+</script>

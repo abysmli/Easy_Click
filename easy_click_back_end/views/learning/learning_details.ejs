@@ -1,0 +1,36 @@
+<div data-role="content">
+  <% if (learn.img.length != 0) { %>    
+  <% if (Object.prototype.toString.call(learn.img) === "[object Array]") { %>
+  <div id="learning_details_slider">
+    <% learn.img.forEach(function(img,index) { %>
+    <img src="data:image/jpg;base64,<%= img %>" width="100%" alt="image"></img>
+    <% }) %>
+    <% if (learn.img.length===3) { %>
+    <img src="data:image/jpg;base64,<%= learn.img[1] %>" alt="image"></img>
+    <% } %>
+    <% if (learn.img.length===2) { %>
+    <img src="data:image/jpg;base64,<%= learn.img[0] %>" alt="image"></img>
+    <img src="data:image/jpg;base64,<%= learn.img[1] %>" alt="image"></img>
+    <% } %>
+</div>
+<% } else { %>
+<img src="data:image/jpg;base64,<%= learn.img %>" width="100%" alt="image">
+<% }} %> 
+<div class="user_container">
+    <pre><%= learn.content %></pre>
+</div>
+</div>
+<script>
+$("#learning_details_slider").excoloSlider({
+    width: $(window).width(),
+    height: $(window).width()/2,
+    autoSize: false,
+    touchNav: true,
+    mouseNav: true,
+    prevnextNav: false,
+    prevnextAutoHide: false,
+    pagerNav: false,
+    hoverPause: false,
+    interval: 10000,
+});
+</script>

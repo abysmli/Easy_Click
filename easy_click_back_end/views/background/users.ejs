@@ -1,0 +1,60 @@
+<% if (success) { %>
+    <div>
+        <br/>
+        	<div class="alert alert-success">
+        	<%= success %>
+    		</div>
+        <br/>
+    </div>
+    <% } %>
+    <% if (error) { %>
+    <div>
+        <br/>
+        	<div class="alert alert-error">
+        	<%= error %>
+    		</div>
+        <br/>
+    </div>
+<% } %>
+
+<ul class="nav nav-tabs">
+	<li class="active">
+		<a href="/background/users">用户管理</a>
+	</li>
+	<li>
+		<a href="/background/information">实用资讯</a>
+	</li>
+	<li>
+		<a href="/background/user_post">免费交流</a>
+	</li>
+	<li>
+		<a href="/background/news">新闻</a>
+	</li>
+	<li>
+		<a href="/background/learning">日语学习</a>
+	</li>
+</ul>
+
+<div class="row-fluid">
+	<div class="span12">
+		<form method="post" enctype="multipart/form-data">
+			<div class="control-group">
+				<label class="control-label" for="recv_input">收件人:</label>
+				<div class="controls">
+					<input style="width:500px;" id="recv_input" name="recv" type="text"></input>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="content_input">内容:</label>
+				<div class="controls">
+					<textarea style="height:200px; width:500px;" id="content_input" name="content" type="text"></textarea>
+				</div>
+			</div>
+			<div class="control-group">
+				<div class="controls">
+					<button type="submit" class="btn">投递</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>

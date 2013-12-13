@@ -1,0 +1,181 @@
+<% if (success) { %>
+    <div>
+        <br/>
+        	<div class="alert alert-success">
+        	<%= success %>
+    		</div>
+        <br/>
+    </div>
+    <% } %>
+    <% if (error) { %>
+    <div>
+        <br/>
+        	<div class="alert alert-error">
+        	<%= error %>
+    		</div>
+        <br/>
+    </div>
+<% } %>
+
+<ul class="nav nav-tabs">
+    <li>
+        <a href="/background/users">用户管理</a>
+    </li>
+    <li class="active">
+        <a href="/background/information">实用资讯</a>
+    </li>
+    <li>
+        <a href="/background/user_post">免费交流</a>
+    </li>
+    <li>
+        <a href="/background/news">新闻</a>
+    </li>
+    <li>
+        <a href="/background/learning">日语学习</a>
+    </li>
+</ul>
+
+<div class="container-fluid">
+	<h3>发布一个商业资讯:</h3>
+
+	<form method="post" enctype="multipart/form-data">
+				<div class="control-group">
+                    <label class="control-label" for="index_input">分类:</label>
+                    <div class="controls">
+                        <select style="width:500px;" id="index_input" name="index">
+                            <option>工作</option>
+                            <option>找房</option>
+                            <option>搬家</option>
+                            <option>商业</option>
+                            <option>机票</option>
+                            <option>法务</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="username_input">发件人:</label>
+                    <div class="controls">
+                        <input value="admin" style="width:500px;" id="username_input" name="username" type="text"></input>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="title_input">标题:</label>
+                    <div class="controls">
+                        <textarea style="width:500px;" id="title_input" name="title" type="text"></textarea>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="prevtext_input">展示文字:</label>
+                    <div class="controls">
+                        <textarea style="width:500px;" id="prevtext_input" name="prevtext" type="text"></textarea>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="prevtext2_input">展示文字2:</label>
+                    <div class="controls">
+                        <textarea style="width:500px;" id="prevtext2_input" name="prevtext2" type="text"></textarea>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="instruction_input">说明:</label>
+                    <div class="controls">
+                        <textarea style="height:5em; width:500px;" id="instruction_input" name="instruction" type="text"></textarea>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="name_input">名称:</label>
+                    <div class="controls">
+                        <textarea style="width:500px;" id="name_input" name="name" type="text"></textarea>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="brief_input">简介:</label>
+                    <div class="controls">
+                        <textarea style="height:5em; width:500px;" id="brief_input" name="brief" type="text"></textarea>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="comment_input">备注:</label>
+                    <div class="controls">
+                        <textarea style="width:500px;" id="comment_input" name="comment" type="text"></textarea>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="telephone_input">电话:</label>
+                    <div class="controls">
+                        <textarea style="width:500px;" id="telephone_input" name="telephone" type="text"></textarea>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="email_input">邮箱:</label>
+                    <div class="controls">
+                        <textarea style="width:500px;" id="email_input" name="email" type="text"></textarea>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="url_input">网址:</label>
+                    <div class="controls">
+                        <textarea style="width:500px;" id="url_input" name="url" type="text"></textarea>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="address_input">地址:</label>
+                    <div class="controls">
+                        <textarea style="width:500px;" id="address_input" name="address" type="text"></textarea>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="path_input">路线:</label>
+                    <div class="controls">
+                        <textarea style="width:500px;" id="path_input" name="path" type="text"></textarea>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="previmg_input">预览图片:</label>
+                    <div class="controls">
+                        <input style="width:500px;" id="previmg_input" name="previmage" type="file"></input>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="img_input">滚动图片:</label>
+                    <div class="controls">
+                        <input style="width:500px;" id="img_input" name="image" type="file" multiple></input>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="expire_input">过期日期:</label>
+                    <div class="controls">
+                        <input style="width:500px;" id="expire_input" name="expire" type="date"></input>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="tags_input">标签:</label>
+                    <div class="controls">
+                        <textarea style="width:500px;" id="tags_input" name="tags" type="text"></textarea>
+                    </div>
+                </div>
+		<div class="control-group">
+			<div class="controls">
+				<button type="submit" class="btn btn-primary span2">发送</button>
+				<a href="/background/information" class="btn btn-primary span2">回退</a>
+			</div>
+		</div>
+	</form>
+</div>

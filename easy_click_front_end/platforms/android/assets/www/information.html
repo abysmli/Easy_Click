@@ -1,0 +1,199 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Main-Page</title>
+    <link rel="stylesheet" href="stylesheets/jquery.excoloSlider.css" />
+    <link rel="stylesheet" href="jquery_mobile/jquery.mobile_abysmli_custom.min.css" />
+    <link rel="stylesheet" href="jquery_mobile/jquery.mobile.structure-1.3.1.min.css" />
+    <link rel="stylesheet" href="stylesheets/main.css" />
+    <script src="javascripts/jquery-1.9.1.min.js"></script>
+    <script src="javascripts/jquery.lazy.min.js"></script>
+    <script src="jquery_mobile/jquery.mobile-1.3.1.min.js"></script>
+    <script src="javascripts/jquery.excoloSlider.min.js"></script>
+    <script src="javascripts/main.js"></script>
+</head>
+<body>
+    <div data-role="page" id="main_page" class="page_body">
+    <div class="nav_bar">
+        <a href="javascript:history.go(-1)">
+            <img alt="" src="img/icon_img/icon_back.png"></img>
+        </a>
+        <a data-transition="flip" href="index.html">
+            <img alt="" src="img/icon_img/icon_home.png"></img>
+        </a>
+        <a data-transition="slide" href="post_selector.html">
+            <img alt="" src="img/icon_img/icon_write.png"></img>
+        </a>
+        <a data-transition="slide" href="aboutpost.html">
+            <img alt="" src="img/icon_img/icon_contact_us.png"></img>
+        </a>
+        <h3>
+        </h3>
+        </div>
+        <div class="nav_bar_holder">
+        </div>
+
+        <div data-role="content">
+            <div class="search_block">
+                <form id="information_search_bar" class="search">
+                    <input type="search" data-mini="true" name="search_key" id="information_search_input" placeholder="例: 新宿 整体 可就职 (简繁中日文皆可)" value="" />
+                </form>
+            </div>
+            <div class="search_block_holder">
+            </div>
+            <div id="information_main_body">
+                
+                <div class="ui-grid-a">
+                    <div class="ui-block-a">
+                        <div class="main_nav_icon">
+                            <a href="/information/find_job/" data-transition="slide">
+                                <img alt="" src="img/information_img/information_nav_01.png"></img>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ui-block-b">
+                        <div class="main_nav_icon">
+                            <a href="/information/find_house/" data-transition="slide">
+                                <img alt="" src="img/information_img/information_nav_02.png"></img>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ui-block-a">
+                        <div class="main_nav_icon">
+                            <a href="/information/move_house/" data-transition="slide">
+                                <img alt="" src="img/information_img/information_nav_03.png"></img>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ui-block-b">
+                        <div class="main_nav_icon">
+                            <a href="/information/business/" data-transition="slide">
+                                <img alt="" src="img/information_img/information_nav_04.png"></img>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ui-block-a">
+                        <div class="main_nav_icon">
+                            <a href="/information/ticket/" data-transition="slide">
+                                <img alt="" src="img/information_img/information_nav_05.png"></img>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ui-block-b">
+                        <div class="main_nav_icon">
+                            <a href="/information/law/" data-transition="slide">
+                                <img alt="" src="img/information_img/information_nav_06.png"></img>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <script>
+                $(document).one("pageinit","#information_page", function( event ) {
+                    $('.main_nav_icon').on('vmousedown','a',function(){
+                        $(this).children('img').css({opacity:0.5}).animate({opacity:1},500);
+                    });
+                    $('#search_bar').submit(function(e){
+                        return false;
+                        e.preventDefault();
+                    });
+                });
+                </script>
+
+            </div>
+            <div id="ajax_loading_bar">
+                <div id="noTrespassingOuterBarG">
+                    <div id="noTrespassingFrontBarG" class="noTrespassingAnimationG">
+                        <div class="noTrespassingBarLineG">
+                        </div>
+                        <div class="noTrespassingBarLineG">
+                        </div>
+                        <div class="noTrespassingBarLineG">
+                        </div>
+                        <div class="noTrespassingBarLineG">
+                        </div>
+                        <div class="noTrespassingBarLineG">
+                        </div>
+                        <div class="noTrespassingBarLineG">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+        $(document).one("pageinit","#information_page", function( event ) {
+            $('#ajax_loading_bar').hide();
+            var mSkip=15;
+            var mLimit=9;
+            var mKey=$('#information_search_input').val();
+            var mFlagFinished=false, scrollOK = true;
+            $(window).bind('scroll', function () {
+                if (scrollOK&&(!mFlagFinished)&&($.mobile.activePage.attr("id")=="information_page")&&(mKey!="")) {
+                    if (($(this).scrollTop() + $(this).height()) >= ($(document).height() - 300)) {
+                        scrollOK = false;
+                        $('#ajax_loading_bar').show();
+                        $.ajax({
+                            url: '/information/get_catagory',
+                            type:'POST',
+                            timeout: 10000,
+                            data: 'key='+mKey+'&skip='+mSkip+'&limit='+mLimit,
+                            success: function(result){
+                                mSkip+=mLimit;
+                                scrollOK=true;
+                                $('#information_main_body').append(result);
+                                if (result==="") {
+                                    $('#ajax_loading_bar').hide();
+                                    mFlagFinished=true;
+                                }
+                            },
+                            error: function(jqXHR, textStatus, errorThrown){
+                                $('#ajax_loading_bar').hide();
+                                mFlagFinished=true;
+                            }
+                        });
+                    }
+                }
+            });
+            $('#information_search_bar').submit(function(e){
+                mKey=$('#information_search_input').val();
+                if(mKey===""){
+                    $('#information_main_body').html("").removeClass("ui-grid-b");
+                } else {
+                    $('#information_main_body').html("").addClass("ui-grid-b");
+                }
+                mFlagFinished=false;
+                $.ajax({
+                    url: '/information/get_catagory',
+                    type:'POST',
+                    timeout: 10000,
+                    data: 'key='+mKey+'&skip=0&limit=15',
+                    success: function(result){
+                        $('#information_main_body').html(result);
+                        $('#ajax_loading_bar').hide();
+                        mFlagFinished=false;
+                        mSkip=15;
+                    },
+                    error: function(jqXHR, textStatus, errorThrown){
+                        $('#ajax_loading_bar').hide();
+                        mFlagFinished=false;
+                        mSkip=15;
+                    }
+                }); 
+                return false;
+                e.preventDefault();
+            });
+        });
+        </script>
+
+        <script>
+            $(document).one("pageinit","#index_page", function( event ) {
+                $('.main_nav_icon, #main_logo').on('vmousedown','a',function(){
+                    $(this).children('img').css({opacity:0.5}).animate({opacity:1},500);
+                });
+            });
+        </script>
+    </div>
+</div>
+</body>
+</html>

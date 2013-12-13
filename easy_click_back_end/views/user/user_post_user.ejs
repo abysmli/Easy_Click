@@ -1,0 +1,36 @@
+<div data-role="content">
+	<div style="margin-top:0.5em;" id="post_list" class="ui-grid-b">
+		<% include post_list_user %>
+	</div>
+</div>
+
+<div class="del_information_block">
+	<div class="del_information_block_cancel_button">
+		<a href="#close_del_information_block">取消</a>
+	</div>
+	<div class="del_information_block_del_button">
+		<a href="#">撤下</a>
+	</div>
+</div>
+<div class="del_information_block_inner">
+	<div id="del_information_block">
+	</div>
+</div>
+<script>
+function sendAjaxRequest(url, callback) {
+    $.ajax({
+        url: url,
+        type:'GET',
+        timeout: 10000,
+        success: callback,
+        error: function(jqXHR, textStatus, errorThrown) {
+        }
+    });
+}
+$(document).one("pageinit","#user_post_user_page", function( event ) {
+	$('.del_information_block, .del_information_block_inner').hide();
+	$("[href='#close_del_information_block']").click(function() {
+		$('.del_information_block, .del_information_block_inner').fadeOut();
+	});
+});
+</script>

@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title><%= title %></title>
+  <link rel="shortcut icon" href="/img/logo.png" />
+  <link rel="stylesheet" href="/stylesheets/jquery.excoloSlider.css" />
+  <link rel="stylesheet" href="/jquery_mobile/jquery.mobile_abysmli_custom.min.css" />
+  <link rel="stylesheet" href="/jquery_mobile/jquery.mobile.structure-1.3.1.min.css" />
+  <link rel="stylesheet" href="/stylesheets/main.css" />
+  <script src="/javascripts/jquery-1.9.1.min.js"></script>
+  <script src="/javascripts/jquery.lazy.min.js"></script>
+  <script src="/jquery_mobile/jquery.mobile-1.3.1.min.js"></script>
+  <script src="/javascripts/jquery.excoloSlider.min.js"></script>
+  <script src="/javascripts/main.js"></script>
+</head>
+<body>
+  <div data-role="page" id="<%= pageid %>" class="page_body">
+    <div class="nav_bar">
+      <a href="javascript:history.go(-1)">
+        <img alt="" src="/img/icon_img/icon_back.png"></img>
+      </a>
+      <a data-transition="flip" href="/">
+        <img alt="" src="/img/icon_img/icon_home.png"></img>
+      </a>
+      <a data-transition="slide" href="/post_selector">
+        <img alt="" src="/img/icon_img/icon_write.png"></img>
+      </a>
+      <a data-transition="slide" href="/aboutpost">
+        <img alt="" src="/img/icon_img/icon_contact_us.png"></img>
+      </a>
+      <h3 id="get_more">
+        <%= title.substr(0,8) %>
+      </h3>
+    </div>
+    <div class="nav_bar_holder">
+    </div>
+    <%- body %>
+    <div class="login_reg_selector">
+      <div class="selector_login_button">
+        <a data-transition="slide" class="selector_login_button_word" style="color: white; font-weight: normal;" href="/reg">注册</a>
+      </div>
+      <div class="selector_reg_button">
+        <a data-transition="slide" class="selector_reg_button_word" style="color: white; font-weight: normal;" href="/login">登录</a>
+      </div>
+      <div class="selector_cancel_button">
+        <a class="selector_cancel_button_word" style="color: white; font-weight: normal;" href="#login_reg_selector">取消</a>
+      </div>
+    </div>
+    <% if (success) { %>
+    <div class="post_success">
+      <p><%= success %></p>
+      <div>
+        <p style="color: white; text-decoration: none; font-weight: normal;">确定</p>
+      </div>
+    </div>
+    <% } %>
+    <% if (error) { %>
+    <div class="post_failed">
+      <p><%= error %></p>
+      <p>对不起，发送失败，请您重新操作。</p>
+      <div>
+        <p style="color: white; text-decoration: none; font-weight: normal;">确定</p>
+      </div>
+    </div>
+    <% } %>
+  </div>
+</body>
+</html>

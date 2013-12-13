@@ -1,0 +1,47 @@
+<% posts.forEach(function(post, index) { 
+    if (index % 3 == 0) { %>
+        <div class="ui-block-a">
+            <div class="information_list" id="<%= post.uid %>">
+                <a href="/user_post_view/<%= post.uid %>" data-transition="slide">
+                    <% if (post.previmg.length===0) { %> 
+                    <img alt="img" width="100%" src="/img/no_img.jpg"></img>
+                    <% } else { %>
+                    <img alt="img" width="100%" src="data:image/jpg;base64,<%= post.previmg %>"></img>
+                    <% } %>
+                    <p><%= post.prevtext %></p>
+                    <pre><%= post.prevtext2 %></pre>
+                </a>
+            </div>
+        </div>
+    <% } %>
+    <% if (index % 3 == 1) { %>
+        <div class="ui-block-b">
+            <div class="information_list" id="<%= post.uid %>">
+                <a href="/user_post_view/<%= post.uid %>" data-transition="slide">
+                    <% if (post.previmg.length===0) { %> 
+                    <img alt="img" width="100%" src="/img/no_img.jpg"></img>
+                    <% } else { %>
+                    <img alt="img" width="100%" src="data:image/jpg;base64,<%= post.previmg %>"></img>
+                    <% } %>
+                    <p><%= post.prevtext %></p>
+                    <pre><%= post.prevtext2 %></pre>
+                </a>
+            </div>
+        </div>
+    <% } %>
+    <% if (index % 3 == 2) { %>
+        <div class="ui-block-c">
+            <div class="information_list" id="<%= post.uid %>">
+                <a href="/user_post_view/<%= post.uid %>" data-transition="slide">
+                    <% if (post.previmg.length===0) { %> 
+                    <img alt="img" width="100%" src="/img/no_img.jpg"></img>
+                    <% } else { %>
+                    <img alt="img" width="100%" src="data:image/jpg;base64,<%= post.previmg %>"></img>
+                    <% } %>
+                    <p><%= post.prevtext %></p>
+                    <pre><%= post.prevtext2 %></pre>
+                </a>
+            </div>
+        </div>
+    <% } %>
+<%}) %>

@@ -1,0 +1,44 @@
+<div data-role="content">
+    <div id="main_logo" style="text-align: center;">
+        <a data-transition="slide" href="/about">
+            <img src="/img/logo_header.jpg" alt="logo" width="97.5%" style="margin-top:0.8em; margin-bottom:-0.05em;">
+        </a>
+    </div>
+    <div class="ui-grid-a">
+        <div class="ui-block-a">
+            <div class="main_nav_icon">
+                <a href="/information" data-transition="slide">
+                    <img alt="" src="/img/menu_icon/menu_icon_01.png"></img>
+                </a>
+            </div>
+        </div>
+        <div class="ui-block-b">
+            <div class="main_nav_icon">
+                <a href="/user_post_view" data-transition="slide">
+                    <img alt="" src="/img/menu_icon/menu_icon_02.png"></img>
+                </a>
+            </div>
+        </div>
+        <div class="ui-block-a">
+            <div class="main_nav_icon">
+                <a href="/news" data-transition="slide">
+                    <img alt="" src="/img/menu_icon/menu_icon_03.png"></img>
+                </a>
+            </div>
+        </div>
+        <div class="ui-block-b">
+            <div class="main_nav_icon">
+                <a href="/learning" data-transition="slide">
+                    <img alt="" src="/img/menu_icon/menu_icon_04.png"></img>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+$(document).one("pageinit","#index_page", function( event ) {
+    $('.main_nav_icon, #main_logo').on('vmousedown','a',function(){
+        $(this).children('img').css({opacity:0.5}).animate({opacity:1},500);
+    });
+});
+</script>

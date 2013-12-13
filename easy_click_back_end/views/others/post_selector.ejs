@@ -1,0 +1,25 @@
+<div class="user_name_bar">
+	<% if (user) { %>
+	<p style="color: #666666;"><%= user.name %></p>
+	<a style="color: #999999; font-weight: normal;" href="/logout">- 退出登录</a>
+ 	<% } %>
+</div>
+
+<div class="post_selector">
+  <div>
+    <a style="color: white; font-weight: normal;" data-transition="slide" href="<% if (user) { %> /post <% } else { %>#login_reg_selector<% } %>">立刻发布物品  <p>--永久免费</p></a>
+  </div>
+  <div>
+    <a style="color: white; font-weight: normal;" data-transition="slide" href="<% if (user) { %> /u/<%= user.name %> <% } else { %>#login_reg_selector<% } %>">撤下已发物品  <p>--交易完毕</p></a>
+  </div>
+  <div>
+    <a style="color: white; font-weight: normal;" data-transition="slide" href="/aboutpost">发布广告信息  <p>--联系方式</p></a>
+  </div>
+</div>
+<div data-role="content">
+    <div data-role="fieldcontain">
+        <div class="about_contain">
+            </br><a style="color: #0086ab;" data-transition="slide" href="/announce">服务条款及免责声明</a>
+        </div>
+    </div>
+</div>

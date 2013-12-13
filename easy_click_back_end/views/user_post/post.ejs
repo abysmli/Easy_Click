@@ -1,0 +1,27 @@
+<div data-role="content">
+    <div class="user_container">
+        <form method="post" data-ajax="false" enctype="multipart/form-data">
+            <label for="content_input">
+                物品介绍：
+            </label>
+            <textarea style="height: 10em;" name="content" id="content_input" placeholder="物品介绍"></textarea>
+            <label for="location_input">
+                所在地：
+            </label>
+            <textarea name="location" id="location_input" placeholder="所在地"></textarea>
+            <label for="contact_input">
+                联系方式：
+            </label>
+            <textarea name="contact" id="contact_input" placeholder="联系方式"></textarea>
+            <label for="price_input">
+                价格(选填)：
+            </label>
+            <textarea name="price" id="price_input" placeholder="价格"></textarea>
+            <label for="file_upload">
+                图片上传：
+            </label>
+            <input id="file_upload" type="file" name="image" multiple/>
+            <input id="post_button" type="submit" data-theme="b" data-icon="edit" data-iconpos="left" value="投递">
+        </form>  
+    </div>
+</div>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title><%= title %></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link href="/stylesheets/bootstrap.min.css" rel="stylesheet" media="screen">
+		<script src="/javascripts/jquery-1.9.1.min.js"></script>
+		<script src="/javascripts/bootstrap.min.js"></script>
+		<script>
+			$(document).ready(function() {
+				$("#header div").css({
+					"height": $("#header").height() + $("#header h1").height() + $("#header p").height(),
+				});
+			});
+		</script>
+		<style>
+			@keyframes headeranimation { from {opacity: 0} to {opacity: 1} } @-moz-keyframes
+			headeranimation /* Firefox */ { from {opacity: 0} to {opacity: 1} } @-webkit-keyframes
+			headeranimation /* Safari 和 Chrome */ { from {opacity: 0} to {opacity: 1} } @-o-keyframes
+			headeranimation /* Opera */ { from {opacity: 0} to {opacity: 1} }
+		</style>
+	</head>
+	<body>
+		<div class="container-fluid">
+			<div class="row-fluid">
+				<div class="span12">
+					<div id="header" style="margin:0 -2em 2em -2em; padding-top: 3em; padding-bottom:3em; color: #fff; background: linear-gradient(45deg,  #020031 0%,#6d3353 100%); text-align: center;">
+						<div style="animation: headeranimation 5s linear 3s infinite alternate; -webkit-animation: headeranimation 5s linear 3s infinite alternate; -moz-animation: headeranimation 5s linear 3s infinite alternate; -o-animation: headeranimation 5s linear 3s infinite alternate; display: block; position: absolute; top: 0; right: 0; left: 0; background: url(/img/background.png) repeat center center;">
+						</div>
+						<h1 style="font-size:50px; font-weight:bold; letter-spacing:-1px; line-height: 1;">
+							后台管理系统
+						</h1>
+						<p style="font-size: 18px; font-weight: 300; line-height: 1.25; margin-bottom: 30px;">
+							新晨资讯 since 2012.12.21
+						</p>
+					</div>
+					
+					<%- body %>
+					<footer style="width:100%; background-color: #F8F8F8; text-align:center; padding:50px 0px 30px 0px">
+						<p style="margin:0px">
+							<a style="margin:0px" href="/">Li, Qi & Li, Yuan</a>
+							@ Copyright: 2013
+						</p>
+					</footer>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

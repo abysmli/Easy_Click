@@ -1,0 +1,20 @@
+<div data-role="content">
+    <div class="user_container">
+        <form id="form" method="post" data-ajax="false" enctype="multipart/form-data">
+            <label for="title_input">
+                标题：
+            </label>
+            <textarea name="title" id="title_input" placeholder="请输入你想投递的内容"></textarea>
+            
+            <label for="content_input">
+                内容：
+            </label>
+            <textarea style="height: 10em;" name="content" id="content_input" placeholder="请输入你想投递的内容"></textarea>
+            <label for="file_upload">
+                图片上传：
+            </label>
+            <input id="file_upload" type="file" name="image" multiple/>
+            <input id="post_button" type="submit" data-theme="b" data-icon="edit" data-iconpos="left" value="投递">
+        </form>  
+    </div>
+</div>

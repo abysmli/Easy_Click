@@ -1,0 +1,64 @@
+<div data-role="content">
+    <div id="learning_slider" style="text-shadow: 0 0 0 #FFFFFF; font-style:normal; margin-bottom:0.5em;">
+        <img width="100%" src="/img/learning_img/logo-1.jpg">
+        <img width="100%" src="/img/learning_img/logo-2.jpg">
+		<img width="100%" src="/img/learning_img/logo-3.jpg">
+		<img width="100%" src="/img/learning_img/logo-1.jpg">
+		<img width="100%" src="/img/learning_img/logo-2.jpg">
+        <img width="100%" src="/img/learning_img/logo-3.jpg">
+    </div>
+	<div class="ui-grid-a">
+        <div class="ui-block-a">
+			<div class="learning_nav">
+				<div>
+					<a data-transition="slide" href="/learning/beginner">
+						<img alt="beginner" src="/img/learning_img/1.png"></img>
+					</a>
+				</div>
+				<div>
+					<a data-transition="slide" href="/learning/vocabulary">
+						<img alt="beginner" src="/img/learning_img/2.png"></img>
+					</a>
+				</div>
+			</div>
+        </div>
+        <div class="ui-block-b">
+			<div class="learning_nav">
+				<div>
+					<a data-transition="slide" href="/learning/sentence">
+						<img alt="beginner" src="/img/learning_img/3.png"></img>
+					</a>
+				</div>
+				<div>
+					<a data-transition="slide" href="/learning/test">
+						<img alt="beginner" src="/img/learning_img/4.png"></img>
+					</a>					
+				</div>
+				<div>
+					<a data-transition="slide" href="/learning/article">
+						<img alt="beginner" src="/img/learning_img/5.png"></img>
+					</a>					
+				</div>
+			</div>
+        </div>
+    </div>
+</div>
+<script>
+$("#learning_slider").excoloSlider({
+	width: $(window).width(),
+	height: $(window).width()/2,
+    autoSize: false,
+    touchNav: true,
+    mouseNav: true,
+    prevnextNav: false,
+    prevnextAutoHide: false,
+    pagerNav: false,
+    hoverPause: false,
+    interval: 15000,
+});
+$(document).one("pageinit","#learning_page", function( event ) {
+	$('.learning_nav').on('vmousedown','a',function(){
+	  $(this).children('img').css({opacity:0.5}).animate({opacity:1},500);
+	});
+});
+</script>

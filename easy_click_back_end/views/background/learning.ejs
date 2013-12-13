@@ -1,0 +1,203 @@
+<% if (success) { %>
+    <div>
+        <br/>
+        	<div class="alert alert-success">
+        	<%= success %>
+    		</div>
+        <br/>
+    </div>
+    <% } %>
+    <% if (error) { %>
+    <div>
+        <br/>
+        	<div class="alert alert-error">
+        	<%= error %>
+    		</div>
+        <br/>
+    </div>
+<% } %>
+<ul class="nav nav-tabs">
+	<li>
+		<a href="/background/users">用户管理</a>
+	</li>
+	<li>
+		<a href="/background/information">实用资讯</a>
+	</li>
+	<li>
+		<a href="/background/user_post">免费交流</a>
+	</li>
+	<li>
+		<a href="/background/news">新闻</a>
+	</li>
+	<li class="active">
+		<a href="/background/learning">日语学习</a>
+	</li>
+</ul>
+
+<div class="row-fluid">
+	<div class="span6">
+		<form method="post" enctype="multipart/form-data">
+			<div class="control-group">
+                <label class="control-label" for="index_input">分类:</label>
+                <div class="controls">
+                    <select onchange="getval(this);" style="width:500px;" id="index_input" name="index">
+                        <option value="vocabulary">常用单词</option>
+                        <option value="beginner">日语入门</option>
+                        <option value="sentence">实用语句</option>
+                        <option value="test">能力试验</option>
+                        <option value="article">美文赏析</option>
+                    </select>
+                </div>
+            </div>
+			<div class="control-group">
+				<label class="control-label" for="title_input">标题:</label>
+				<div class="controls">
+					<input style="width:500px;" id="title_input" name="title" type="text"></input>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="content_input">内容:</label>
+				<div class="controls">
+					<textarea style="height:200px; width:500px;" id="content_input" name="content" type="text"></textarea>
+				</div>
+			</div>
+			<div class="control-group">
+                    <label class="control-label" for="img_input">图片:</label>
+                    <div class="controls">
+                        <input style="width:500px;" id="img_input" name="image" type="file" multiple></input>
+                    </div>
+                </div>
+			<div class="control-group">
+				<div class="controls">
+					<button type="submit" class="btn btn-primary span2">发布</button>
+				</div>
+			</div>
+		</form>
+	</div>
+	<div class="span6">
+		<h4>已发布的条目: <%= learns.length %></h4>
+		<h4>常用单词:</h4>
+		<table class="table table-hover table-bordered">
+		<% var i=0 %>
+		<% learns.forEach(function(learn, index) { %>
+		<% if (learn.index==='vocabulary') { %>
+		<% i++ %>
+			<tr>
+				<td>
+					<div id="<%=learn.uid%>">
+						<a href="/background/learning/<%=learn.uid%>">
+							<h4>标题: <%= learn.title %></h4>
+						</a>
+						<a id="button_<%=learn.uid%>"class="btn btn-danger" href="/remove_learnings/<%=learn.uid%>">删除</a>
+					</div>
+				</td>
+			</tr>
+		<% } %>
+		<% }) %>
+		</table>
+		<h4>总计: <%= i %> 条</h4>
+		<hr/>
+		<h4>日语入门:</h4>
+		<table class="table table-hover table-bordered">
+		<% var i=0 %>
+		<% learns.forEach(function(learn, index) { %>
+		<% if (learn.index==='beginner') { %>
+		<% i++ %>
+			<tr>
+				<td>
+					<div id="<%=learn.uid%>">
+						<a href="/background/learning/<%=learn.uid%>">
+							<h4>标题: <%= learn.title %></h4>
+						</a>
+						<a id="button_<%=learn.uid%>"class="btn btn-danger" href="/remove_learnings/<%=learn.uid%>">删除</a>
+					</div>
+				</td>
+			</tr>
+		<% } %>
+		<% }) %>
+		</table>
+		<h4>总计: <%= i %> 条</h4>
+		<hr/>
+		<h4>实用语句:</h4>
+		<table class="table table-hover table-bordered">
+		<% var i=0 %>
+		<% learns.forEach(function(learn, index) { %>
+		<% if (learn.index==='sentence') { %>
+		<% i++ %>
+			<tr>
+				<td>
+					<div id="<%=learn.uid%>">
+						<a href="/background/learning/<%=learn.uid%>">
+							<h4>标题: <%= learn.title %></h4>
+						</a>
+						<a id="button_<%=learn.uid%>"class="btn btn-danger" href="/remove_learnings/<%=learn.uid%>">删除</a>
+					</div>
+				</td>
+			</tr>
+		<% } %>
+		<% }) %>
+		</table>
+		<h4>总计: <%= i %> 条</h4>
+		<hr/>
+		<h4>能力试验:</h4>
+		<table class="table table-hover table-bordered">
+		<% var i=0 %>
+		<% learns.forEach(function(learn, index) { %>
+		<% if (learn.index==='test') { %>
+		<% i++ %>
+			<tr>
+				<td>
+					<div id="<%=learn.uid%>">
+						<a href="/background/learning/<%=learn.uid%>">
+							<h4>标题: <%= learn.title %></h4>
+						</a>
+						<a id="button_<%=learn.uid%>"class="btn btn-danger" href="/remove_learnings/<%=learn.uid%>">删除</a>
+					</div>
+				</td>
+			</tr>
+		<% } %>
+		<% }) %>
+		</table>
+		<h4>总计: <%= i %> 条</h4>
+		<hr/>
+		<h4>美文赏析:</h4>
+		<table class="table table-hover table-bordered">
+		<% var i=0 %>
+		<% learns.forEach(function(learn, index) { %>
+		<% if (learn.index==='article') { %>
+		<% i++ %>
+			<tr>
+				<td>
+					<div id="<%=learn.uid%>">
+						<a href="/background/learning/<%=learn.uid%>">
+							<h4>标题: <%= learn.title %></h4>
+						</a>
+						<a id="button_<%=learn.uid%>"class="btn btn-danger" href="/remove_learnings/<%=learn.uid%>">删除</a>
+					</div>
+				</td>
+			</tr>
+		<% } %>
+		<% }) %>
+		</table>
+		<h4>总计: <%= i %> 条</h4>
+	</div>
+</div>
+<a class="btn btn-danger" onclick="remove_learnings()">删除所有已发布的条目</a>
+
+<script>
+function remove_learnings(){
+	if(confirm("确定删除所有已发布的条目？"))
+	{
+		window.location="/remove_learnings";
+	}
+}
+
+<% learns.forEach(function(learn, index) { %>
+$("#<%=learn.uid%>").hover(function(){
+	$("#button_<%=learn.uid%>").show();
+},function(){
+	$("#button_<%=learn.uid%>").hide();
+});
+$("#button_<%=learn.uid%>").hide();
+<% }) %>
+</script>

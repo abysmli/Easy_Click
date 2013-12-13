@@ -1,0 +1,165 @@
+<% if (success) { %>
+    <div>
+        <br/>
+            <div class="alert alert-success">
+            <%= success %>
+            </div>
+        <br/>
+    </div>
+    <% } %>
+    <% if (error) { %>
+    <div>
+        <br/>
+            <div class="alert alert-error">
+            <%= error %>
+            </div>
+        <br/>
+    </div>
+<% } %>
+<ul class="nav nav-tabs">
+    <li>
+        <a href="/background/users">用户管理</a>
+    </li>
+    <li>
+        <a href="/background/information">实用资讯</a>
+    </li>
+    <li class="active">
+        <a href="/background/user_post">免费交流</a>
+    </li>
+    <li>
+        <a href="/background/news">新闻</a>
+    </li>
+    <li>
+        <a href="/background/learning">日语学习</a>
+    </li>
+</ul>
+
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span4">
+            <h3>原稿发布容:</h3>
+            <h4>发送者:</h4>
+            <p id="post_user_name"><%= post.username %></p>
+            <h4>标题:</h4>
+            <pre><%= post.title %></pre>   
+            <h4>展示文字:</h4>
+            <pre><%= post.prevtext %></pre> 
+            <h4>展示文字2:</h4>
+            <pre><%= post.prevtext2 %></pre>      
+            <h4>物品介绍:</h4>
+            <pre><%= post.content %></pre>
+            <h4>所在地:</h4>
+            <pre><%= post.location %></pre>
+            <h4>联系方式:</h4>
+            <pre><%= post.contact %></pre>
+            <h4>价格:</h4>
+            <pre><%= post.price %></pre>
+            <h4>标签:</h4>
+            <pre><%= post.tags %></pre>
+            <% if (post.img.length != 0) { %>
+            <h4>配图:</h4>
+            <% if (Object.prototype.toString.call(post.img) === "[object Array]") { %>
+            <p>总计<%= post.img.length %>张图</p>
+            <% post.img.forEach(function(img,index) { %>
+            <hr/>
+            <p>第<%= index+1 %>张图:</p>
+            <img src="data:image/jpg;base64,<%= img %>" alt="image"></img>
+            <% }) %>
+            <% } else { %>
+            <img src="data:image/jpg;base64,<%= post.img %>" alt="image"></img>
+            <% }} %>
+            <h4>日期:</h4>
+            <p><%= post.date.toISOString().replace(/T/, ' ').replace(/\..+/, '') %></p>
+        </div>
+
+        <div class="span8" style="border-left: 1px solid #D4D4D4; padding-left: 3em;">
+
+            <h3>修改发布:</h3>
+            <form method="post" enctype="multipart/form-data">
+                <div class="control-group">
+                    <label class="control-label" for="username_input">发送者:</label>
+                    <div class="controls">
+                        <input readonly="readonly" value="<%= post.username %>" style="width:500px;" id="username_input" name="username" type="text"></input>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="title_input">标题:</label>
+                    <div class="controls">
+                        <textarea style="width:500px;" id="title_input" name="title" type="text"><%= post.title %></textarea>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="prevtext_input">展示文字:</label>
+                    <div class="controls">
+                        <textarea style="width:500px;" id="prevtext_input" name="prevtext" type="text"><%= post.prevtext %></textarea>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="prevtext2_input">展示文字2:</label>
+                    <div class="controls">
+                        <textarea style="width:500px;" id="prevtext2_input" name="prevtext2" type="text"><%= post.prevtext2 %></textarea>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="content_input">物品介绍:</label>
+                    <div class="controls">
+                        <textarea style="height:5em; width:500px;" id="content_input" name="content" type="text"><%= post.content %></textarea>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="location_input">所在地:</label>
+                    <div class="controls">
+                        <textarea style="width:500px;" id="location_input" name="location" type="text"><%= post.location %></textarea>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="contact_input">联系方式:</label>
+                    <div class="controls">
+                        <textarea style="width:500px;" id="contact_input" name="contact" type="text"><%= post.contact %></textarea>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="price_input">价格:</label>
+                    <div class="controls">
+                        <textarea style="width:500px;" id="price_input" name="price" type="text"><%= post.price %></textarea>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="previmg_input">预览图片:</label>
+                    <div class="controls">
+                        <input style="width:500px;" id="previmg_input" name="previmage" type="file"></input>
+                    </div>
+                </div>               
+
+                <div class="control-group">
+                    <label class="control-label" for="img_input">滚动图片:</label>
+                    <div class="controls">
+                        <input style="width:500px;" id="img_input" name="image" type="file" multiple></input>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="tags_input">标签:</label>
+                    <div class="controls">
+                        <textarea style="width:500px;" id="tags_input" name="tags" type="text"><%= post.tags %></textarea>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <div class="controls">
+                        <button type="submit" class="btn btn-primary span2">发送</button>
+                        <a href="/background/user_post_editor_list" class="btn btn-primary span2">回退</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

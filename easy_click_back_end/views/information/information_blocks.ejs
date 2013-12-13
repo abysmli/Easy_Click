@@ -1,0 +1,55 @@
+<div class="ui-grid-a">
+    <div class="ui-block-a">
+        <div class="main_nav_icon">
+            <a href="/information/find_job/" data-transition="slide">
+                <img alt="" src="/img/information_img/information_nav_01.png"></img>
+            </a>
+        </div>
+    </div>
+    <div class="ui-block-b">
+        <div class="main_nav_icon">
+            <a href="/information/find_house/" data-transition="slide">
+                <img alt="" src="/img/information_img/information_nav_02.png"></img>
+            </a>
+        </div>
+    </div>
+    <div class="ui-block-a">
+        <div class="main_nav_icon">
+            <a href="/information/move_house/" data-transition="slide">
+                <img alt="" src="/img/information_img/information_nav_03.png"></img>
+            </a>
+        </div>
+    </div>
+    <div class="ui-block-b">
+        <div class="main_nav_icon">
+            <a href="/information/business/" data-transition="slide">
+                <img alt="" src="/img/information_img/information_nav_04.png"></img>
+            </a>
+        </div>
+    </div>
+    <div class="ui-block-a">
+        <div class="main_nav_icon">
+            <a href="/information/ticket/" data-transition="slide">
+                <img alt="" src="/img/information_img/information_nav_05.png"></img>
+            </a>
+        </div>
+    </div>
+    <div class="ui-block-b">
+        <div class="main_nav_icon">
+            <a href="/information/law/" data-transition="slide">
+                <img alt="" src="/img/information_img/information_nav_06.png"></img>
+            </a>
+        </div>
+    </div>
+</div>
+<script>
+$(document).one("pageinit","#information_page", function( event ) {
+    $('.main_nav_icon').on('vmousedown','a',function(){
+        $(this).children('img').css({opacity:0.5}).animate({opacity:1},500);
+    });
+    $('#search_bar').submit(function(e){
+        return false;
+        e.preventDefault();
+    });
+});
+</script>

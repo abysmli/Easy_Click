@@ -1,0 +1,11 @@
+<div data-role="content">
+	<ul style="margin-top:0" data-role="listview" data-divider-theme="b" data-inset="true">
+		<% learns.forEach(function(learn, index) { %>
+		<li data-theme="c">
+			<a href="/learning/article/<%= learn.uid %>" data-transition="slide">
+				<%= learn.title %>
+			</a>
+		</li>
+		<% }) %>
+	</ul>  
+</div>

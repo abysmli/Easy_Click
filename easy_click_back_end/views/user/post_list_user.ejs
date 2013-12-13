@@ -1,0 +1,75 @@
+<% posts.forEach(function(post, index) { 
+if (index % 3 == 0) { %>
+<div class="ui-block-a">
+    <div class="information_list" id="<%= post.uid %>">
+        <a id="del_view_<%= post.uid %>" href="#" data-transition="slide">
+            <% if (post.previmg.length===0) { %> 
+            <img alt="img" width="100%" src="/img/no_img.jpg"></img>
+            <% } else { %>
+            <img alt="img" width="100%" src="data:image/jpg;base64,<%= post.previmg %>"></img>
+            <% } %>
+            <p><%= post.prevtext %></p>
+            <pre><%= post.prevtext2 %></pre>
+        </a>
+    </div>
+</div>
+<script>
+$('#del_view_<%= post.uid %>').click(function(){
+    sendAjaxRequest('/u/<%= user.name %>/<%= post.uid %>', function(result){
+        $('.del_information_block, .del_information_block_inner').fadeIn();
+        $('#del_information_block').html(result);
+        $('.del_information_block_del_button a').attr('href','/u/<%= user.name %>/remove/<%= post.uid %>');
+    })
+});
+</script>
+<% } %>
+<% if (index % 3 == 1) { %>
+<div class="ui-block-b">
+    <div class="information_list" id="<%= post.uid %>">
+        <a id="del_view_<%= post.uid %>" href="#" data-transition="slide">
+            <% if (post.previmg.length===0) { %> 
+            <img alt="img" width="100%" src="/img/no_img.jpg"></img>
+            <% } else { %>
+            <img alt="img" width="100%" src="data:image/jpg;base64,<%= post.previmg %>"></img>
+            <% } %>
+            <p><%= post.prevtext %></p>
+            <pre><%= post.prevtext2 %></pre>
+        </a>
+    </div>
+</div>
+<script>
+$('#del_view_<%= post.uid %>').click(function(){
+    sendAjaxRequest('/u/<%= user.name %>/<%= post.uid %>', function(result){
+        $('.del_information_block, .del_information_block_inner').fadeIn();
+        $('#del_information_block').html(result);
+        $('.del_information_block_del_button a').attr('href','/u/<%= user.name %>/remove/<%= post.uid %>');
+    })
+});
+</script>
+<% } %>
+<% if (index % 3 == 2) { %>
+<div class="ui-block-c">
+    <div class="information_list" id="<%= post.uid %>">
+        <a id="del_view_<%= post.uid %>" href="#" data-transition="slide">
+            <% if (post.previmg.length===0) { %> 
+            <img alt="img" width="100%" src="/img/no_img.jpg"></img>
+            <% } else { %>
+            <img alt="img" width="100%" src="data:image/jpg;base64,<%= post.previmg %>"></img>
+            <% } %>
+            <p><%= post.prevtext %></p>
+            <pre><%= post.prevtext2 %></pre>
+        </a>
+    </div>
+</div>
+<script>
+$('#del_view_<%= post.uid %>').click(function(){
+    sendAjaxRequest('/u/<%= user.name %>/<%= post.uid %>', function(result){
+        $('.del_information_block, .del_information_block_inner').fadeIn();
+        $('#del_information_block').html(result);
+        $('.del_information_block_del_button a').attr('href','/u/<%= user.name %>/remove/<%= post.uid %>');
+    })
+});
+</script>
+<% } %>
+<%}) %>
+

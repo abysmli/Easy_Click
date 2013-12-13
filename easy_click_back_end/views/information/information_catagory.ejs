@@ -1,0 +1,89 @@
+<div data-role="content">
+    <div class="search_block">
+        <form id="search_bar" class="search">
+            <input type="search" data-mini="true" name="search_key" id="search_input" placeholder="例: 新宿 整体 可就职 (简繁中日文皆可)" value="" />
+        </form>
+    </div>
+    <div class="search_block_holder">
+    </div>
+    <div id="information_catagory" class="ui-grid-b">
+        <% include catagory_list %>
+    </div>
+    <div id="information_ajax_loading_bar">
+        <div id="noTrespassingOuterBarG">
+            <div id="noTrespassingFrontBarG" class="noTrespassingAnimationG">
+                <div class="noTrespassingBarLineG">
+                </div>
+                <div class="noTrespassingBarLineG">
+                </div>
+                <div class="noTrespassingBarLineG">
+                </div>
+                <div class="noTrespassingBarLineG">
+                </div>
+                <div class="noTrespassingBarLineG">
+                </div>
+                <div class="noTrespassingBarLineG">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+$(document).one("pageinit","#information_catagory_page<%= title %>", function( event ) {
+    $('#information_ajax_loading_bar').hide();
+    var mSkip=15;
+    var mLimit=9;
+    var mKey=$('#search_input').val();
+    var mFlagFinished=false, scrollOK = true;
+    $(window).bind('scroll', function () {
+       if (scrollOK&&(!mFlagFinished)&&($.mobile.activePage.attr("id")=="information_catagory_page<%= title %>")) {
+            if (($(this).scrollTop() + $(this).height()) >= ($(document).height() - 300)) {
+                scrollOK = false;
+                $('#information_ajax_loading_bar').show();
+                $.ajax({
+                    url: '/information/get_catagory',
+                    type:'POST',
+                    timeout: 10000,
+                    data: 'index=<%= title %>&key='+mKey+'&skip='+mSkip+'&limit='+mLimit,
+                    success: function(result){
+                        mSkip+=mLimit;
+                        scrollOK=true;
+                        $('#information_catagory').append(result);
+                        if (result==="") {
+                            $('#information_ajax_loading_bar').hide();
+                            mFlagFinished=true;
+                        }
+                    },
+                    error: function(jqXHR, textStatus, errorThrown){
+                        $('#information_ajax_loading_bar').hide();
+                        mFlagFinished=true;
+                    }
+                });
+            }
+        }
+    });
+    $('#search_bar').submit(function(e){
+        mKey=$('#search_input').val();
+        mFlagFinished=false;
+        $.ajax({
+            url: '/information/get_catagory',
+            type:'POST',
+            timeout: 10000,
+            data: 'index=<%= title %>&key='+mKey+'&skip=0&limit=15',
+            success: function(result){
+                $('#information_catagory').html(result);
+                $('#information_ajax_loading_bar').hide();
+                mFlagFinished=false;
+                mSkip=15;
+            },
+            error: function(jqXHR, textStatus, errorThrown){
+                $('#information_ajax_loading_bar').hide();
+                mFlagFinished=false;
+                mSkip=15;
+            }
+        }); 
+        return false;
+        e.preventDefault();
+    });
+});
+</script>

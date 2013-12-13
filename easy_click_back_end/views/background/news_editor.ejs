@@ -1,0 +1,133 @@
+<% if (success) { %>
+    <div>
+        <br/>
+            <div class="alert alert-success">
+            <%= success %>
+            </div>
+        <br/>
+    </div>
+    <% } %>
+    <% if (error) { %>
+    <div>
+        <br/>
+            <div class="alert alert-error">
+            <%= error %>
+            </div>
+        <br/>
+    </div>
+<% } %>
+
+<ul class="nav nav-tabs">
+    <li>
+        <a href="/background/users">用户管理</a>
+    </li>
+    <li>
+        <a href="/background/information">实用资讯</a>
+    </li>
+    <li>
+        <a href="/background/user_post">免费交流</a>
+    </li>
+    <li class="active">
+        <a href="/background/news">新闻</a>
+    </li>
+    <li>
+        <a href="/background/learning">日语学习</a>
+    </li>
+</ul>
+
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span4">
+            <h3>原始发布的新闻:</h3>
+            <h4>标题:</h4>
+            <p><%= news.title %></p>
+            <h4>副标题:</h4>
+            <p><%= news.sub_title %></p>
+            <h4>出处:</h4>
+            <p><%= news.source %></p>
+            <h4>原文链接:</h4>
+            <p><%= news.sourceurl %></p>
+            <h4>新闻日期:</h4>
+            <p><%= news.newsdate %></p>
+            <h4>内容:</h4>
+            <pre><%= news.content %></pre>            
+            <% if (news.img.length != 0) { %>
+            <h4>配图:</h4>
+            <% if (Object.prototype.toString.call(news.img) === "[object Array]") { %>
+            <p>总计<%= news.img.length %>张图</p>
+            <% news.img.forEach(function(img,index) { %>
+            <hr/>
+            <p>第<%= index+1 %>张图:</p>
+            <img src="data:image/jpg;base64,<%= img %>" alt="image"></img>
+            <% }) %>
+            <% } else { %>
+            <img src="data:image/jpg;base64,<%= news.img %>" alt="image"></img>
+            <% }} %>
+            <h4>发布日期:</h4>
+            <p><%= news.date.toISOString().replace(/T/, ' ').replace(/\..+/, '') %></p>
+        </div>
+
+        <div class="span8" style="border-left: 1px solid #D4D4D4; padding-left: 3em;">
+            <h3>修改发布:</h3>
+            <form method="post" enctype="multipart/form-data">
+            <div class="control-group">
+                <label class="control-label" for="title_input">标题:</label>
+                <div class="controls">
+                    <input style="width:80%;" id="title_input" name="title" type="text"/>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="sub_title_input">副标题:</label>
+                <div class="controls">
+                    <input style="width:80%;" id="sub_title_input" name="sub_title" type="text"/>
+                </div>
+            </div>
+            <div class="control-group">
+                 <label class="control-label" for="source_input">出处:</label>
+                <div class="controls">
+                    <input style="width:80%;" id="source_input" name="source" type="text"/>
+                </div>
+            </div>
+            <div class="control-group">
+                 <label class="control-label" for="sourceurl_input">原文链接:</label>
+                <div class="controls">
+                    <input style="width:80%;" id="sourceurl_input" name="sourceurl" type="text"/>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="newsdate_input">新闻日期:</label>
+                <div class="controls">
+                    <input style="width:80%;" id="newsdate_input" name="newsdate" type="datetime-local"/>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="content_input">正文:</label>
+                <div class="controls">
+                    <textarea style="width:80%; height:8em;" id="content_input" name="content" type="text"></textarea>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="file_upload">预览图片上传: (建议 50x50 px)</label>
+                <div class="controls">
+                    <input style="width:80%;" id="file_upload" type="file" name="previmg"/>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="newsfile_upload">新闻图片上传: (建议 800x600 px)</label>
+                <div class="controls">
+                    <input style="width:80%;" id="newsfile_upload" type="file" name="img" multiple/>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <div class="controls">
+                    <button type="submit" class="btn btn-primary span2">投递</button>
+                </div>
+            </div>
+        </form>
+        </div>
+    </div>
+</div>

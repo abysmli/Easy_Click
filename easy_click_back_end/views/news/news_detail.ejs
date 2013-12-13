@@ -1,0 +1,42 @@
+<div data-role="content">
+    <% if (news.img.length != 0) { %>    
+    <% if (Object.prototype.toString.call(news.img) === "[object Array]") { %>
+    <div id="slider_news_details">
+        <% news.img.forEach(function(img,index) { %>
+        <img src="data:image/jpg;base64,<%= img %>" alt="image"></img>
+        <% }) %>
+        <% if (news.img.length===3) { %>
+        <img src="data:image/jpg;base64,<%= news.img[1] %>" alt="image"></img>
+        <% } %>
+        <% if (news.img.length===2) { %>
+        <img src="data:image/jpg;base64,<%= news.img[0] %>" alt="image"></img>
+        <img src="data:image/jpg;base64,<%= news.img[1] %>" alt="image"></img>
+        <% } %>
+    </div>
+    <script>
+    $("#slider_news_details").excoloSlider({
+        width: $(window).width(),
+        height: $(window).width()/2,
+        autoSize: false,
+        touchNav: true,
+        mouseNav: true,
+        prevnextNav: false,
+        prevnextAutoHide: false,
+        pagerNav: false,
+        hoverPause: false,
+        interval: 10000,
+    });
+    </script>
+    <% } else { %>
+    <img src="data:image/jpg;base64,<%= news.img %>" width="100%" alt="image">
+    <% }} %>
+    <div class="user_container">
+        <div class="news_container">
+            <h4 style="letter-spacing: 0.05em;"><%= news.title %></h4>
+            <p>来源: <%= news.source %></p>
+            <p><%= news.newsdate.substr(5,5) %></p>
+            <a href="<%= news.sourceurl %>" rel="external">点击查看原文</a>
+            <pre style="letter-spacing: 0.05em;"><%= news.content %></pre>
+        </div>
+    </div>
+</div>

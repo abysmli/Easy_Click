@@ -1,0 +1,80 @@
+<div data-role="content">
+    <div id="slider_news">
+        <img src="images/image1.jpg">
+        <img src="images/image2.jpg">
+        <img src="images/image1.jpg">
+        <img src="images/image2.jpg">
+    </div>
+
+    <div class="news_list">
+        <ul id="news_list_group" data-role="listview" data-divider-theme="b" data-inset="true">
+            <% include news_list %>
+        </ul>
+    </div>
+    <div style="margin-top: -10px;" id="ajax_loading_bar">
+        <div id="noTrespassingOuterBarG">
+            <div id="noTrespassingFrontBarG" class="noTrespassingAnimationG">
+                <div class="noTrespassingBarLineG">
+                </div>
+                <div class="noTrespassingBarLineG">
+                </div>
+                <div class="noTrespassingBarLineG">
+                </div>
+                <div class="noTrespassingBarLineG">
+                </div>
+                <div class="noTrespassingBarLineG">
+                </div>
+                <div class="noTrespassingBarLineG">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+$("#slider_news").excoloSlider({
+    width: $(window).width(),
+    height: $(window).width()/2,
+    autoSize: false,
+    touchNav: true,
+    mouseNav: true,
+    prevnextNav: false,
+    prevnextAutoHide: false,
+    pagerNav: false,
+    hoverPause: false,
+    interval: 30000,
+});
+$(document).one("pageinit","#news_page", function( event ) {
+    $('#ajax_loading_bar').hide();
+    var mSkip=15;
+    var mLimit=9;
+    var mFlagFinished=false, scrollOK = true;
+    $(window).bind('scroll', function () {
+        if (scrollOK&&(!mFlagFinished)&&($.mobile.activePage.attr("id")=="news_page")) {
+            if (($(this).scrollTop() + $(this).height()) >= ($(document).height() - 300)) {
+                scrollOK = false;
+                $('#ajax_loading_bar').show();
+                $.ajax({
+                    url: '/news/list',
+                    type:'POST',
+                    timeout: 10000,
+                    data: 'index=<%= title %>&skip='+mSkip+'&limit='+mLimit,
+                    success: function(result){
+                        mSkip+=mLimit;
+                        scrollOK=true;
+                        $('#news_list_group').append(result).listview('refresh');;
+                        if (result==="") {
+                            $('#ajax_loading_bar').hide();
+                            mFlagFinished=true;
+                        }
+                    },
+                    error: function(jqXHR, textStatus, errorThrown){
+                        $('#ajax_loading_bar').hide();
+                        mFlagFinished=true;
+                    }
+                });
+            }
+        }
+    });
+});
+</script>
+

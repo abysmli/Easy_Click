@@ -1,0 +1,93 @@
+<div data-role="content">
+    <div data-role="fieldcontain">
+        <div class="information_block">   
+            <% if (post.img.length != 0) { %>
+            <% if (Object.prototype.toString.call(post.img) === "[object Array]") { %>
+            <div id="user_post_details_slider">
+                <% post.img.forEach(function(img,index) { %>
+                <img src="data:image/jpg;base64,<%= img %>" alt="image"></img>
+                <% }) %>
+                <% if (post.img.length===3) { %>
+                <img src="data:image/jpg;base64,<%= post.img[1] %>" alt="image"></img>
+                <% } %>
+                <% if (post.img.length===2) { %>
+                <img src="data:image/jpg;base64,<%= post.img[0] %>" alt="image"></img>
+                <img src="data:image/jpg;base64,<%= post.img[1] %>" alt="image"></img>
+                <% } %>
+            </div>
+            <script>
+            $("#user_post_details_slider").excoloSlider({
+                width: $(window).width(),
+                height: $(window).width()/2,
+                autoSize: false,
+                touchNav: true,
+                mouseNav: true,
+                prevnextNav: false,
+                prevnextAutoHide: false,
+                pagerNav: false,
+                hoverPause: false,
+                interval: 10000,
+            });
+            </script>
+            <% } else { %>
+            <img src="data:image/jpg;base64,<%= post.img %>" width="100%" alt="image">
+            <% }} %> 
+            <div>
+                <div style="border: none !important;" data-role="fieldcontain">
+                    <div class="content_block">
+                        <div>
+                            <img src="/img/icon_img/icon_fav_1.png"></img>
+                        </div>
+                        <div>
+                            <h3><%= post.title %></h3>
+                        </div>
+                    </div> 
+                </div>
+            </div>
+            <pre><%= post.content %></pre>
+        </div>
+    </div>
+
+    <% if (post.location.length!=0)  {%> 
+    <div data-role="fieldcontain">
+        <div class="content_block">
+            <div>
+                <img src="/img/icon_img/icon_content_address.png"></img>
+            </div>
+            <div>
+                <pre><%= post.location %></pre>
+            </div>
+        </div> 
+    </div>
+    <% } %>
+
+    <% if (post.contact.length!=0)  {%> 
+    <div data-role="fieldcontain">
+        <div class="content_block">
+            <div>
+                <img src="/img/icon_img/icon_content_telephone.png"></img>
+            </div>
+            <div>
+                <% var allnumber = post.contact.split(/\r\n|\r|\n/g) %>
+                <% allnumber.forEach(function(number,index) { %>
+                <% var telenumber = number.replace(/[^\d.]/g,'') %>
+                <pre><a href="tel:<%= telenumber %>"><%= number %></a></pre>
+                <% }) %>
+            </div>
+        </div> 
+    </div>
+    <% } %>
+
+    <% if (post.price.length!=0)  {%> 
+    <div data-role="fieldcontain">
+        <div class="content_block">
+            <div>
+                <img src="/img/icon_img/icon_content_price.png"></img>
+            </div>
+            <div>
+                <pre><%= post.price %></pre>
+            </div>
+        </div> 
+    </div>
+    <% } %>
+</div>

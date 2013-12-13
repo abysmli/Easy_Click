@@ -1,0 +1,47 @@
+<% shops.forEach(function(shop, index) { 
+if (index % 3 == 0) { %>
+<div class="ui-block-a">
+    <div class="information_list" id="<%= shop.uid %>">
+        <a href="/information/<%= title %>/<%= shop.uid %>" data-transition="slide">
+            <% if (shop.previmg.length===0) { %> 
+            <img alt="img" src="/img/no_img.jpg"></img>
+            <% } else { %>
+            <img alt="img" src="data:image/jpg;base64,<%= shop.previmg %>"></img>
+            <% } %>
+            <p><%= shop.prevtext %></p>
+            <pre><%= shop.prevtext2 %></pre>
+        </a>
+    </div>
+</div>
+<% } %>
+<% if (index % 3 == 1) { %>
+<div class="ui-block-b">
+    <div class="information_list" id="<%= shop.uid %>">
+        <a href="/information/<%= title %>/<%= shop.uid %>" data-transition="slide">
+            <% if (shop.previmg.length===0) { %> 
+            <img alt="img" src="/img/no_img.jpg"></img>
+            <% } else { %>
+            <img alt="img" src="data:image/jpg;base64,<%= shop.previmg %>"></img>
+            <% } %>
+            <p><%= shop.prevtext %></p>
+            <pre><%= shop.prevtext2 %></pre>
+        </a>
+    </div>
+</div>
+<% } %>
+<% if (index % 3 == 2) { %>
+<div class="ui-block-c">
+    <div class="information_list" id="<%= shop.uid %>">
+        <a href="/information/<%= title %>/<%= shop.uid %>" data-transition="slide">
+            <% if (shop.previmg.length===0) { %> 
+            <img alt="img" src="/img/no_img.jpg"></img>
+            <% } else { %>
+            <img alt="img" src="data:image/jpg;base64,<%= shop.previmg %>"></img>
+            <% } %>
+            <p><%= shop.prevtext %></p>
+            <pre><%= shop.prevtext2 %></pre>
+        </a>                
+    </div>
+</div>
+<% } %>
+<%}) %>

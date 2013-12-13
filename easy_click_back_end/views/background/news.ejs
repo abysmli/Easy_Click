@@ -1,0 +1,137 @@
+<% if (success) { %>
+    <div>
+        <br/>
+        	<div class="alert alert-success">
+        	<%= success %>
+    		</div>
+        <br/>
+    </div>
+    <% } %>
+    <% if (error) { %>
+    <div>
+        <br/>
+        	<div class="alert alert-error">
+        	<%= error %>
+    		</div>
+        <br/>
+    </div>
+<% } %>
+
+<ul class="nav nav-tabs">
+	<li>
+		<a href="/background/users">用户管理</a>
+	</li>
+	<li>
+		<a href="/background/information">实用资讯</a>
+	</li>
+	<li>
+		<a href="/background/user_post">免费交流</a>
+	</li>
+	<li class="active">
+		<a href="/background/news">新闻</a>
+	</li>
+	<li>
+		<a href="/background/learning">日语学习</a>
+	</li>
+</ul>
+<a class="btn btn-danger" href="/remove_news">删除所有已发布的新闻</a>
+<div class="row-fluid">
+	<div class="span4" style="border-right: 1px solid #D4D4D4;">
+		<h3>发布新闻:</h3>
+		<form method="post" enctype="multipart/form-data">
+			<div class="control-group">
+				<label class="control-label" for="title_input">标题:</label>
+				<div class="controls">
+					<input style="width:80%;" id="title_input" name="title" type="text"/>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="sub_title_input">副标题:</label>
+				<div class="controls">
+					<input style="width:80%;" id="sub_title_input" name="sub_title" type="text"/>
+				</div>
+			</div>
+			<div class="control-group">
+				 <label class="control-label" for="source_input">出处:</label>
+				<div class="controls">
+					<input style="width:80%;" id="source_input" name="source" type="text"/>
+				</div>
+			</div>
+			<div class="control-group">
+				 <label class="control-label" for="sourceurl_input">原文链接:</label>
+				<div class="controls">
+					<input style="width:80%;" id="sourceurl_input" name="sourceurl" type="text"/>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="newsdate_input">新闻日期:</label>
+				<div class="controls">
+					<input style="width:80%;" id="newsdate_input" name="newsdate" type="datetime-local"/>
+				</div>
+			</div>
+
+			<div class="control-group">
+				<label class="control-label" for="content_input">正文:</label>
+				<div class="controls">
+					<textarea style="width:80%; height:8em;" id="content_input" name="content" type="text"></textarea>
+				</div>
+			</div>
+
+			<div class="control-group">
+				<label class="control-label" for="file_upload">预览图片上传: (建议 50x50 px)</label>
+				<div class="controls">
+					<input style="width:80%;" id="file_upload" type="file" name="previmg"/>
+				</div>
+			</div>
+
+			<div class="control-group">
+				<label class="control-label" for="newsfile_upload">新闻图片上传: (建议 800x600 px)</label>
+				<div class="controls">
+					<input style="width:80%;" id="newsfile_upload" type="file" name="img" multiple/>
+				</div>
+			</div>
+
+			<div class="control-group">
+				<div class="controls">
+					<button type="submit" class="btn btn-primary span2">投递</button>
+				</div>
+			</div>
+		</form>
+	</div>
+	<div class="span6">
+		<h3>修改已发布的新闻:</h3>
+		<table class="table table-hover table-bordered">
+		<% news.forEach(function(New, index) { %>
+			<tr>
+				<td>
+					<div id="<%= New.uid %>">
+						<a href="/background/news/<%=New.uid%>">
+						<% if (New.previmg.length != 0) { %>
+						<img style="max-width: 200px;" src="data:image/jpg;base64,<%= New.previmg %>" alt="image"></img>
+						<% } %>
+						<h4>标题: <%= New.title %></h4>
+						<p>副标题: <%= New.sub_title %></p>
+						<p>新闻日期: <%= New.newsdate %></p>
+						<p>投递日期: <%= New.date.toISOString().replace(/T/, ' ').replace(/\..+/, '') %></p>
+						</a>
+						<a id="button_<%=New.uid%>"class="btn btn-danger" href="/remove_news/<%=New.uid%>">删除</a>
+					</div>
+				</td>
+			</tr>
+		<% }) %>
+		</table>
+		<h4>共计 <%= news.length %> 个</h4>
+	</div>
+</div>
+<script>
+$(document).ready(function(){
+	<% news.forEach(function(New, index) { %>
+	$("#<%=New.uid%>").hover(function(){
+		$("#button_<%=New.uid%>").show();
+	},function(){
+		$("#button_<%=New.uid%>").hide();
+	});
+	$("#button_<%=New.uid%>").hide();
+	<% }) %>
+});
+</script>

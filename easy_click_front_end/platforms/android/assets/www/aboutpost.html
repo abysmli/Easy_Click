@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Main-Page</title>
+    <link rel="stylesheet" href="stylesheets/jquery.excoloSlider.css" />
+    <link rel="stylesheet" href="jquery_mobile/jquery.mobile_abysmli_custom.min.css" />
+    <link rel="stylesheet" href="jquery_mobile/jquery.mobile.structure-1.3.1.min.css" />
+    <link rel="stylesheet" href="stylesheets/main.css" />
+    <script src="javascripts/jquery-1.9.1.min.js"></script>
+    <script src="javascripts/jquery.lazy.min.js"></script>
+    <script src="jquery_mobile/jquery.mobile-1.3.1.min.js"></script>
+    <script src="javascripts/jquery.excoloSlider.min.js"></script>
+    <script src="javascripts/main.js"></script>
+</head>
+<body>
+    <div data-role="page" id="main_page" class="page_body">
+    <div class="nav_bar">
+        <a href="javascript:history.go(-1)">
+            <img alt="" src="img/icon_img/icon_back.png"></img>
+        </a>
+        <a data-transition="flip" href="index.html">
+            <img alt="" src="img/icon_img/icon_home.png"></img>
+        </a>
+        <a data-transition="slide" href="post_selector.html">
+            <img alt="" src="img/icon_img/icon_write.png"></img>
+        </a>
+        <a data-transition="slide" href="aboutpost.html">
+            <img alt="" src="img/icon_img/icon_contact_us.png"></img>
+        </a>
+        <h3>
+        </h3>
+        </div>
+        <div class="nav_bar_holder">
+        </div>
+
+        <div data-role="content">
+            <div class="user_container">
+                <h3 style="margin-bottom:0.4em; display:inline-block;">联系方式</h3>
+                <div style="padding-left:1em; border-top:2px solid #3db680">
+                    <pre>QQ: 2066245510    微信: jd5510
+        电话: 050-5875-4617
+        邮箱: 2066245510@qq.com
+        在线时间: 10:00〜21:00
+        定休日: 日曜日 祝日
+        </pre>
+                </div>
+            </div>
+            <div class="user_container">
+                <h3 style="margin-bottom:0.4em; display:inline-block;">发布说明</h3>
+                <div style="padding-left:1em; border-top:2px solid #44a5cb">
+                    <pre>推荐QQ或微信联系，可以随时发布资讯，内容无字数限制，可以展示高清图片，用户可以直接搜索需要的内容。</pre>
+                </div>
+            </div>
+            <div class="user_container">
+                <h3 style="margin-bottom:0.4em; display:inline-block;">备注</h3>
+                <div style="padding-left:1em; border-top:2px solid #e6855e">
+                    <pre>1.请先阅读<a style="color: #0086ab; font-size: 1em;" data-transition="slide" href="announce.html">服务条款及免责声明</a>
+        2.好友验证信息请注明: "发资讯"
+        3.如果遇到忙碌中，未能及时回应您的情况，请稍做等待，我们会尽快回应您。</pre>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            $(document).one("pageinit","#index_page", function( event ) {
+                $('.main_nav_icon, #main_logo').on('vmousedown','a',function(){
+                    $(this).children('img').css({opacity:0.5}).animate({opacity:1},500);
+                });
+            });
+        </script>
+    </div>
+</div>
+</body>
+</html>

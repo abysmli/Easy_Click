@@ -1,0 +1,86 @@
+<% if (success) { %>
+    <div>
+        <br/>
+        	<div class="alert alert-success">
+        	<%= success %>
+    		</div>
+        <br/>
+    </div>
+    <% } %>
+    <% if (error) { %>
+    <div>
+        <br/>
+        	<div class="alert alert-error">
+        	<%= error %>
+    		</div>
+        <br/>
+    </div>
+<% } %>
+
+<ul class="nav nav-tabs">
+	<li>
+		<a href="/background/users">用户管理</a>
+	</li>
+	<li class="active">
+		<a href="/background/information">实用资讯</a>
+	</li>
+	<li>
+		<a href="/background/user_post">免费交流</a>
+	</li>
+	<li>
+		<a href="/background/news">新闻</a>
+	</li>
+	<li>
+		<a href="/background/learning">日语学习</a>
+	</li>
+</ul>
+
+<a style="display: inline-block;" class="btn btn-primary" href="/background/information">回到实用资讯控制页</a>
+
+<form action="/background/information_editor_list_searcher" style="display: inline-block;" class="form-search">
+  <div class="input-append">
+    <input type="text" class="span12 search-query" name="search_key" placeholder="联系方式">
+    <button type="submit" class="btn">查找</button>
+  </div>
+</form>
+
+<div class="row-fluid">
+	<div class="span8">
+		<h4>已发布的投稿: </h4>
+		<table class="table table-hover table-bordered">
+		<% shops.forEach(function(shop, index) { %>
+			<tr>
+				<td>
+					<div id="<%=shop.uid%>">
+						<a href="/background/information_editor/<%=shop.uid%>">
+						<% if (shop.previmg.length != 0) { %>
+						<img style="max-width: 200px;" src="data:image/jpg;base64,<%= shop.previmg %>" alt="image"></img>
+						<% } %>
+						<h4><%= shop.title %></h4>
+						<p>发件人: <%= shop.username %></p>
+						<p>投递日期: <%= shop.date.toISOString().replace(/T/, ' ').replace(/\..+/, '') %></p>
+						<p>过期日期: <%= shop.expire %></p>
+						</a>
+						<a id="button_<%=shop.uid%>"class="btn btn-danger" href="/remove_information/<%=shop.uid%>">删除</a>
+					</dvi>
+				</td>
+			</tr>
+		<% }) %>
+		</table>
+		<h4>共计 <%= shops.length %> 个</h4>
+	</div>
+</div>
+<a class="btn btn-danger" href="/remove_information">删除所有已发布的资讯</a>
+<a class="btn btn-danger" href="/remove_information_buffer">删除所有临时资讯</a>
+<script>
+$(document).ready(function(){
+	<% shops.forEach(function(shop, index) { %>
+	$("#<%=shop.uid%>").hover(function(){
+		$("#button_<%=shop.uid%>").show();
+	},function(){
+		$("#button_<%=shop.uid%>").hide();
+	});
+	$("#button_<%=shop.uid%>").hide();
+	<% }) %>
+});
+</script>

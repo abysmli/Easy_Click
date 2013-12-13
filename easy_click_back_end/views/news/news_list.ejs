@@ -1,0 +1,14 @@
+<% news.forEach(function(News,index){ %>
+<li data-theme="c" data-icon="false">
+    <a href="/news/<%= News.uid %>" data-transition="slide">
+        <% if (News.previmg.length != 0) { %>
+        <img src="data:image/jpg;base64,<%= News.previmg %>">
+        <% } %>
+        <h2><%= News.title %></h2>
+        <p id="news_subtitle_<%= News.uid %>"><%= News.sub_title %></p>
+    </a>
+</li>
+<script>
+    $('#news_subtitle_<%= News.uid %>').text($('#news_subtitle_<%= News.uid %>').text().substr(0,40)+'...');
+</script>
+<% }) %>

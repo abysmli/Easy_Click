@@ -1,0 +1,272 @@
+var mongodb = require('./db');
+var utils = require('../utils/utils.js');
+var assert = require('assert');
+module.exports = Shops;
+
+function Shops(username, index, title, instruction, name, brief, comment, telephone, email, url, address, path, expire, tags, prevtext, prevtext2, previmg, img, date) {
+  this.username = username;
+  this.index = index;
+  this.title = title;
+  this.instruction = instruction;
+  this.name = name;
+  this.brief = brief;
+  this.comment = comment;
+  this.telephone = telephone;
+  this.email = email;
+  this.url = url;
+  this.address = address;
+  this.path = path;
+  this.expire = expire;
+  this.tags = tags;
+  this.prevtext = prevtext;
+  this.prevtext2 = prevtext2;
+  this.previmg = previmg;
+  this.img = img;
+  if (date) {
+    this.date = date;
+  } else {
+    this.date = new Date();
+  }
+};
+
+function shopview(title, username, expire, date, prevtext, prevtext2, previmg, uid) {
+  this.title = title;
+  this.username = username;
+  this.expire = expire;
+  this.date = date;
+  this.prevtext = prevtext;
+  this.prevtext2 = prevtext2;
+  this.previmg = previmg;
+  this.uid = uid;
+};
+
+Shops.prototype.save = function save(db, callback) {
+  var shop = {
+    username: this.username,
+    index: this.index,
+    title: this.title,
+    instruction: this.instruction,
+    name: this.name,
+    brief: this.brief,
+    comment: this.comment,
+    telephone: this.telephone,
+    email: this.email,
+    url: this.url,
+    address: this.address,
+    path: this.path,
+    expire: this.expire,
+    tags: this.tags,
+    prevtext: this.prevtext,
+    prevtext2: this.prevtext2,
+    previmg: this.previmg,
+    img: this.img,
+    date: this.date,
+  };
+  db.collection('shops', function(err, collection) {
+    if (err) {
+      return callback(err);
+    }
+    collection.ensureIndex({
+      'index': 1
+    });
+    collection.insert(shop, {
+      safe: true
+    }, function(err, shop) {
+      callback(err, shop);
+    });
+  });
+};
+
+Shops.getAll = function getAll(db, callback) {
+  db.collection('shops', function(err, collection) {
+    if (err) {
+      return callback(err);
+    }
+    collection.find({}).sort({
+      date: -1
+    }).toArray(function(err, docs) {
+      if (err) {
+        callback(err, null);
+      }
+      var shops_buffer = [];
+      docs.forEach(function(doc, index) {
+        var shop = new shopview(doc.title, doc.username, doc.expire, doc.date, doc.prevtext, doc.prevtext2, doc.previmg, doc._id);
+        shops_buffer.push(shop);
+      });
+      callback(null, shops_buffer);
+    });
+  });
+};
+
+Shops.getbyIndex = function getbyIndex(db, index, callback) {
+  db.collection('shops', function(err, collection) {
+    if (err) {
+      return callback(err);
+    }
+    var query = {};
+    if (index) {
+      query.index = index;
+    }
+    collection.find(query).sort({
+      date: -1
+    }).toArray(function(err, docs) {
+      if (err) {
+        callback(err, null);
+      }
+      var shops = [];
+      docs.forEach(function(doc, index) {
+        var shop = new shopview(doc.title, doc.username, doc.expire, doc.date, doc.prevtext, doc.prevtext2, doc.previmg, doc._id);
+        shops.push(shop);
+      });
+      callback(null, shops);
+    });
+  });
+};
+
+Shops.getList_expire = function getList_expire(db, mIndex, mTags, mSkip, mLimit, callback) {
+  db.collection('shops', function(err, collection) {
+    if (err) {
+      return callback(err);
+    }
+    var tagReg='', tags = mTags.split(/[ ,;]+/);
+    tags.forEach(function(tag, index){
+      if(index!=0) {
+        tagReg+='\|'+tag;
+      } else {
+        tagReg+=tag;
+      }
+    });
+    var query = {
+      index: mIndex,
+      tags: new RegExp(tagReg)
+    };
+    if(mIndex==="") {
+      query = {
+        tags: new RegExp(tagReg)
+      };
+    }
+    collection.find(query, {
+      skip: mSkip,
+      limit: mLimit
+    }).sort({
+      date: -1
+    }).toArray(function(err, docs) {
+      if (err) {
+        callback(err, null);
+      }
+      var shops = [];
+      docs.forEach(function(doc, index) {
+        var shop = new shopview(doc.title, doc.username, doc.expire, doc.date, doc.prevtext, doc.prevtext2, doc.previmg, doc._id);
+        if (utils.checkExpire(shop.expire)) {
+          shops.push(shop);
+        }
+      });
+      callback(null, shops);
+    });
+  });
+};
+
+Shops.getbyUid = function getbyUid(db, uid, callback) {
+  db.collection('shops', function(err, collection) {
+    if (err) {
+      return callback(err);
+    }
+    var oid = new require('mongodb').ObjectID(uid);
+    collection.findOne({
+      _id: oid
+    }, function(err, doc) {
+      if (err) {
+        callback(err, null);
+      }
+      var shop = new Shops(doc.username, doc.index, doc.title, doc.instruction, doc.name, doc.brief, doc.comment, doc.telephone, doc.email, doc.url, doc.address, doc.path, doc.expire, doc.tags, doc.prevtext,  doc.prevtext2, doc.previmg, doc.img, doc.date);
+      callback(null, shop);
+    });
+  });
+};
+
+Shops.getbyTele = function getbyTele(db, tel, callback) {
+  db.collection('shops', function(err, collection) {
+    if (err) {
+      return callback(err);
+    }
+    collection.findOne({
+      telephone: new RegExp(tel)
+    }, function(err, doc) {
+      if (err) {
+        callback(err, null);
+      }
+      if (null === doc) {
+        callback("找不到你输入的联系方式", null);
+      } else {
+        var shop = new Shops(doc.username, doc.index, doc.title, doc.instruction, doc.name, doc.brief, doc.comment, doc.telephone, doc.email, doc.url, doc.address, doc.path, doc.expire, doc.tags, doc.prevtext, doc.prevtext2, doc.previmg, doc.img, doc.date);
+        callback(null, shop);
+      }
+    });
+  });
+};
+
+Shops.prototype.modifybyUid = function modifybyUid(db, uid, callback) {
+  var shop = {
+    username: this.username,
+    index: this.index,
+    title: this.title,
+    instruction: this.instruction,
+    name: this.name,
+    brief: this.brief,
+    comment: this.comment,
+    telephone: this.telephone,
+    email: this.email,
+    url: this.url,
+    address: this.address,
+    path: this.path,
+    expire: this.expire,
+    tags: this.tags,
+    prevtext: this.prevtext,
+    prevtext2: this.prevtext2,
+    previmg: this.previmg,
+    img: this.img,
+    date: this.date,
+  };
+  db.collection('shops', function(err, collection) {
+    if (err) {
+      return callback(err);
+    }
+    var oid = new require('mongodb').ObjectID(uid);
+    collection.findAndModify({
+      _id: oid
+    }, [
+      ['_id', 1]
+    ], shop, function(err, shop) {
+      callback(err, shop);
+    });
+  });
+};
+
+Shops.remove = function remove(db, callback) {
+  db.collection('shops', function(err, collection) {
+    if (err) {
+      return callback(err);
+    }
+    collection.remove();
+    callback(null);
+  });
+};
+
+Shops.removebyUid = function removebyUid(db, uid, callback) {
+  db.collection('shops', function(err, collection) {
+    if (err) {
+      return callback(err);
+    }
+    var oid = new require('mongodb').ObjectID(uid);
+    collection.findAndRemove({
+      _id: oid
+    }, [
+      ['_id', 1]
+    ], function(err) {
+      if (err) {
+        return callback(err);
+      }
+    });
+    callback(null);
+  });
+};

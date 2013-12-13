@@ -1,0 +1,61 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Main-Page</title>
+    <link rel="stylesheet" href="stylesheets/jquery.excoloSlider.css" />
+    <link rel="stylesheet" href="jquery_mobile/jquery.mobile_abysmli_custom.min.css" />
+    <link rel="stylesheet" href="jquery_mobile/jquery.mobile.structure-1.3.1.min.css" />
+    <link rel="stylesheet" href="stylesheets/main.css" />
+    <script src="javascripts/jquery-1.9.1.min.js"></script>
+    <script src="javascripts/jquery.lazy.min.js"></script>
+    <script src="jquery_mobile/jquery.mobile-1.3.1.min.js"></script>
+    <script src="javascripts/jquery.excoloSlider.min.js"></script>
+    <script src="javascripts/main.js"></script>
+</head>
+<body>
+    <div data-role="page" id="main_page" class="page_body">
+    <div class="nav_bar">
+        <a href="javascript:history.go(-1)">
+            <img alt="" src="img/icon_img/icon_back.png"></img>
+        </a>
+        <a data-transition="flip" href="index.html">
+            <img alt="" src="img/icon_img/icon_home.png"></img>
+        </a>
+        <a data-transition="slide" href="post_selector.html">
+            <img alt="" src="img/icon_img/icon_write.png"></img>
+        </a>
+        <a data-transition="slide" href="aboutpost.html">
+            <img alt="" src="img/icon_img/icon_contact_us.png"></img>
+        </a>
+        <h3>
+        </h3>
+        </div>
+        <div class="nav_bar_holder">
+        </div>
+
+        <div data-role="content">
+            <div data-role="fieldcontain">
+                <div class="about_contain">
+                    <img src="img/logo.png"></img>
+                    <pre style="color: #3e4c54; line-height: 160%;"></br>《简单一点》为您把资讯传递到每一部手机，让华人的世界从此触手可及。</pre>
+                    <i style="color: #d34c5e;">（本应用发布资讯在中国大陆地区无法浏览）</i>
+                    </br></br></br><a style="color: #0086ab;" data-transition="slide" href="announce.html">服务条款及免责声明</a>
+                    <a style="color: #0086ab;" data-transition="slide" href="aboutpost.html">联系我们</a></pre>
+                    <p>version 1.0</p>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            $(document).one("pageinit","#index_page", function( event ) {
+                $('.main_nav_icon, #main_logo').on('vmousedown','a',function(){
+                    $(this).children('img').css({opacity:0.5}).animate({opacity:1},500);
+                });
+            });
+        </script>
+    </div>
+</div>
+</body>
+</html>

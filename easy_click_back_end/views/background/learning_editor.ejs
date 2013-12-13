@@ -1,0 +1,101 @@
+<% if (success) { %>
+    <div>
+        <br/>
+            <div class="alert alert-success">
+            <%= success %>
+            </div>
+        <br/>
+    </div>
+    <% } %>
+    <% if (error) { %>
+    <div>
+        <br/>
+            <div class="alert alert-error">
+            <%= error %>
+            </div>
+        <br/>
+    </div>
+<% } %>
+<ul class="nav nav-tabs">
+    <li>
+        <a href="/background/users">用户管理</a>
+    </li>
+    <li>
+        <a href="/background/information">实用资讯</a>
+    </li>
+    <li>
+        <a href="/background/user_post">免费交流</a>
+    </li>
+    <li>
+        <a href="/background/news">新闻</a>
+    </li>
+    <li class="active">
+        <a href="/background/learning">日语学习</a>
+    </li>
+</ul>
+
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span4">
+            <h3>原稿内容:</h3>
+            <h4>标题:</h4>
+            <p><%= learn.title %></p>
+            <h4>内容:</h4>
+            <pre><%= learn.content %></pre>
+            <h4>配图:</h4>
+            <% if (Object.prototype.toString.call(learn.img) === "[object Array]") { %>
+            <p>总计<%= learn.img.length %>张图</p>
+            <% learn.img.forEach(function(img,index) { %>
+            <hr/>
+            <p>第<%= index+1 %>张图:</p>
+            <img src="data:image/jpg;base64,<%= img %>" alt="image"></img>
+            <% }) %>
+            <% } else { %>
+            <img src="data:image/jpg;base64,<%= learn.img %>" alt="image"></img>
+            <% } %>
+        </div>
+
+        <div class="span8" style="border-left: 1px solid #D4D4D4; padding-left: 3em;">
+
+            <h3>修改发布:</h3>
+            <form method="post" enctype="multipart/form-data">
+                <div class="control-group">
+                    <label class="control-label" for="index_input">分类:</label>
+                    <div class="controls">
+                        <select onchange="getval(this);" style="width:500px;" id="index_input" name="index">
+                            <option value="vocabulary">常用单词</option>
+                            <option value="beginner">日语入门</option>
+                            <option value="sentence">实用语句</option>
+                            <option value="test">能力试验</option>
+                            <option value="article">美文赏析</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="title_input">标题:</label>
+                    <div class="controls">
+                        <input style="width:500px;" id="title_input" name="title" type="text"></input>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="content_input">内容:</label>
+                    <div class="controls">
+                        <textarea style="height:200px; width:500px;" id="content_input" name="content" type="text"></textarea>
+                    </div>
+                </div>
+                <div class="control-group">
+                        <label class="control-label" for="img_input">图片:</label>
+                        <div class="controls">
+                            <input style="width:500px;" id="img_input" name="image" type="file" multiple></input>
+                        </div>
+                    </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <button type="submit" class="btn btn-primary span2">发送</button>
+                        <a href="/background/learning" class="btn btn-primary span2">回退</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

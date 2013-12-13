@@ -1,0 +1,104 @@
+<% if (success) { %>
+    <div>
+        <br/>
+        	<div class="alert alert-success">
+        	<%= success %>
+    		</div>
+        <br/>
+    </div>
+    <% } %>
+    <% if (error) { %>
+    <div>
+        <br/>
+        	<div class="alert alert-error">
+        	<%= error %>
+    		</div>
+        <br/>
+    </div>
+<% } %>
+
+<ul class="nav nav-tabs">
+	<li>
+		<a href="/background/users">用户管理</a>
+	</li>
+	<li class="active">
+		<a href="/background/information">实用资讯</a>
+	</li>
+	<li>
+		<a href="/background/user_post">免费交流</a>
+	</li>
+	<li>
+		<a href="/background/news">新闻</a>
+	</li>
+	<li>
+		<a href="/background/learning">日语学习</a>
+	</li>
+</ul>
+
+<a class="btn btn-primary" href="/background/information_post/">发布一个商业资讯</a>
+<a class="btn btn-primary" href="/background/information_editor_list/">修改已经投递的信息</a>
+<div class="row-fluid">
+	<div class="span6">
+		<h4>未处理的用户投稿: </h4>
+		<table class="table table-hover table-bordered">
+		<% var i=0; %>
+		<% shops_buffer.forEach(function(shop, index) { %>
+		<% if (!shop.handled) { %>
+		<% i++ %>
+			<tr>
+				<td>
+					<div id="<%=shop.uid%>">
+						<a href="/background/information/<%=shop.uid%>">
+						<h4><%= shop.title %></h4>
+						<p>发件人: <%= shop.user %></p>
+						<p>投递日期: <%= shop.date.toISOString().replace(/T/, ' ').replace(/\..+/, '') %></p>
+						</a>
+						<a id="button_<%=shop.uid%>"class="btn btn-danger" href="/remove_information_buffer/<%=shop.uid%>">删除</a>
+					</div>
+				</td>
+			</tr>
+		<% } %>
+		<% }) %>
+		</table>
+		<h4>共计 <%= i %> 个</h4>
+	</div>
+
+	<div class="span6">
+		<h4>已处理的用户投稿: </h4>
+		<table class="table table-hover table-bordered">
+		<% var i=0; %>
+		<% shops_buffer.forEach(function(shop, index) { %>
+		<% if (shop.handled) { %>
+		<% i++ %>
+			<tr>
+				<td>
+					<div id="<%=shop.uid%>">
+						<a href="/background/information/<%=shop.uid%>">
+						<h4><%= shop.title %></h4>
+						<p>发件人: <%= shop.user %></p>
+						<p>投递日期: <%= shop.date.toISOString().replace(/T/, ' ').replace(/\..+/, '') %></p>
+						</a>
+						<a id="button_<%=shop.uid%>"class="btn btn-danger" href="/remove_information_buffer/<%=shop.uid%>">删除</a>
+					</div>
+				</td>
+			</tr>
+		<% } %>
+		<% }) %>
+		</table>
+		<h4>共计 <%= i %> 个</h4>
+	</div>
+</div>
+<a class="btn btn-danger" href="/remove_information">删除所有已发布的资讯</a>
+<a class="btn btn-danger" href="/remove_information_buffer">删除所有临时资讯</a>
+<script>
+$(document).ready(function(){
+	<% shops_buffer.forEach(function(shop, index) { %>
+	$("#<%=shop.uid%>").hover(function(){
+		$("#button_<%=shop.uid%>").show();
+	},function(){
+		$("#button_<%=shop.uid%>").hide();
+	});
+	$("#button_<%=shop.uid%>").hide();
+	<% }) %>
+});
+</script>
