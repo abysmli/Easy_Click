@@ -1095,4 +1095,55 @@ module.exports = function(app) {
       title: '字号测试',
       pageid: 'test_page',
     });
-  });}
+  });
+
+  //################################################# background routing############################################
+  var counter=0;
+  app.post('/app_information_catagory', function(req, res){
+    Shops.getList_expire(req.database, req.body.index, req.body.tags, req.body.skip, req.body.limit, function(err, shops) {
+      res.json(shops);
+    });
+  });
+
+  app.post('/app_information_details', function(req, res){
+    Shops.getbyUid(req.database, req.body.uid, function(err, shop) {
+      res.json(shop);
+    });
+  });
+
+  app.post('/app_user_post_view', function(req, res) {
+    Posts.getAll(req.database, req.body.tags, req.body.skip, req.body.limit, function(err, posts) {
+      res.json(posts);
+    });   
+  });
+    
+  app.post('/app_user_post_details', function(req, res) {
+    Posts.getbyUid(req.database, req.body.uid, function(err, post) {
+      res.json(post);
+    });
+  });
+
+  app.post('/app_news',function(req, res){
+    News.getAll(req.database, req.body.skip, req.body.limit, function(err, news) {
+      res.json(news);
+    });
+  });
+
+  app.post('/app_news_details', function(req, res){
+    News.getbyUid(req.database, req.body.uid, function(err, news) {
+      res.json(news);
+    });
+  });
+
+  app.post('/app_learning', function(req, res){
+    Learn.getbyIndex(req.database, req.body.index, function(err, learns) {
+      res.json(learns);
+    });
+  });
+
+  app.post('/app_learning_details', function(req, res){
+    Learn.getbyUid(req.database, req.body.uid, function(err, learn) {
+      res.json(learn);
+    });
+  });
+}

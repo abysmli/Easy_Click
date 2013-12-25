@@ -7,7 +7,7 @@
     , "ejs": "*"
     , "express-partials": "*"
     , "connect-flash" : "*"
-    , "connect": "2.7"
+    , "connect": "*"
     , "connect-mongo": "*"
     , "mongodb": "*"
     , "async": "*"

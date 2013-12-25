@@ -59,12 +59,14 @@
     border: 1px solid rgba(255,255,255,0.3);
 }
 ul.es-pager {
+    position: relative;
     display: block;
     width: 100%;
     text-align: center;
     margin: 5px 0 0 0;
     padding: 0;
     line-height: 0px;
+    z-index: 2000;
 }
 ul.es-pager li {
     display: inline-block;
