@@ -1102,48 +1102,141 @@ module.exports = function(app) {
   app.post('/app_information_catagory', function(req, res){
     Shops.getList_expire(req.database, req.body.index, req.body.tags, req.body.skip, req.body.limit, function(err, shops) {
       res.json(shops);
+      console.log("app_information_catagory number: "+shops.length);
     });
   });
 
   app.post('/app_information_details', function(req, res){
     Shops.getbyUid(req.database, req.body.uid, function(err, shop) {
       res.json(shop);
+      console.log("app_information_details");
     });
   });
 
   app.post('/app_user_post_view', function(req, res) {
     Posts.getAll(req.database, req.body.tags, req.body.skip, req.body.limit, function(err, posts) {
       res.json(posts);
+      console.log("app_user_post_view: "+posts.length);
     });   
   });
     
   app.post('/app_user_post_details', function(req, res) {
     Posts.getbyUid(req.database, req.body.uid, function(err, post) {
       res.json(post);
+      console.log("app_user_post_details");
     });
   });
 
   app.post('/app_news',function(req, res){
     News.getAll(req.database, req.body.skip, req.body.limit, function(err, news) {
       res.json(news);
+      console.log("app_news: "+news.length);
     });
   });
 
   app.post('/app_news_details', function(req, res){
     News.getbyUid(req.database, req.body.uid, function(err, news) {
       res.json(news);
+      console.log("app_news_details");
     });
   });
 
   app.post('/app_learning', function(req, res){
     Learn.getbyIndex(req.database, req.body.index, function(err, learns) {
       res.json(learns);
+      console.log("app_learning: "+learns.length);
     });
   });
 
   app.post('/app_learning_details', function(req, res){
     Learn.getbyUid(req.database, req.body.uid, function(err, learn) {
       res.json(learn);
+      console.log("app_learning_details");
     });
+  });
+
+  app.post('/app_login', function(req, res) {
+    // creating md5 Hash code
+    var data;
+    req.body.username = req.body.username.toLowerCase();
+    var md5 = crypto.createHash('md5');
+    var password = md5.update(req.body.password).digest('base64');
+    User.get(req.database, req.body.username, function(err, user) {
+      if (!user) {
+        data = {
+          result: "error",
+          message: "用户不存在!",
+          username: req.body.username,
+          password: req.body.password
+        };
+        res.json(data);
+      } else if(user.password != password) {
+        data = {
+          result: "error",
+          message: "密码错误！",
+          username: req.body.username,
+          password: req.body.password
+        };
+        res.json(data);
+      } else {
+        data = {
+          result: "success",
+          message: "登陆成功",
+          username: req.body.username,
+          password: req.body.password
+        };
+        req.session.user = user;
+        res.json(data);
+      }
+    });
+  });
+
+  app.post('/app_reg', function(req, res) {
+    var data;
+    req.body.username = req.body.username.toLowerCase();
+    var md5 = crypto.createHash('md5');
+    var password = md5.update(req.body.password).digest('base64');
+    var newUser = new User({
+      name: req.body.username,
+      password: password,
+    });
+    User.get(req.database, newUser.name, function(err, user) {
+      if (user) {
+        err = '用户已经存在'
+      };
+      if (err) {
+        data = {
+          result: "error",
+          message: err,
+          username: req.body.username,
+          password: req.body.password
+        };
+        res.json(data);
+      } else {
+        newUser.save(req.database, function(err) {
+          if (err) {
+            data = {
+              result: "error",
+              message: err,
+              username: req.body.username,
+              password: req.body.password
+            };
+            res.json(data);
+          }
+          req.session.user = newUser;
+          data = {
+            result: "success",
+            message: '注册成功',
+            username: req.body.username,
+            password: req.body.password
+          };
+          res.json(data);
+        });
+      }
+    });
+  });
+
+  app.post('/app_logout', function(req, res) {
+    req.session.user = null;
   });
 }
