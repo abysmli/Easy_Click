@@ -1155,6 +1155,25 @@ module.exports = function(app) {
     });
   });
 
+  app.post('/app_post', function(req, res) {
+    var post = new Posts_buffer(req.session.user.name, req.body.location, req.body.content, req.body.contact, req.body.price, false, req.body.image);
+    post.save(req.database, function(err) {
+      if (err) {
+        var data = {
+          result: "error",
+          message: err
+        };
+        res.json(data);
+      } else {
+        var data = {
+          result: "success",
+          message: "发送已成功，我们将在一个工作日内为您完成排版制作并正式发布。"
+        };
+        res.json(data);
+      }
+    });
+  });
+
   app.post('/app_login', function(req, res) {
     // creating md5 Hash code
     var data;
@@ -1238,5 +1257,6 @@ module.exports = function(app) {
 
   app.post('/app_logout', function(req, res) {
     req.session.user = null;
+    console.log("logout");
   });
 }
