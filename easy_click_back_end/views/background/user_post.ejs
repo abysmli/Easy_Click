@@ -53,7 +53,7 @@
 						<p>发件人: <%= post.username %></p>
 						<p>投递日期: <%= post.date.toISOString().replace(/T/, ' ').replace(/\..+/, '') %></p>
 						</a>
-						<a id="button_<%=post.uid%>"class="btn btn-danger" href="/remove_information_buffer/<%=post.uid%>">删除</a>
+						<a id="button_<%=post.uid%>"class="btn btn-danger" href="/remove_post_buffer/<%=post.uid%>">删除</a>
 					</div>
 				</td>
 			</tr>

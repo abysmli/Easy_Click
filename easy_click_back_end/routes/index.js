@@ -1119,11 +1119,38 @@ module.exports = function(app) {
       console.log("app_user_post_view: "+posts.length);
     });   
   });
-    
+  
+  app.post('/app_user_post_post', utils.appcheckLogin);
+  app.post('/app_user_post_post', function(req, res) {
+    Posts.getbyUsername(req.database, req.session.user.name, function(err, posts) {
+      res.json(posts);
+      console.log("app_user_post_post: "+posts.length);
+    });
+  });
+
   app.post('/app_user_post_details', function(req, res) {
     Posts.getbyUid(req.database, req.body.uid, function(err, post) {
       res.json(post);
       console.log("app_user_post_details");
+    });
+  });
+
+  app.post('/app_user_remove_post', utils.appcheckLogin);
+  app.post('/app_user_remove_post', function(req, res) {
+    Posts.removebyUid(req.database, req.body.uid, function(err) {
+      if (err) {
+        var data = {
+          result: "error",
+          message: err
+        };
+        res.json(data);
+      } else {
+        var data = {
+          result: "success",
+          message: "已成功删除!"
+        };
+        res.json(data);
+      }
     });
   });
 
@@ -1155,6 +1182,7 @@ module.exports = function(app) {
     });
   });
 
+  app.post('/app_post', utils.appcheckLogin);
   app.post('/app_post', function(req, res) {
     var post = new Posts_buffer(req.session.user.name, req.body.location, req.body.content, req.body.contact, req.body.price, false, req.body.image);
     post.save(req.database, function(err) {

@@ -817,16 +817,6 @@ div.del_information_block {
 
 div.del_information_block_cancel_button {
 	position: absolute;
-	top:90%;
-	left:3%;
-	right: 51%;
-	bottom:2%;
-	background-color: white;
-}
-
-
-div.del_information_block_cancel_button {
-	position: absolute;
 	top:91%;
 	left:3%;
 	right: 51%;

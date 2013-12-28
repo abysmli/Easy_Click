@@ -39,8 +39,30 @@ utils.checkLogin = function checkLogin(req, res, next) {
 
 utils.checkNotLogin = function checkNotLogin(req, res, next) {
 	if (req.session.user) {
-		req.flash('error', '登陆成功！');
+		req.flash('error', '已经登陆');
 		return res.redirect('/');
+	}
+	next();
+};
+
+utils.appcheckLogin = function checkLogin(req, res, next) {
+	if (!req.session.user) {
+		var data = {
+			result: 'error',
+			message: '需要登陆才能继续！'
+		};
+		res.json(data);
+	}
+	next();
+};
+
+utils.appcheckNotLogin = function checkNotLogin(req, res, next) {
+	if (req.session.user) {
+		var data = {
+			result: 'error',
+			message: '已经登陆'
+		};
+		res.json(data);
 	}
 	next();
 };
