@@ -3,7 +3,7 @@ var utils = require('../utils/utils.js');
 var assert = require('assert');
 module.exports = Shops;
 
-function Shops(username, index, title, instruction, name, brief, comment, telephone, email, url, address, path, expire, tags, prevtext, prevtext2, previmg, img, date) {
+function Shops(username, index, title, instruction, name, brief, comment, telephone, email, url, address, path, expire, tags, prevtext, prevtext2, previmg, img, date, uid) {
   this.username = username;
   this.index = index;
   this.title = title;
@@ -26,6 +26,11 @@ function Shops(username, index, title, instruction, name, brief, comment, teleph
     this.date = date;
   } else {
     this.date = new Date();
+  }
+  if (uid) {
+    this.uid = uid;
+  } else {
+    this.uid = null;
   }
 };
 
@@ -178,7 +183,7 @@ Shops.getbyUid = function getbyUid(db, uid, callback) {
       if (err) {
         callback(err, null);
       }
-      var shop = new Shops(doc.username, doc.index, doc.title, doc.instruction, doc.name, doc.brief, doc.comment, doc.telephone, doc.email, doc.url, doc.address, doc.path, doc.expire, doc.tags, doc.prevtext,  doc.prevtext2, doc.previmg, doc.img, doc.date);
+      var shop = new Shops(doc.username, doc.index, doc.title, doc.instruction, doc.name, doc.brief, doc.comment, doc.telephone, doc.email, doc.url, doc.address, doc.path, doc.expire, doc.tags, doc.prevtext,  doc.prevtext2, doc.previmg, doc.img, doc.date, doc._id);
       callback(null, shop);
     });
   });
@@ -198,7 +203,7 @@ Shops.getbyTele = function getbyTele(db, tel, callback) {
       if (null === doc) {
         callback("找不到你输入的联系方式", null);
       } else {
-        var shop = new Shops(doc.username, doc.index, doc.title, doc.instruction, doc.name, doc.brief, doc.comment, doc.telephone, doc.email, doc.url, doc.address, doc.path, doc.expire, doc.tags, doc.prevtext, doc.prevtext2, doc.previmg, doc.img, doc.date);
+        var shop = new Shops(doc.username, doc.index, doc.title, doc.instruction, doc.name, doc.brief, doc.comment, doc.telephone, doc.email, doc.url, doc.address, doc.path, doc.expire, doc.tags, doc.prevtext, doc.prevtext2, doc.previmg, doc.img, doc.date, doc._id);
         callback(null, shop);
       }
     });

@@ -1,7 +1,7 @@
 var mongodb = require('./db');
 module.exports = News;
 
-function News(index, title, sub_title, source, sourceurl, newsdate, content, previmg, img, date) {
+function News(index, title, sub_title, source, sourceurl, newsdate, content, previmg, img, date, uid) {
   this.index = index;
   this.title = title;
   this.sub_title = sub_title;
@@ -15,6 +15,11 @@ function News(index, title, sub_title, source, sourceurl, newsdate, content, pre
     this.date = date;
   } else {
     this.date = new Date();
+  }
+  if (uid) {
+    this.uid = uid;
+  } else {
+    this.uid = null;
   }
 };
 
@@ -88,7 +93,7 @@ News.getbyUid = function getbyUid(db, uid, callback) {
       if (err) {
         callback(err, null);
       }
-      var news_buffer = new News(doc.index, doc.title, doc.sub_title, doc.source, doc.sourceurl, doc.newsdate, doc.content, doc.previmg, doc.img, doc.date);
+      var news_buffer = new News(doc.index, doc.title, doc.sub_title, doc.source, doc.sourceurl, doc.newsdate, doc.content, doc.previmg, doc.img, doc.date, doc._id);
       callback(null, news_buffer);
     });
   });

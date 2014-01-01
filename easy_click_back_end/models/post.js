@@ -1,7 +1,7 @@
 var mongodb = require('./db');
 module.exports = Post;
 
-function Post(username, title, content, location, contact, price, tags, prevtext, prevtext2, previmg, img, date) {
+function Post(username, title, content, location, contact, price, tags, prevtext, prevtext2, previmg, img, date, uid) {
   this.username = username;
   this.title = title;
   this.content = content;
@@ -17,6 +17,11 @@ function Post(username, title, content, location, contact, price, tags, prevtext
     this.date = date;
   } else {
     this.date = new Date();
+  }
+  if (uid) {
+    this.uid = uid;
+  } else {
+    this.uid = null;
   }
 };
 
@@ -101,7 +106,7 @@ Post.getbyUid = function getbyUid(db, uid, callback) {
       if (err) {
         callback(err, null);
       }
-      var post = new Post(doc.username, doc.title, doc.content, doc.location, doc.contact, doc.price, doc.tags, doc.prevtext, doc.prevtext2, doc.previmg, doc.img, doc.date);
+      var post = new Post(doc.username, doc.title, doc.content, doc.location, doc.contact, doc.price, doc.tags, doc.prevtext, doc.prevtext2, doc.previmg, doc.img, doc.date, doc._id);
       callback(null, post);
     });
   });
@@ -121,7 +126,7 @@ Post.getbyTele = function getbyTele(db, tel, callback) {
       if (null === doc) {
         callback("找不到你输入的联系方式", null);
       } else {
-        var post = new Post(doc.username, doc.title, doc.content, doc.location, doc.contact, doc.price, doc.tags, doc.prevtext, doc.prevtext2, doc.previmg, doc.img, doc.date);
+        var post = new Post(doc.username, doc.title, doc.content, doc.location, doc.contact, doc.price, doc.tags, doc.prevtext, doc.prevtext2, doc.previmg, doc.img, doc.date, doc._id);
         callback(null, post);
       }
     });
