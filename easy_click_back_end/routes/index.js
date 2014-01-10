@@ -7,6 +7,7 @@ var News = require('../models/news.js');
 var User = require('../models/user.js');
 var Messages = require('../models/message.js');
 var Learn = require('../models/learning.js');
+var Modules = require('../models/modules.js');
 var util = require('util');
 var async = require('async');
 var utils = require('../utils/utils.js');
@@ -1090,6 +1091,25 @@ module.exports = function(app) {
     });
   });
 
+  app.get('/background/modules', function(req, res) {
+    res.render('./background/modules', {
+      layout: './background/background_layout',
+      title: '后台管理系统-模块'
+    });
+  });
+
+  app.post('/background/modules', function(req, res) {
+    var modules = new Modules(1,req.body.exchange);
+    modules.save(req.database, function(err){
+      if (err) {
+        req.flash('error', err);
+        return res.redirect('/background/modules');
+      }
+      req.flash('success', '已成功发送');
+      res.redirect('/background/modules');
+    });
+  });
+  
   app.get('/test', function(req, res) {
     res.render('./others/test', {
       title: '字号测试',
@@ -1158,6 +1178,13 @@ module.exports = function(app) {
     News.getAll(req.database, req.body.skip, req.body.limit, function(err, news) {
       res.json(news);
       console.log("app_news: "+news.length);
+    });
+  });
+
+  app.post('/app_exchange',function(req, res){
+    Modules.getbyId(req.database, 1, function(err, modules) {
+      res.json(modules);
+      console.log("app_modules");
     });
   });
 
