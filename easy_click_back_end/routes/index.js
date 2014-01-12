@@ -1255,7 +1255,7 @@ module.exports = function(app) {
       } else {
         data = {
           result: "success",
-          message: "登陆成功",
+          message: "登录成功",
           username: req.body.username,
           password: req.body.password
         };
