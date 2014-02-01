@@ -1222,7 +1222,7 @@ module.exports = function(app) {
       } else {
         var data = {
           result: "success",
-          message: "发送已成功，我们将在一个工作日内为您完成排版制作并正式发布。"
+          message: "操作成功，审核后正式发布。"
         };
         res.json(data);
       }
