@@ -1,0 +1,188 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>News</title>
+    <link rel="stylesheet" href="resource/stylesheets/jquery.excoloSlider.css" />
+    <link rel="stylesheet" href="resource/javascripts/jquery_mobile/jquery.mobile-1.4.0.min.css" />
+    <link rel="stylesheet" href="resource/stylesheets/jquery.mobile.iscrollview.css" />
+    <link rel="stylesheet" href="resource/stylesheets/jquery.mobile.iscrollview-pull.css" />
+    <link rel="stylesheet" href="resource/stylesheets/main.css" />
+    <script src="resource/javascripts/jquery-2.0.3.min.js"></script>
+    <script src="resource/javascripts/jquery_mobile/jquery.mobile-1.4.0.min.js"></script>
+    <script src="resource/javascripts/jquery.excoloSlider.js"></script>
+    <script src="resource/javascripts/iscroll.js"></script>
+    <script src="resource/javascripts/jquery.mobile.iscrollview.js"></script>
+    <script src="resource/javascripts/main.js"></script>
+    <script src="phonegap.js"></script>
+</head>
+<body>
+    <div data-role="page" id="news_page" class="page_body">
+        <div class="nav_bar">
+            <a data-rel="back">
+                <img alt="" src="resource/img/icon_img/icon_back.png"></img>
+            </a>
+            <a data-transition="flip" href="index.html">
+                <img alt="" src="resource/img/icon_img/icon_home.png"></img>
+            </a>
+            <a data-transition="slide" href="post_selector.html">
+                <img alt="" src="resource/img/icon_img/icon_write.png"></img>
+            </a>
+            <a data-transition="slide" href="aboutpost.html" >
+                <img alt="" src="resource/img/icon_img/icon_contact_us.png"></img>
+            </a>
+            <h3>时事</h3>
+        </div>
+    	<div data-iscroll="" data-role="content">
+            <div class="iscroll-pulldown">
+                <span class="iscroll-pull-icon"></span>
+                <span class="iscroll-pull-label" data-iscroll-loading-text="载入中" data-iscroll-pulled-text="松开立即更新">下拉更新</span>
+            </div>
+                <ul id="news_list_group" data-role="listview">
+                    <li id="exchange_block" data-role="list-divider"></li>
+                </ul>
+            <div class="iscroll-pullup">
+                <span class="iscroll-pull-icon"></span>
+                <span class="iscroll-pull-label" data-iscroll-loading-text="载入中" data-iscroll-pulled-text="松开立即加载">上拉加载更多</span>
+            </div>
+		</div>
+        <div id="floatingCirclesG" class="news_floatingBarsG">
+            <div class="f_circleG" id="frotateG_01"></div>
+            <div class="f_circleG" id="frotateG_02"></div>
+            <div class="f_circleG" id="frotateG_03"></div>
+            <div class="f_circleG" id="frotateG_04"></div>
+            <div class="f_circleG" id="frotateG_05"></div>
+            <div class="f_circleG" id="frotateG_06"></div>
+            <div class="f_circleG" id="frotateG_07"></div>
+            <div class="f_circleG" id="frotateG_08"></div>
+        </div>
+		<script>
+        var listSelector = "#news_list_group.ui-listview",
+            lastItemSelector = listSelector + " > li:last-child",
+            pullUpflag=false;
+            mSkip=15,
+            mLimit=9,
+            mKey=$('#search_input').val(),
+            mIDBuffer=[];
+
+		$(document).one("pageinit","#news_page", function( event ) {
+            $("#news_page .iscroll-scroller").css("padding-top","2.8em");
+            $(".iscroll-wrapper", this).bind({
+                iscroll_onpulldown : onPullDown,
+                iscroll_onpullup   : onPullUp
+            });
+            if(!localStorage.Exchange){
+                getExchange();
+            } else {
+                $('#exchange_block').text(localStorage.Exchange);
+            }
+            if(localStorage.NewsIDBuffer) {
+                mIDBuffer=JSON.parse(localStorage.NewsIDBuffer);
+            }
+            if(!localStorage.NewsCatagory) {
+                var data = {
+                    skip: 0,
+                    limit: 15
+                };
+                sendAjax('/app_news', data, function(News){
+                    $('.news_floatingBarsG').fadeOut('fast');
+                    $.each(News, insertNewsCatagory);
+                    localStorage.NewsCatagory = JSON.stringify(News);
+                    $('#news_list_group').listview('refresh');
+                    getExchange();
+                },function(jqXHR, textStatus, errorThrown){
+                    $('.news_floatingBarsG').fadeOut('fast');
+                    alert('网络错误！连接失败！ 请重试');
+                });
+            } else {
+                var News = JSON.parse(localStorage.NewsCatagory);
+                $('.news_floatingBarsG').hide();
+                $.each(News, insertNewsCatagory);
+                $('#news_list_group').listview('refresh');
+            }
+            $('#news_list_group').on('click', 'li a', function(){
+                sessionStorage.newsuid = $(this).children('p').attr('id');
+                if(mIDBuffer.indexOf(sessionStorage.newsuid)==-1) {
+                    mIDBuffer.push(sessionStorage.newsuid);
+                    localStorage.NewsIDBuffer = JSON.stringify(mIDBuffer);
+                }
+            });
+		});
+
+        function insertNewsCatagory(key, news){
+            $('#news_list_group').append(
+                "<li data-theme='c' data-icon='false'>"+
+                    "<a href='news_details.html' data-transition='slide'>"+
+                        "<img src='data:image/jpg;base64,"+news.previmg+"'>"+
+                        "<h2>"+news.title+"</h2>"+
+                        "<p id='"+news.uid+"'>"+news.sub_title+"</p>"+
+                    "</a>"+
+                "</li>"
+            );
+            $('#'+news.uid).text($('#'+news.uid).text().substr(0,50)+'...');
+            if(mIDBuffer.indexOf(news.uid)!=-1){
+                $('#'+news.uid).siblings("h2").css("color","#545454");
+            }
+        }
+
+        function gotPullDownData(event, mIscroll) {
+            var data =  {
+                skip: 0,
+                limit: 15
+            };
+            sendAjax('/app_news', data, function(posts){
+                $(listSelector).html("<li id='exchange_block' data-role='list-divider'></li>");
+                $.each(posts, insertNewsCatagory);
+                $('#news_list_group').listview('refresh');
+                localStorage.NewsCatagory = JSON.stringify(posts);
+                mIscroll.iscrollview.refresh();
+                mSkip=15;
+                getExchange();
+            }, function(jqXHR, textStatus, errorThrown){
+                alert('网络错误！连接失败！ 请重试');
+            });
+        }
+
+        function gotPullUpData(event, mIscroll) {
+            if(!pullUpflag) {
+                pullUpflag=true;
+                var data = {
+                    skip: mSkip,
+                    limit: mLimit
+                };
+                sendAjax('/app_news', data, function(posts){
+                    mSkip+=mLimit;
+                    pullUpflag=false;
+                    $.each(posts, insertNewsCatagory);
+                    $('#news_list_group').listview('refresh');
+                    iscrollview = mIscroll.iscrollview,
+                    iscrollview.refresh(null, null, $.proxy(function (iscrollview) { 
+                        this.scrollToElement(lastItemSelector, 400); 
+                    }, iscrollview) ); 
+                },function(jqXHR, textStatus, errorThrown){
+                    alert('网络错误！连接失败！ 请重试');
+                });
+            }
+        }
+
+        function onPullDown (event, data) { 
+            gotPullDownData(event, data); 
+        }    
+
+        function onPullUp (event, data) { 
+            gotPullUpData(event, data); 
+        }
+
+        function getExchange() {
+            sendAjax('/app_exchange', "", function(exchange){
+                $('#exchange_block').text(exchange.content);
+                localStorage.Exchange = exchange.content;
+            },function(jqXHR, textStatus, errorThrown){
+                alert('网络错误！连接失败！ 请重试');
+            });
+        }
+		</script>
+	</div>
+</body>
+</html>

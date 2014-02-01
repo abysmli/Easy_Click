@@ -1,0 +1,347 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Information</title>
+    <link rel="stylesheet" href="resource/stylesheets/jquery.excoloSlider.css" />
+    <link rel="stylesheet" href="resource/javascripts/jquery_mobile/jquery.mobile-1.4.0.min.css" />
+    <link rel="stylesheet" href="resource/stylesheets/jquery.mobile.iscrollview.css" />
+    <link rel="stylesheet" href="resource/stylesheets/jquery.mobile.iscrollview-pull.css" />
+    <link rel="stylesheet" href="resource/stylesheets/main.css" />
+    <script src="resource/javascripts/jquery-2.0.3.min.js"></script>
+    <script src="resource/javascripts/jquery_mobile/jquery.mobile-1.4.0.min.js"></script>
+    <script src="resource/javascripts/jquery.excoloSlider.js"></script>
+    <script src="resource/javascripts/iscroll.js"></script>
+    <script src="resource/javascripts/jquery.mobile.iscrollview.js"></script>
+    <script src="resource/javascripts/main.js"></script>
+    <script src="phonegap.js"></script>
+</head>
+<body>
+    <div data-role="page" id="information_catagory_page" class="page_body">
+        <div class="nav_bar">
+            <a data-rel="back">
+                <img alt="" src="resource/img/icon_img/icon_back.png"></img>
+            </a>
+            <a data-transition="flip" href="index.html">
+                <img alt="" src="resource/img/icon_img/icon_home.png"></img>
+            </a>
+            <a data-transition="slide" href="post_selector.html">
+                <img alt="" src="resource/img/icon_img/icon_write.png"></img>
+            </a>
+            <a data-transition="slide" href="aboutpost.html">
+                <img alt="" src="resource/img/icon_img/icon_contact_us.png"></img>
+            </a>
+            <h3>资讯</h3>
+        </div>
+        <div class="search_block">
+            <form id="search_bar" class="search">
+                <input type="search" data-mini="true" name="search_key" id="search_input" placeholder="例: 新宿 整体 可就职 (简繁中日文皆可)" value="" />
+            </form>
+        </div>
+        <div data-iscroll="" data-role="content">
+            <div class="iscroll-pulldown">
+                <span class="iscroll-pull-icon"></span>
+                <span class="iscroll-pull-label" data-iscroll-loading-text="载入中" data-iscroll-pulled-text="松开立即更新">下拉更新</span>
+            </div>
+            <div id="information_catagory" class="ui-grid-b"></div>
+            <div class="iscroll-pullup">
+                <span class="iscroll-pull-icon"></span>
+                <span class="iscroll-pull-label" data-iscroll-loading-text="载入中" data-iscroll-pulled-text="松开立即加载">上拉加载更多</span>
+            </div>
+        </div>
+        <div id="floatingCirclesG" class="information_catagory_floatingBarsG">
+            <div class="f_circleG" id="frotateG_01"></div>
+            <div class="f_circleG" id="frotateG_02"></div>
+            <div class="f_circleG" id="frotateG_03"></div>
+            <div class="f_circleG" id="frotateG_04"></div>
+            <div class="f_circleG" id="frotateG_05"></div>
+            <div class="f_circleG" id="frotateG_06"></div>
+            <div class="f_circleG" id="frotateG_07"></div>
+            <div class="f_circleG" id="frotateG_08"></div>
+        </div>
+        <script>
+            var listSelector = "#information_catagorys",
+                lastItemSelector = listSelector + " > div:last-child",
+                pullUpflag=false;
+                mSkip=15,
+                mLimit=9,
+                mKey=$('#search_input').val();
+            $(document).one("pageinit","#information_catagory_page", function( event ) {
+                $("#information_catagory_page .iscroll-scroller").css("padding-top","5.6em");
+                $(".iscroll-wrapper", this).bind({
+                    iscroll_onpulldown : onPullDown,
+                    iscroll_onpullup   : onPullUp
+                });
+                document.addEventListener("deviceready", onDeviceReady_information_catagory, false);
+                $('#information_catagory').on('vmousedown','a',function(){
+                    $(this).parent('div.information_list').css({opacity:0.5}).animate({opacity:1},200);
+                });
+            });
+            function onDeviceReady_information_catagory(){
+                $('.nav_bar h3').text(sessionStorage.title);
+                if(sessionStorage.index=="find_job"){
+                    if(!localStorage.informationFindJobCatagory) {
+                        var data =  {
+                            index: sessionStorage.index,
+                            tags: "",
+                            skip: 0,
+                            limit: 15
+                        };
+                        sendAjax('/app_information_catagory', data, function(shops){
+                            $('.information_catagory_floatingBarsG').hide();
+                            $.each(shops, insertInformationCatagory);
+                            localStorage.informationFindJobCatagory = JSON.stringify(shops);
+                        }, function(jqXHR, textStatus, errorThrown){
+                            $('.information_catagory_floatingBarsG').hide();
+                            alert('网络错误！连接失败！ 请重试');
+                        });
+                    } else {
+                        var shops = JSON.parse(localStorage.informationFindJobCatagory);
+                        $('.information_catagory_floatingBarsG').hide();
+                        $.each(shops, insertInformationCatagory);
+                    }
+                } else if(sessionStorage.index=="find_house") {
+                    if(!localStorage.informationFindHouseCatagory) {
+                        var data =  {
+                            index: sessionStorage.index,
+                            tags: "",
+                            skip: 0,
+                            limit: 15
+                        };
+                        sendAjax('/app_information_catagory', data, function(shops){
+                            $('.information_catagory_floatingBarsG').hide();
+                            $.each(shops, insertInformationCatagory);
+                            localStorage.informationFindHouseCatagory = JSON.stringify(shops);
+                        }, function(jqXHR, textStatus, errorThrown){
+                            $('.information_catagory_floatingBarsG').hide();
+                            alert('网络错误！连接失败！ 请重试');
+                        });
+                    } else {
+                        var shops = JSON.parse(localStorage.informationFindHouseCatagory);
+                        $('.information_catagory_floatingBarsG').hide();
+                        $.each(shops, insertInformationCatagory);
+                    }
+                } else if(sessionStorage.index=="move_house") {
+                    if(!localStorage.informationMoveHouseCatagory) {
+                        var data =  {
+                            index: sessionStorage.index,
+                            tags: "",
+                            skip: 0,
+                            limit: 15
+                        };
+                        sendAjax('/app_information_catagory', data, function(shops){
+                            $('.information_catagory_floatingBarsG').hide();
+                            $.each(shops, insertInformationCatagory);
+                            localStorage.informationMoveHouseCatagory = JSON.stringify(shops);
+                        }, function(jqXHR, textStatus, errorThrown){
+                            $('.information_catagory_floatingBarsG').hide();
+                            alert('网络错误！连接失败！ 请重试');
+                        });
+                    } else {
+                        var shops = JSON.parse(localStorage.informationMoveHouseCatagory);
+                        $('.information_catagory_floatingBarsG').hide();
+                        $.each(shops, insertInformationCatagory);
+                    }                   
+                } else if(sessionStorage.index=="business") {
+                    if(!localStorage.informationBusinessCatagory) {
+                        var data =  {
+                            index: sessionStorage.index,
+                            tags: "",
+                            skip: 0,
+                            limit: 15
+                        };
+                        sendAjax('/app_information_catagory', data, function(shops){
+                            $('.information_catagory_floatingBarsG').hide();
+                            $.each(shops, insertInformationCatagory);
+                            localStorage.informationBusinessCatagory = JSON.stringify(shops);
+                        }, function(jqXHR, textStatus, errorThrown){
+                            $('.information_catagory_floatingBarsG').hide();
+                            alert('网络错误！连接失败！ 请重试');
+                        });
+                    } else {
+                        var shops = JSON.parse(localStorage.informationBusinessCatagory);
+                        $('.information_catagory_floatingBarsG').hide();
+                        $.each(shops, insertInformationCatagory);
+                    }                    
+                } else if(sessionStorage.index=="ticket") {
+                    if(!localStorage.informationTicketCatagory) {
+                        var data =  {
+                            index: sessionStorage.index,
+                            tags: "",
+                            skip: 0,
+                            limit: 15
+                        };
+                        sendAjax('/app_information_catagory', data, function(shops){
+                            $('.information_catagory_floatingBarsG').hide();
+                            $.each(shops, insertInformationCatagory);
+                            localStorage.informationTicketCatagory = JSON.stringify(shops);
+                        }, function(jqXHR, textStatus, errorThrown){
+                            $('.information_catagory_floatingBarsG').hide();
+                            alert('网络错误！连接失败！ 请重试');
+                        });
+                    } else {
+                        var shops = JSON.parse(localStorage.informationTicketCatagory);
+                        $('.information_catagory_floatingBarsG').hide();
+                        $.each(shops, insertInformationCatagory);
+                    }                    
+                } else {
+                    if(!localStorage.informationLawCatagory) {
+                        var data =  {
+                            index: sessionStorage.index,
+                            tags: "",
+                            skip: 0,
+                            limit: 15
+                        };
+                        sendAjax('/app_information_catagory', data, function(shops){
+                            $('.information_catagory_floatingBarsG').hide();
+                            $.each(shops, insertInformationCatagory);
+                            localStorage.informationLawCatagory = JSON.stringify(shops);
+                        }, function(jqXHR, textStatus, errorThrown){
+                            $('.information_catagory_floatingBarsG').hide();
+                            alert('网络错误！连接失败！ 请重试');
+                        });
+                    } else {
+                        var shops = JSON.parse(localStorage.informationLawCatagory);
+                        $('.information_catagory_floatingBarsG').hide();
+                        $.each(shops, insertInformationCatagory);
+                    }
+                }
+                $('#information_catagory').on('click', '.information_list a', function(){
+                    sessionStorage.uid = $(this).parent('div.information_list').attr('id');
+                });
+                $('#search_bar').submit(function(e){
+                    mKey=$('#search_input').val();
+                    $('#information_catagory').html("");
+                    $('.information_catagory_floatingBarsG').show();
+                    var data = {
+                        index: sessionStorage.index,
+                        tags: mKey,
+                        skip: 0,
+                        limit: 15
+                    };
+                    sendAjax('/app_information_catagory', data, function(shops){
+                        $.each(shops, insertInformationCatagory);
+                        $('.information_catagory_floatingBarsG').hide();
+                        mSkip=15;
+                    },function(jqXHR, textStatus, errorThrown){
+                        $('.information_catagory_floatingBarsG').hide();
+                        mSkip=15;
+                    });
+                    return false;
+                    e.preventDefault();
+                });
+                $('#search_bar').change(function(){
+                    if($('#search_input').val()=="") {
+                        mKey="";
+                        $('#information_catagory').html("");
+                        $('.information_catagory_floatingBarsG').show();
+                        var data = {
+                            index: sessionStorage.index,
+                            tags: mKey,
+                            skip: 0,
+                            limit: 15
+                        };
+                        sendAjax('/app_information_catagory', data, function(shops){
+                            $.each(shops, insertInformationCatagory);
+                            $('.information_catagory_floatingBarsG').hide();
+                            mSkip=15;
+                        },function(jqXHR, textStatus, errorThrown){
+                            $('.information_catagory_floatingBarsG').hide();
+                            mSkip=15;
+                        });
+                    }
+                });
+            }
+            
+            function insertInformationCatagory(key, shop) {
+                var imgstring="", classstring="";
+                if (shop.previmg.length==0){
+                    imgstring = "resource/img/information_img/information_box.png";
+                } else {
+                    imgstring = "data:image/jpg;base64,"+shop.previmg;
+                }
+                if(key % 3 ==0) {
+                    classstring = "ui-block-a";
+                } else if(key % 3 ==1) {
+                    classstring = "ui-block-b";
+                } else if(key % 3 ==2) {
+                    classstring = "ui-block-c";
+                }
+                $('#information_catagory').append("<div class='"+classstring+"'>"+
+                    "<div class='information_list' id='"+shop.uid+"'>"+
+                    "<a href='information_details.html' data-transition='slide'>"+
+                    "<img alt='img' src='"+imgstring+"'></img>"+
+                    "<p>"+shop.prevtext+"</p>"+
+                    "<pre>"+shop.prevtext2+"</pre>"+
+                    "</a>"+
+                    "</div>"+
+                    "</div>");
+            }
+
+            function gotPullDownData(event, mIscroll) {
+                var data =  {
+                    index: sessionStorage.index,
+                    tags: "",
+                    skip: 0,
+                    limit: 15
+                };
+                sendAjax('/app_information_catagory', data, function(shops){
+                    $('#information_catagory').html("");
+                    $.each(shops, insertInformationCatagory);
+                    if(sessionStorage.index=="find_job"){
+                        localStorage.informationFindJobCatagory = JSON.stringify(shops);
+                    } else if(sessionStorage.index=="find_house") {
+                        localStorage.informationFindHouseCatagory = JSON.stringify(shops);
+                    } else if(sessionStorage.index=="move_house") {
+                        localStorage.informationMoveHouseCatagory = JSON.stringify(shops);
+                    } else if(sessionStorage.index=="business") {
+                        localStorage.informationBusinessCatagory = JSON.stringify(shops);
+                    } else if(sessionStorage.index=="ticket") {
+                        localStorage.informationTicketCatagory = JSON.stringify(shops);
+                    } else {
+                        localStorage.informationLawCatagory = JSON.stringify(shops);
+                    }
+                    mIscroll.iscrollview.refresh();
+                    mSkip=15;
+                }, function(jqXHR, textStatus, errorThrown){
+                    alert('网络错误！连接失败！ 请重试');
+                });
+            }
+
+            function gotPullUpData(event, mIscroll) {
+                if(!pullUpflag) {
+                    pullUpflag=true;
+                    var data = {
+                        index: sessionStorage.index,
+                        tags: mKey,
+                        skip: mSkip,
+                        limit: mLimit
+                    };
+                    sendAjax('/app_information_catagory', data, function(shops){
+                        mSkip+=mLimit;
+                        pullUpflag=false;
+                        $.each(shops, insertInformationCatagory);
+                        iscrollview = mIscroll.iscrollview,
+                        iscrollview.refresh(null, null, $.proxy(function (iscrollview) { 
+                            this.scrollToElement(lastItemSelector, 400); 
+                        }, iscrollview) ); 
+                    },function(jqXHR, textStatus, errorThrown){
+                        alert('网络错误！连接失败！ 请重试');
+                    });
+
+                }
+            }
+
+            function onPullDown (event, data) { 
+                gotPullDownData(event, data); 
+            }    
+
+            function onPullUp (event, data) { 
+                gotPullUpData(event, data); 
+            }
+
+        </script>
+    </div>
+</body>
+</html>

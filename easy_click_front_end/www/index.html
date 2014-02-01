@@ -1,0 +1,87 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Main-Page</title>
+    <link rel="stylesheet" href="resource/stylesheets/jquery.excoloSlider.css" />
+    <link rel="stylesheet" href="resource/javascripts/jquery_mobile/jquery.mobile-1.4.0.min.css" />
+    <link rel="stylesheet" href="resource/stylesheets/jquery.mobile.iscrollview.css" />
+    <link rel="stylesheet" href="resource/stylesheets/jquery.mobile.iscrollview-pull.css" />
+    <link rel="stylesheet" href="resource/stylesheets/main.css" />
+    <script src="resource/javascripts/jquery-2.0.3.min.js"></script>
+    <script src="resource/javascripts/jquery_mobile/jquery.mobile-1.4.0.min.js"></script>
+    <script src="resource/javascripts/jquery.excoloSlider.js"></script>
+    <script src="resource/javascripts/iscroll.js"></script>
+    <script src="resource/javascripts/jquery.mobile.iscrollview.js"></script>
+    <script src="resource/javascripts/main.js"></script>
+    <script src="phonegap.js"></script>
+</head>
+<body>
+    <div data-role="page" id="main_page" class="page_body">
+        <div class="nav_bar">
+            <a data-rel="back">
+                <img alt="" src="resource/img/icon_img/icon_back.png"></img>
+            </a>
+            <a data-transition="flip" href="index.html">
+                <img alt="" src="resource/img/icon_img/icon_home.png"></img>
+            </a>
+            <a data-transition="slide" href="post_selector.html">
+                <img alt="" src="resource/img/icon_img/icon_write.png"></img>
+            </a>
+            <a data-transition="slide" href="aboutpost.html" >
+                <img alt="" src="resource/img/icon_img/icon_contact_us.png"></img>
+            </a>
+        </div>
+        <div data-role="content" style="padding-top:2.8em !important;">
+            <div id="main_logo" style="text-align: center;">
+                <a data-transition="slide" href="about.html">
+                    <img src="resource/img/logo_header.jpg" alt="logo" width="97.5%" style="margin-top:0.8em; margin-bottom:-0.05em;">
+                </a>
+            </div>
+            <div class="ui-grid-a">
+                <div class="ui-block-a">
+                    <div class="main_nav_icon">
+                        <a href="information.html" data-transition="slide">
+                            <img alt="" src="resource/img/menu_icon/menu_icon_01.png"></img>
+                        </a>
+                    </div>
+                </div>
+                <div class="ui-block-b">
+                    <div class="main_nav_icon">
+                        <a href="userpostview.html" data-transition="slide">
+                            <img alt="" src="resource/img/menu_icon/menu_icon_02.png"></img>
+                        </a>
+                    </div>
+                </div>
+                <div class="ui-block-a">
+                    <div class="main_nav_icon">
+                        <a href="news.html" data-transition="slide">
+                            <img alt="" src="resource/img/menu_icon/menu_icon_03.png"></img>
+                        </a>
+                    </div>
+                </div>
+                <div class="ui-block-b">
+                    <div class="main_nav_icon">
+                        <a href="learning.html" data-transition="slide">
+                            <img alt="" src="resource/img/menu_icon/menu_icon_04.png"></img>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+        $(document).one("pageinit","#main_page", function( event ) {
+            loginAction();
+            $('.main_nav_icon, #main_logo').on('vmousedown','a',function(){
+                $(this).children('img').css({opacity:0.5}).animate({opacity:1},200);
+            });
+            document.addEventListener("deviceready", onDeviceReady_index, false);
+        });
+        function onDeviceReady_index(){
+            StatusBar.backgroundColorByHexString("#f4f4f4");
+        };
+        </script>
+    </div>
+</body>
+</html>

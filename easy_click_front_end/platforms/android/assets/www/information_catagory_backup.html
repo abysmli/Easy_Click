@@ -1,0 +1,335 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Information</title>
+    <link rel="stylesheet" href="resource/stylesheets/jquery.excoloSlider.css" />
+    <link rel="stylesheet" href="resource/javascripts/jquery_mobile/jquery.mobile-1.4.0.min.css" />
+    <link rel="stylesheet" href="resource/stylesheets/jquery.mobile.iscrollview.css" />
+    <link rel="stylesheet" href="resource/stylesheets/jquery.mobile.iscrollview-pull.css" />
+    <link rel="stylesheet" href="resource/stylesheets/main.css" />
+    <script src="resource/javascripts/jquery-2.0.3.min.js"></script>
+    <script src="resource/javascripts/jquery_mobile/jquery.mobile-1.4.0.min.js"></script>
+    <script src="resource/javascripts/jquery.excoloSlider.js"></script>
+    <script src="resource/javascripts/iscroll.js"></script>
+    <script src="resource/javascripts/jquery.mobile.iscrollview.js"></script>
+    <script src="resource/javascripts/main.js"></script>
+    <script src="phonegap.js"></script>
+</head>
+<body>
+    <div data-role="page" id="information_catagory_page" class="page_body">
+        <div class="nav_bar">
+            <a data-rel="back">
+                <img alt="" src="resource/img/icon_img/icon_back.png"></img>
+            </a>
+            <a data-transition="flip" href="index.html">
+                <img alt="" src="resource/img/icon_img/icon_home.png"></img>
+            </a>
+            <a data-transition="slide" href="post_selector.html">
+                <img alt="" src="resource/img/icon_img/icon_write.png"></img>
+            </a>
+            <a data-transition="slide" href="aboutpost.html">
+                <img alt="" src="resource/img/icon_img/icon_contact_us.png"></img>
+            </a>
+            <h3>资讯</h3>
+        </div>
+        <div data-iscroll="" data-role="content">
+            <div class="iscroll-pulldown">
+                <span class="iscroll-pull-icon"></span>
+                <span class="iscroll-pull-label" data-iscroll-loading-text="载入中" data-iscroll-pulled-text="松开刷新">下拉刷新</span>
+            </div>
+            <div class="search_block">
+                <form id="search_bar" class="search">
+                    <input type="search" data-mini="true" name="search_key" id="search_input" placeholder="例: 新宿 整体 可就职 (简繁中日文皆可)" value="" />
+                </form>
+            </div>
+            <div class="search_block_holder">
+            </div>
+            <div id="information_catagory" class="ui-grid-b">
+            </div>
+            <div class="iscroll-pullup">
+                <span class="iscroll-pull-icon"></span>
+                <span class="iscroll-pull-label" data-iscroll-loading-text="载入中" data-iscroll-pulled-text="松开刷新">上拉刷新</span>
+            </div>
+        </div>
+        <div id="information_ajax_loading_bar">
+            <div id="noTrespassingOuterBarG">
+                <div id="noTrespassingFrontBarG" class="noTrespassingAnimationG">
+                    <div class="noTrespassingBarLineG">
+                    </div>
+                    <div class="noTrespassingBarLineG">
+                    </div>
+                    <div class="noTrespassingBarLineG">
+                    </div>
+                    <div class="noTrespassingBarLineG">
+                    </div>
+                    <div class="noTrespassingBarLineG">
+                    </div>
+                    <div class="noTrespassingBarLineG">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="floatingBarsG" class="information_catagory_floatingBarsG">
+            <div class="blockG" id="rotateG_01"></div>
+            <div class="blockG" id="rotateG_02"></div>
+            <div class="blockG" id="rotateG_03"></div>
+            <div class="blockG" id="rotateG_04"></div>
+            <div class="blockG" id="rotateG_05"></div>
+            <div class="blockG" id="rotateG_06"></div>
+            <div class="blockG" id="rotateG_07"></div>
+            <div class="blockG" id="rotateG_08"></div>
+        </div>
+        <script>
+            var pullDownGeneratedCount = 0, 
+                pullUpGeneratedCount = 0,
+                listSelector = "#test_block",
+                lastItemSelector = listSelector + " > p:last-child",
+                firstItemSelector = listSelector + " > p:first-child";
+            $(document).one("pageinit","#information_catagory_page", function( event ) {
+                document.addEventListener("deviceready", onDeviceReady_information_catagory, false);
+            });
+            function onDeviceReady_information_catagory(){
+                $(".iscroll-wrapper", this).bind({
+                    iscroll_onpulldown : onPullDown,
+                    iscroll_onpullup   : onPullUp
+                });
+                $('#information_ajax_loading_bar').hide();
+                $('.nav_bar h3').text(sessionStorage.title);
+                var mSkip=15;
+                var mLimit=9;
+                var mKey=$('#search_input').val();
+                var mFlagFinished=false, scrollOK = true;
+
+                var scrollAction = function () {
+                    if (scrollOK&&(!mFlagFinished)&&($.mobile.activePage.attr("id")=="information_catagory_page")) {
+                        if (($(this).scrollTop() + $(this).height()) >= ($(document).height() - 300)) {
+                            scrollOK = false;
+                            $('#information_ajax_loading_bar').show();
+                            var data = {
+                                index: sessionStorage.index,
+                                tags: mKey,
+                                skip: mSkip,
+                                limit: mLimit
+                            };
+                            sendAjax('/app_information_catagory', data, function(shops){
+                                mSkip+=mLimit;
+                                scrollOK=true;
+                                $.each(shops, insertInformationCatagory);
+                                if (shops.length===0) {
+                                    $('#information_ajax_loading_bar').hide();
+                                    mFlagFinished=true;
+                                    $(window).unbind('scroll',scrollAction);
+                                }
+                            },function(jqXHR, textStatus, errorThrown){
+                                $('#information_ajax_loading_bar').hide();
+                                $('.information_catagory_floatingBarsG').hide();
+                                scrollOK=true;
+                                alert('网络错误！连接失败！ 请重试'+jqXHR.responseText);
+                            });
+                        }
+                    }
+                }
+                if(sessionStorage.index=="find_job"){
+                    if(!localStorage.informationFindJobCatagory) {
+                        var data =  {
+                            index: sessionStorage.index,
+                            tags: "",
+                            skip: 0,
+                            limit: 15
+                        };
+                        sendAjax('/app_information_catagory', data, function(shops){
+                            $('.information_catagory_floatingBarsG').hide();
+                            $.each(shops, insertInformationCatagory);
+                            localStorage.informationFindJobCatagory = JSON.stringify(shops);
+                            $(window).bind('scroll',scrollAction);
+                        }, function(jqXHR, textStatus, errorThrown){
+                            $('.information_catagory_floatingBarsG').hide();
+                            alert('网络错误！连接失败！ 请重试'+jqXHR.responseText);
+                        });
+                    } else {
+                        var shops = JSON.parse(localStorage.informationFindJobCatagory);
+                        $('.information_catagory_floatingBarsG').hide();
+                        $.each(shops, insertInformationCatagory);
+                        $(window).bind('scroll',scrollAction);
+                    }
+                } else if(sessionStorage.index=="find_house") {
+                    if(!localStorage.informationFindHouseCatagory) {
+                        var data =  {
+                            index: sessionStorage.index,
+                            tags: "",
+                            skip: 0,
+                            limit: 15
+                        };
+                        sendAjax('/app_information_catagory', data, function(shops){
+                            $('.information_catagory_floatingBarsG').hide();
+                            $.each(shops, insertInformationCatagory);
+                            localStorage.informationFindHouseCatagory = JSON.stringify(shops);
+                            $(window).bind('scroll',scrollAction);
+                        }, function(jqXHR, textStatus, errorThrown){
+                            $('.information_catagory_floatingBarsG').hide();
+                            alert('网络错误！连接失败！ 请重试'+jqXHR.responseText);
+                        });
+                    } else {
+                        var shops = JSON.parse(localStorage.informationFindHouseCatagory);
+                        $('.information_catagory_floatingBarsG').hide();
+                        $.each(shops, insertInformationCatagory);
+                        $(window).bind('scroll',scrollAction);
+                    }
+                } else if(sessionStorage.index=="move_house") {
+                    if(!localStorage.informationMoveHouseCatagory) {
+                        var data =  {
+                            index: sessionStorage.index,
+                            tags: "",
+                            skip: 0,
+                            limit: 15
+                        };
+                        sendAjax('/app_information_catagory', data, function(shops){
+                            $('.information_catagory_floatingBarsG').hide();
+                            $.each(shops, insertInformationCatagory);
+                            localStorage.informationMoveHouseCatagory = JSON.stringify(shops);
+                            $(window).bind('scroll',scrollAction);
+                        }, function(jqXHR, textStatus, errorThrown){
+                            $('.information_catagory_floatingBarsG').hide();
+                            alert('网络错误！连接失败！ 请重试'+jqXHR.responseText);
+                        });
+                    } else {
+                        var shops = JSON.parse(localStorage.informationMoveHouseCatagory);
+                        $('.information_catagory_floatingBarsG').hide();
+                        $.each(shops, insertInformationCatagory);
+                        $(window).bind('scroll',scrollAction);
+                    }                   
+                } else if(sessionStorage.index=="business") {
+                    if(!localStorage.informationBusinessCatagory) {
+                        var data =  {
+                            index: sessionStorage.index,
+                            tags: "",
+                            skip: 0,
+                            limit: 15
+                        };
+                        sendAjax('/app_information_catagory', data, function(shops){
+                            $('.information_catagory_floatingBarsG').hide();
+                            $.each(shops, insertInformationCatagory);
+                            localStorage.informationBusinessCatagory = JSON.stringify(shops);
+                            $(window).bind('scroll',scrollAction);
+                        }, function(jqXHR, textStatus, errorThrown){
+                            $('.information_catagory_floatingBarsG').hide();
+                            alert('网络错误！连接失败！ 请重试'+jqXHR.responseText);
+                        });
+                    } else {
+                        var shops = JSON.parse(localStorage.informationBusinessCatagory);
+                        $('.information_catagory_floatingBarsG').hide();
+                        $.each(shops, insertInformationCatagory);
+                        $(window).bind('scroll',scrollAction);
+                    }                    
+                } else if(sessionStorage.index=="ticket") {
+                    if(!localStorage.informationTicketCatagory) {
+                        var data =  {
+                            index: sessionStorage.index,
+                            tags: "",
+                            skip: 0,
+                            limit: 15
+                        };
+                        sendAjax('/app_information_catagory', data, function(shops){
+                            $('.information_catagory_floatingBarsG').hide();
+                            $.each(shops, insertInformationCatagory);
+                            localStorage.informationTicketCatagory = JSON.stringify(shops);
+                            $(window).bind('scroll',scrollAction);
+                        }, function(jqXHR, textStatus, errorThrown){
+                            $('.information_catagory_floatingBarsG').hide();
+                            alert('网络错误！连接失败！ 请重试'+jqXHR.responseText);
+                        });
+                    } else {
+                        var shops = JSON.parse(localStorage.informationTicketCatagory);
+                        $('.information_catagory_floatingBarsG').hide();
+                        $.each(shops, insertInformationCatagory);
+                        $(window).bind('scroll',scrollAction);
+                    }                    
+                } else {
+                    if(!localStorage.informationLawCatagory) {
+                        var data =  {
+                            index: sessionStorage.index,
+                            tags: "",
+                            skip: 0,
+                            limit: 15
+                        };
+                        sendAjax('/app_information_catagory', data, function(shops){
+                            $('.information_catagory_floatingBarsG').hide();
+                            $.each(shops, insertInformationCatagory);
+                            localStorage.informationLawCatagory = JSON.stringify(shops);
+                            $(window).bind('scroll',scrollAction);
+                        }, function(jqXHR, textStatus, errorThrown){
+                            $('.information_catagory_floatingBarsG').hide();
+                            alert('网络错误！连接失败！ 请重试'+jqXHR.responseText);
+                        });
+                    } else {
+                        var shops = JSON.parse(localStorage.informationLawCatagory);
+                        $('.information_catagory_floatingBarsG').hide();
+                        $.each(shops, insertInformationCatagory);
+                        $(window).bind('scroll',scrollAction);
+                    }
+                }
+
+
+                $('#information_catagory').on('click', '.information_list a', function(){
+                    sessionStorage.uid = $(this).parent('div.information_list').attr('id');
+                    $(window).unbind('scroll',scrollAction);
+                });
+
+                $('#search_bar').submit(function(e){
+                    mKey=$('#search_input').val();
+                    $('#information_catagory').html("");
+                    $('.information_catagory_floatingBarsG').show();
+                    var data = {
+                        index: sessionStorage.index,
+                        tags: mKey,
+                        skip: 0,
+                        limit: 15
+                    };
+                    sendAjax('/app_information_catagory', data, function(shops){
+                        $.each(shops, insertInformationCatagory);
+                        $('.information_catagory_floatingBarsG').hide();
+                        $('#information_ajax_loading_bar').hide();
+                        mFlagFinished=false;
+                        mSkip=15;
+                        $(window).bind('scroll',scrollAction);
+                    },function(jqXHR, textStatus, errorThrown){
+                        $('.information_catagory_floatingBarsG').hide();
+                        $('#information_ajax_loading_bar').hide();
+                        mFlagFinished=false;
+                        mSkip=15;
+                    });
+                    return false;
+                    e.preventDefault();
+                });
+            }
+            
+            function insertInformationCatagory(key, shop) {
+                var imgstring="", classstring="";
+                if (shop.previmg.length==0){
+                    imgstring = "resource/img/information_img/information_box.jpg";
+                } else {
+                    imgstring = "data:image/jpg;base64,"+shop.previmg;
+                }
+                if(key % 3 ==0) {
+                    classstring = "ui-block-a";
+                } else if(key % 3 ==1) {
+                    classstring = "ui-block-b";
+                } else if(key % 3 ==2) {
+                    classstring = "ui-block-c";
+                }
+                $('#information_catagory').append("<div class='"+classstring+"'>"+
+                    "<div class='information_list' id='"+shop.uid+"'>"+
+                    "<a href='information_details.html' data-transition='slide'>"+
+                    "<img alt='img' src='"+imgstring+"'></img>"+
+                    "<p>"+shop.prevtext+"</p>"+
+                    "<pre>"+shop.prevtext2+"</pre>"+
+                    "</a>"+
+                    "</div>"+
+                    "</div>");
+            }
+        </script>
+    </div>
+</body>
+</html>
