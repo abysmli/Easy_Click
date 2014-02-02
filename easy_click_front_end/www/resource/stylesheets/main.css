@@ -235,6 +235,58 @@ body  * {
 	min-height:7em;
 }
 
+/*---------- userpost_list ----------*/
+.userpost_list {
+	position: relative;
+	margin-top:0.3em;
+	margin-bottom: 0.2em;
+	width: 95%;
+	box-shadow: 0px 0px 3px 0px #888888;
+}
+
+.userpost_list:before {
+	content: "";
+	display: block;
+	padding-top: 100%;
+}
+
+.userpost_list a {
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+}
+
+.userpost_list a img {
+	width: 100%;
+	height: 100%;
+}
+
+.userpost_list div{
+	bottom: 0;
+	left: 0;
+	right: 0;
+	height: 1em;
+	min-height: 1.1em;
+	position: absolute;
+	opacity: 0.5;
+	background-color: black;
+}
+
+.userpost_list p {
+	text-shadow: none;
+	margin: 0;
+	margin-top: 0.2em;
+	margin-left: 0.2em;
+	font-size: 0.65em;
+	color: white;
+	opacity: 1;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
 /*---------- learning nav ----------*/
 .learning_nav {
 	width: 95%;
@@ -548,7 +600,6 @@ body  * {
 	background-color: white;
 	border: 1px solid #999999;
 	opacity: 0.9;
-	height: 14em;
 	width: 80%;
 	top: 30%;
 	left: 10%;
@@ -568,6 +619,7 @@ body  * {
 	margin-top: 2em;
 	margin-left: 3em;
 	margin-right: 3em;
+	margin-bottom: 2em;
 	height: 2.6em;
 	cursor: pointer;
 }

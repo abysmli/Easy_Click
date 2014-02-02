@@ -35,8 +35,14 @@
             <h3>资讯</h3>
         </div>
         <div class="search_block">
-            <form id="search_bar" class="search">
-                <input type="search" data-mini="true" name="search_key" id="search_input" placeholder="例: 新宿 整体 可就职 (简繁中日文皆可)" value="" />
+            <form>
+                <div class="ui-field-contain">
+                    <select id="key_selector" data-mini="true">
+                        <option value="" selected="selected">全部</option>
+                        <option value="吸尘器">吸尘器</option>
+                        <option value="手机">手机</option>
+                    </select>
+                </div>
             </form>
         </div>
         <div data-iscroll="" data-role="content">
@@ -94,7 +100,7 @@
                             localStorage.informationFindJobCatagory = JSON.stringify(shops);
                         }, function(jqXHR, textStatus, errorThrown){
                             $('.information_catagory_floatingBarsG').hide();
-                            alert('网络错误！连接失败！ 请重试');
+                            showError('#information_catagory_page','网络错误！连接失败！ 请重试!');
                         });
                     } else {
                         var shops = JSON.parse(localStorage.informationFindJobCatagory);
@@ -102,6 +108,12 @@
                         $.each(shops, insertInformationCatagory);
                     }
                 } else if(sessionStorage.index=="find_house") {
+                    $('#key_selector').html('').append(
+                        "<option value='' selected='selected'>全部</option>"+
+                        "<option value='吸尘'>吸尘</option>"+
+                        "<option value='手'>手</option>"
+                    );
+
                     if(!localStorage.informationFindHouseCatagory) {
                         var data =  {
                             index: sessionStorage.index,
@@ -115,7 +127,7 @@
                             localStorage.informationFindHouseCatagory = JSON.stringify(shops);
                         }, function(jqXHR, textStatus, errorThrown){
                             $('.information_catagory_floatingBarsG').hide();
-                            alert('网络错误！连接失败！ 请重试');
+                            showError('#information_catagory_page','网络错误！连接失败！ 请重试!');
                         });
                     } else {
                         var shops = JSON.parse(localStorage.informationFindHouseCatagory);
@@ -136,7 +148,7 @@
                             localStorage.informationMoveHouseCatagory = JSON.stringify(shops);
                         }, function(jqXHR, textStatus, errorThrown){
                             $('.information_catagory_floatingBarsG').hide();
-                            alert('网络错误！连接失败！ 请重试');
+                            showError('#information_catagory_page','网络错误！连接失败！ 请重试!');
                         });
                     } else {
                         var shops = JSON.parse(localStorage.informationMoveHouseCatagory);
@@ -157,7 +169,7 @@
                             localStorage.informationBusinessCatagory = JSON.stringify(shops);
                         }, function(jqXHR, textStatus, errorThrown){
                             $('.information_catagory_floatingBarsG').hide();
-                            alert('网络错误！连接失败！ 请重试');
+                            showError('#information_catagory_page','网络错误！连接失败！ 请重试!');
                         });
                     } else {
                         var shops = JSON.parse(localStorage.informationBusinessCatagory);
@@ -178,7 +190,7 @@
                             localStorage.informationTicketCatagory = JSON.stringify(shops);
                         }, function(jqXHR, textStatus, errorThrown){
                             $('.information_catagory_floatingBarsG').hide();
-                            alert('网络错误！连接失败！ 请重试');
+                            showError('#information_catagory_page','网络错误！连接失败！ 请重试!');
                         });
                     } else {
                         var shops = JSON.parse(localStorage.informationTicketCatagory);
@@ -199,7 +211,7 @@
                             localStorage.informationLawCatagory = JSON.stringify(shops);
                         }, function(jqXHR, textStatus, errorThrown){
                             $('.information_catagory_floatingBarsG').hide();
-                            alert('网络错误！连接失败！ 请重试');
+                            showError('#information_catagory_page','网络错误！连接失败！ 请重试!');
                         });
                     } else {
                         var shops = JSON.parse(localStorage.informationLawCatagory);
@@ -209,6 +221,25 @@
                 }
                 $('#information_catagory').on('click', '.information_list a', function(){
                     sessionStorage.uid = $(this).parent('div.information_list').attr('id');
+                });
+                $('#key_selector').change(function(){
+                    mKey=$('#key_selector').val();
+                    $('#information_catagory').html("");
+                    $('.information_catagory_floatingBarsG').show();
+                    var data = {
+                        index: sessionStorage.index,
+                        tags: mKey,
+                        skip: 0,
+                        limit: 15
+                    };
+                    sendAjax('/app_information_catagory', data, function(shops){
+                        $.each(shops, insertInformationCatagory);
+                        $('.information_catagory_floatingBarsG').hide();
+                        mSkip=15;
+                    },function(jqXHR, textStatus, errorThrown){
+                        $('.information_catagory_floatingBarsG').hide();
+                        mSkip=15;
+                    });
                 });
                 $('#search_bar').submit(function(e){
                     mKey=$('#search_input').val();
@@ -305,7 +336,7 @@
                     mIscroll.iscrollview.refresh();
                     mSkip=15;
                 }, function(jqXHR, textStatus, errorThrown){
-                    alert('网络错误！连接失败！ 请重试');
+                    showError('#information_catagory_page','网络错误！连接失败！ 请重试!');
                 });
             }
 
@@ -327,7 +358,7 @@
                             this.scrollToElement(lastItemSelector, 400); 
                         }, iscrollview) ); 
                     },function(jqXHR, textStatus, errorThrown){
-                        alert('网络错误！连接失败！ 请重试');
+                        showError('#information_catagory_page','网络错误！连接失败！ 请重试!');
                     });
 
                 }

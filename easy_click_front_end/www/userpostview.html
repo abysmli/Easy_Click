@@ -35,8 +35,14 @@
             <h3>交流</h3>
         </div>
         <div class="search_block">
-            <form id="search_bar" class="search">
-                <input type="search" data-mini="true" name="search_key" id="search_input" placeholder="例: 池袋 微波炉 (简繁中日文皆可)" value="" />
+            <form>
+                <div class="ui-field-contain">
+                    <select id="key_selector" data-mini="true">
+                        <option value="" selected="selected">全部</option>
+                        <option value="吸尘器">吸尘器</option>
+                        <option value="手机">手机</option>
+                    </select>
+                </div>
             </form>
         </div>
         <div data-iscroll="" data-role="content">
@@ -44,7 +50,8 @@
                 <span class="iscroll-pull-icon"></span>
                 <span class="iscroll-pull-label" data-iscroll-loading-text="载入中" data-iscroll-pulled-text="松开立即更新">下拉更新</span>
             </div>
-            <div id="post_list" class="ui-grid-b"></div>
+            <div id="post_list" class="ui-grid-b">
+            </div>
             <div class="iscroll-pullup">
                 <span class="iscroll-pull-icon"></span>
                 <span class="iscroll-pull-label" data-iscroll-loading-text="载入中" data-iscroll-pulled-text="松开立即加载">上拉加载更多</span>
@@ -86,21 +93,21 @@
                         localStorage.UserPostCatagory = JSON.stringify(posts);
                     },function(jqXHR, textStatus, errorThrown){
                         $('.userpostview_floatingBarsG').fadeOut('fast');
-                        alert('网络错误！连接失败！ 请重试');
+                        showError('#user_post_view_page','网络错误！连接失败！ 请重试!');
                     });
                 } else {
                     var posts = JSON.parse(localStorage.UserPostCatagory);
                     $('.userpostview_floatingBarsG').hide();
                     $.each(posts, insertUserPostCatagory);
                 }
-                $('#post_list').on('click', '.information_list a', function(){
-                    sessionStorage.postuid = $(this).parent('div.information_list').attr('id');
+                $('#post_list').on('click', '.userpost_list a', function(){
+                    sessionStorage.postuid = $(this).parent('div.userpost_list').attr('id');
                 });
                 $('#post_list').on('vmousedown','a',function(){
-                    $(this).parent('div.information_list').css({opacity:0.5}).animate({opacity:1},200);
+                    $(this).parent('div.userpost_list').css({opacity:0.5}).animate({opacity:1},200);
                 });
-                $('#search_bar').submit(function(e){
-                    mKey=$('#search_input').val();
+                $('#key_selector').change(function(){
+                    mKey=$('#key_selector').val();
                     $('#post_list').html("");
                     $('.userpostview_floatingBarsG').fadeOut('fast');
                     var data = {
@@ -116,30 +123,7 @@
                         $('.userpostview_floatingBarsG').fadeOut('fast');
                         mSkip=15;
                     });
-                    return false;
-                    e.preventDefault();
                 });
-                $('#search_bar').change(function(){
-                    if($('#search_input').val()=="") {
-                        mKey="";
-                        $('#post_list').html("");
-                        $('.userpostview_floatingBarsG').fadeOut('fast');
-                        var data = {
-                            tags: mKey,
-                            skip: 0,
-                            limit: 15
-                        };
-                        sendAjax('/app_user_post_view', data, function(posts){
-                            $.each(posts, insertUserPostCatagory);
-                            $('.userpostview_floatingBarsG').fadeOut('fast');
-                            mSkip=15;
-                        },function(jqXHR, textStatus, errorThrown){
-                            $('.userpostview_floatingBarsG').fadeOut('fast');
-                            mSkip=15;
-                        });
-                    }
-                });
-
             });
 
             function insertUserPostCatagory(key, post) {
@@ -157,11 +141,12 @@
                     classstring = "ui-block-c";
                 }
                 $('#post_list').append("<div class='"+classstring+"'>"+
-                    "<div class='information_list' id='"+post.uid+"'>"+
+                    "<div class='userpost_list' id='"+post.uid+"'>"+
                         "<a href='userpostview_details.html' data-transition='slide'>"+
                             "<img alt='img' src='"+imgstring+"'></img>"+
-                            "<p>"+post.prevtext+"</p>"+
-                            "<pre>"+post.prevtext2+"</pre>"+
+                            "<div>"+
+                                "<p>"+post.prevtext+"</p>"+
+                            "</div>"+
                         "</a>"+
                     "</div>"+
                 "</div>"); 
@@ -180,7 +165,7 @@
                     mIscroll.iscrollview.refresh();
                     mSkip=15;
                 }, function(jqXHR, textStatus, errorThrown){
-                    alert('网络错误！连接失败！ 请重试');
+                    showError('#user_post_view_page','网络错误！连接失败！ 请重试!');
                 });
             }
 
@@ -201,7 +186,7 @@
                             this.scrollToElement(lastItemSelector, 400); 
                         }, iscrollview) ); 
                     },function(jqXHR, textStatus, errorThrown){
-                        alert('网络错误！连接失败！ 请重试');
+                        showError('#user_post_view_page','网络错误！连接失败！ 请重试!');
                     });
 
                 }
