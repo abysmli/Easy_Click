@@ -113,7 +113,6 @@
                         "<option value='吸尘'>吸尘</option>"+
                         "<option value='手'>手</option>"
                     );
-
                     if(!localStorage.informationFindHouseCatagory) {
                         var data =  {
                             index: sessionStorage.index,
@@ -233,9 +232,14 @@
                         limit: 15
                     };
                     sendAjax('/app_information_catagory', data, function(shops){
-                        $.each(shops, insertInformationCatagory);
-                        $('.information_catagory_floatingBarsG').hide();
-                        mSkip=15;
+                        if(shops!="") {
+                            $.each(shops, insertInformationCatagory);
+                            $('.information_catagory_floatingBarsG').hide();
+                            mSkip=15;    
+                        } else {
+                            $('#information_catagory').html("<p>该分类暂无内容</p>");
+                            $('.information_catagory_floatingBarsG').hide();
+                        }
                     },function(jqXHR, textStatus, errorThrown){
                         $('.information_catagory_floatingBarsG').hide();
                         mSkip=15;

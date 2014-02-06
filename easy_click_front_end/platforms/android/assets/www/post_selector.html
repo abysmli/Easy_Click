@@ -72,14 +72,14 @@
                 if(localStorage.certificate) {
                     $.mobile.changePage( "post.html", { transition: "slide"} );
                 } else {
-                    $('#popupLogin').popup({transition:"flow"}).popup('open');
+                    $('#popupLogin').popup({transition:"pop"}).popup('open');
                 }
             });
             $('#remove_Post').click(function(){
                 if(localStorage.certificate) {
                     $.mobile.changePage( "remove_post.html", { transition: "slide"} );
                 } else {
-                    $('#popupLogin').popup({transition:"flow"}).popup('open');
+                    $('#popupLogin').popup({transition:"pop"}).popup('open');
                 }            
             });
             if(localStorage.certificate){

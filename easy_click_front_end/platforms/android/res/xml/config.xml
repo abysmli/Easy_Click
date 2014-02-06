@@ -63,6 +63,9 @@
     <icon gap:platform="ios" height="72" src="resource/icon/ios/icon-72.png" width="72" />
     <icon gap:platform="ios" height="114" src="resource/icon/ios/icon-57-2x.png" width="114" />
     <icon gap:platform="ios" height="144" src="resource/icon/ios/icon-72-2x.png" width="144" />
+    <icon gap:platform="ios" height="120" src="resource/icon/ios/icon-120.png" width="120" />
+    <icon gap:platform="ios" height="76" src="resource/icon/ios/icon-76.png" width="76" />
+    <icon gap:platform="ios" height="152" src="resource/icon/ios/icon-152.png" width="152" />
     <icon gap:platform="webos" src="resource/icon/webos/icon-64.png" />
     <icon gap:platform="winphone" src="resource/icon/windows-phone/icon-48.png" />
     <icon gap:platform="winphone" gap:role="background" src="resource/icon/windows-phone/icon-173.png" />
@@ -84,7 +87,7 @@
     <gap:splash gap:platform="winphone" src="resource/screen/windows-phone/screen-portrait.jpg" />
     <gap:plugin name="org.apache.cordova.camera" />
     <gap:plugin name="org.apache.cordova.device" />
-    <gap:plugin name="de.appplant.cordova.plugin.local-notification" />
+    <gap:plugin name="org.apache.cordova.inappbrowser" />
     <gap:plugin name="com.phonegap.plugin.statusbar" />
     <access origin="*" />
 </widget>

@@ -1,2 +1,2 @@
-/home/abysmli/workspace/android/easy_click/platforms/android/CordovaLib/bin/AndroidManifest.xml : \
-/home/abysmli/workspace/android/easy_click/platforms/android/CordovaLib/AndroidManifest.xml \
+/home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/CordovaLib/bin/AndroidManifest.xml : \
+/home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/CordovaLib/AndroidManifest.xml \
