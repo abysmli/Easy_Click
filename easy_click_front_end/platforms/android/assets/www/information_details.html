@@ -76,7 +76,7 @@
                             mInformationDetails.push(shop);
                             localStorage.InformationDetails = JSON.stringify(mInformationDetails);
                         }, function(jqXHR, textStatus, errorThrown){
-                            alert('网络错误！连接失败！ 请重试');
+                            showError('#information_details_page','网络错误！连接失败！ 请重试!');
                         });                        
                     }
                 } else {
@@ -88,7 +88,7 @@
                         mInformationDetails.push(shop);
                         localStorage.InformationDetails = JSON.stringify(mInformationDetails);
                     }, function(jqXHR, textStatus, errorThrown){
-                        alert('网络错误！连接失败！ 请重试');
+                        showError('#information_details_page','网络错误！连接失败！ 请重试!');
                     });
                 }
                 $('#information_details_content').on('click', '#refresh_information_details', function() {
@@ -105,7 +105,7 @@
                         }
                         localStorage.InformationDetails = JSON.stringify(mInformationDetails);
                     }, function(jqXHR, textStatus, errorThrown){
-                        alert('网络错误！连接失败！ 请重试');
+                      showError('#information_details_page','网络错误！连接失败！ 请重试!');  
                     });
                 });                
             }

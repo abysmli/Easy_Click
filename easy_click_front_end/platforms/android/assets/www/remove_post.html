@@ -118,7 +118,7 @@
                     });
                 },function(jqXHR, textStatus, errorThrown){
                     $('.remove_post_floatingBarsG').hide();
-                    alert('网络错误！连接失败！ 请重试');
+                    showError('#remove_post_page','网络错误！连接失败！ 请重试!');
                 });
                 $('#remove_post_list').on('click', '.information_list a', function(){
                     $('.remove_post_floatingBarsG').show();
@@ -218,7 +218,7 @@
                         $('.remove_post_block').show();
                         $('.remove_post_floatingBarsG').hide();
                     },function(jqXHR, textStatus, errorThrown){
-                        alert('网络错误！连接失败！ 请重试');
+                        showError('#remove_post_page','网络错误！连接失败！ 请重试!');
                     });
                 });
                 $('.remove_post_cancel_button').click(function(){
@@ -235,7 +235,7 @@
                             showSuccess('#remove_post_page',result.message);
                         } 
                     },function(jqXHR, textStatus, errorThrown){
-                        alert('网络错误！连接失败！ 请重试!');
+                        showError('#remove_post_page','网络错误！连接失败！ 请重试!');
                     });
                 });
             });

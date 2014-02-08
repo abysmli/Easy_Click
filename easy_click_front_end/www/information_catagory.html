@@ -156,7 +156,7 @@
                     }
                 } else if(sessionStorage.index=="move_house") {
                     $('#key_selector').html('').append(
-                        "<option value='' selected='selected'>全部分类</option>"
+                        "<option value='' selected='selected'>全部分类</option>"+
                         "<option value='大小搬家'>大小搬家</option>"+
                         "<option value='用车 包车 货运'>用车 包车 货运</option>"+
                         "<option value='深夜用车 24小时用车'>深夜用车 24小时用车</option>"+
@@ -304,48 +304,6 @@
                         $('.information_catagory_floatingBarsG').hide();
                         mSkip=15;
                     });
-                });
-                $('#search_bar').submit(function(e){
-                    mKey=$('#search_input').val();
-                    $('#information_catagory').html("");
-                    $('.information_catagory_floatingBarsG').show();
-                    var data = {
-                        index: sessionStorage.index,
-                        tags: mKey,
-                        skip: 0,
-                        limit: 15
-                    };
-                    sendAjax('/app_information_catagory', data, function(shops){
-                        $.each(shops, insertInformationCatagory);
-                        $('.information_catagory_floatingBarsG').hide();
-                        mSkip=15;
-                    },function(jqXHR, textStatus, errorThrown){
-                        $('.information_catagory_floatingBarsG').hide();
-                        mSkip=15;
-                    });
-                    return false;
-                    e.preventDefault();
-                });
-                $('#search_bar').change(function(){
-                    if($('#search_input').val()=="") {
-                        mKey="";
-                        $('#information_catagory').html("");
-                        $('.information_catagory_floatingBarsG').show();
-                        var data = {
-                            index: sessionStorage.index,
-                            tags: mKey,
-                            skip: 0,
-                            limit: 15
-                        };
-                        sendAjax('/app_information_catagory', data, function(shops){
-                            $.each(shops, insertInformationCatagory);
-                            $('.information_catagory_floatingBarsG').hide();
-                            mSkip=15;
-                        },function(jqXHR, textStatus, errorThrown){
-                            $('.information_catagory_floatingBarsG').hide();
-                            mSkip=15;
-                        });
-                    }
                 });
             }
             
