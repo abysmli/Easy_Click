@@ -60,7 +60,7 @@
                             mNewsDetails.push(news);
                             localStorage.NewsDetails = JSON.stringify(mNewsDetails);
                         }, function(jqXHR, textStatus, errorThrown){
-                            alert('网络错误！连接失败！ 请重试');
+                            showError('#news_details_page','网络错误！连接失败！ 请重试!');
                         });
                     }
                 } else {
@@ -72,7 +72,7 @@
                         mNewsDetails.push(news);
                         localStorage.NewsDetails = JSON.stringify(mNewsDetails);
                     },function(jqXHR, textStatus, errorThrown){
-                        alert('网络错误！连接失败！ 请重试');
+                        showError('#news_details_page','网络错误！连接失败！ 请重试!');
                         $('.news_details_floatingBarsG').fadeOut('fast');
                     });
                 }
@@ -90,7 +90,7 @@
                         }
                         localStorage.NewsDetails = JSON.stringify(mNewsDetails);
                     }, function(jqXHR, textStatus, errorThrown){
-                        alert('网络错误！连接失败！ 请重试');
+                        showError('#news_details_page','网络错误！连接失败！ 请重试!');
                     });
                 });
             });
