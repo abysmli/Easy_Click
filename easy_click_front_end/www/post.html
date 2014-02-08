@@ -102,7 +102,7 @@
                         showError('#post_page',result.message);
                     }
                 },function(jqXHR, textStatus, errorThrown){
-                    alert('网络错误！连接失败！ 请重试!');
+                    showError('#post_page','网络错误！连接失败！ 请重试!');
                     $('.post_floatingBarsG').fadeOut('fast');
                 });
             });

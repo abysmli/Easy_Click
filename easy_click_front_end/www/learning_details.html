@@ -97,7 +97,7 @@
                     $('#learning_details_content').fadeIn('fast');
                     $('.learning_details_floatingBarsG').fadeOut('fast');
                 },function(jqXHR, textStatus, errorThrown){
-                    alert('网络错误！连接失败！ 请重试');
+                    showError('#learning_details_page','网络错误！连接失败！ 请重试!');
                     $('.learning_details_floatingBarsG').fadeOut('fast');
                 });
             });
