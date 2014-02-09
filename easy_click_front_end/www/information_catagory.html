@@ -39,11 +39,12 @@
                 <div class="ui-field-contain">
                     <select id="key_selector" data-mini="true">
                         <option value="" selected="selected">分类查找</option>
-                        <option value="全部分类">全部分类</option>
-                        <option value="家具">家具</option>
-                        <option value="电器">电器</option>
-                        <option value="服装">服装</option>
-                        <option value="新品">新品</option>
+                        <option value="">全部分类</option>
+                        <option value="A">数码 电器 手机 电脑 网络</option>
+                        <option value="B">生活 交通 家具 日用 百货</option>
+                        <option value="C">服装 鞋包 配饰 手表 小物 </option>
+                        <option value="D">母婴 护理 彩妆 运动 户外</option>
+                        <option value="E">美食 特产 文化 书籍 娱乐</option>
                     </select>
                 </div>
             </form>
@@ -93,16 +94,17 @@
                 if(sessionStorage.index=="find_job"){
                     $('#key_selector').html('').append(
                        "<option value='' selected='selected'>全部分类</option>"+
-                       "<option value='中华料理 居酒屋 饮食店相关'>中华料理 居酒屋 饮食店相关</option>"+
-                       "<option value='健康整体 治疗 足裹 オイル 美妆类'>健康整体 治疗 足裹 オイル 美妆类</option>"+
-                       "<option value='清店 アロマ エステ 其它'>清店 アロマ エステ 其它</option>"+
-                       "<option value='スナック クラブ パブ 其它'>スナック クラブ パブ 其它</option>"+
-                       "<option value='清扫 司机 工厂 工地 工事类'>清扫 司机 工厂 工地 工事类</option>"+
-                       "<option value='会社 营业 事务所 办公室类'>会社 营业 事务所 办公室类</option>"+
-                       "<option value='计算机 网络 电子技术类'>计算机 网络 电子技术类</option>"+
-                       "<option value='可就职 可办签证'>可就职 可办签证</option>"+
-                       "<option value='找学员 培训'>找学员 培训</option>"+
-                       "<option value='其它'>其它</option>"
+                       "<option value='A'>料理店 居酒屋 饮食类</option>"+
+                       "<option value='B'>整体 足裹 オイル 美容美发</option>"+
+                       "<option value='C'>清店 アロマ エステ 其它</option>"+
+                       "<option value='D'>スナック クラブ パブ 其它</option>"+
+                       "<option value='E'>清扫 工厂 工地 工事类</option>"+
+                       "<option value='F'>会社 营业 事务所 办公室类</option>"+
+                       "<option value='G'>计算机 网络 电子技术类</option>"+
+                       "<option value='H'>驾驶 运送</option>"+
+                       "<option value='I'>可就职 可办签证</option>"+
+                       "<option value='J'>招学员 培训</option>"+
+                       "<option value='Z'>其它</option>"
                        );
                        
                     if(!localStorage.informationFindJobCatagory) {
@@ -128,11 +130,11 @@
                 } else if(sessionStorage.index=="find_house") {
                     $('#key_selector').html('').append(
                         "<option value='' selected='selected'>全部分类</option>"+
-                        "<option value='寮'>寮</option>"+
-                        "<option value='アパート'>アパート</option>"+
-                        "<option value='マンション'>マンション</option>"+
-                        "<option value='売却物件'>売却物件</option>"+
-                        "<option value='其它'>其它</option>"
+                        "<option value='A'>寮</option>"+
+                        "<option value='B'>アパート</option>"+
+                        "<option value='C'>マンション</option>"+
+                        "<option value='D'>売却物件</option>"+
+                        "<option value='E'>其它</option>"
                     );
                     if(!localStorage.informationFindHouseCatagory) {
                         var data =  {
@@ -157,14 +159,13 @@
                 } else if(sessionStorage.index=="move_house") {
                     $('#key_selector').html('').append(
                         "<option value='' selected='selected'>全部分类</option>"+
-                        "<option value='大小搬家'>大小搬家</option>"+
-                        "<option value='用车 包车 货运'>用车 包车 货运</option>"+
-                        "<option value='深夜用车 24小时用车'>深夜用车 24小时用车</option>"+
-                        "<option value='不用品处理 回收 新、中古贩卖'>不用品处理 回收 新、中古贩卖</option>"+
-                        "<option value='空调拆装 维修 充ガス 贩卖'>空调拆装 维修 充ガス 贩卖</option>"+
-                        "<option value='装修解体 地陪导游 翻译 其它业务'>装修解体 地陪导游 翻译 其它业务</option>"
+                        "<option value='A'>大小搬家</option>"+
+                        "<option value='B'>用车 包车 货运</option>"+
+                        "<option value='C'>深夜用车 24小时用车</option>"+
+                        "<option value='D'>回收处理 新、中古贩卖</option>"+
+                        "<option value='E'>空调拆装 维修 充ガス 贩卖</option>"+
+                        "<option value='F'>工事 地陪导游 翻译 其它</option>"
                     );
-
                     if(!localStorage.informationMoveHouseCatagory) {
                         var data =  {
                             index: sessionStorage.index,
@@ -188,19 +189,19 @@
                 } else if(sessionStorage.index=="business") {
                     $('#key_selector').html('').append(
                         "<option value='' selected='selected'>全部分类</option>"+
-                        "<option value='中国餐饮 KTV 美容美发 生活娱乐'>中国餐饮 KTV 美容美发 生活娱乐</option>"+
-                        "<option value='各种店铺转让'>各种店铺转让</option>"+
-                        "<option value='店铺用品相关'>店铺用品相关</option>"+
-                        "<option value='广告印刷 看板网页 菜单制作等'>广告印刷 看板网页 菜单制作等</option>"+
-                        "<option value='各种内外工事'>各种内外工事</option>"+
-                        "<option value='婚介交友'>婚介交友</option>"+
-                        "<option value='不动产'>不动产</option>"+
-                        "<option value='保证人'>保证人</option>"+
-                        "<option value='中国物产 中国商城 特价商品'>中国物产 中国商城 特价商品</option>"+
-                        "<option value='电脑 网络 手机 点卡 电话卡 电子器材'>电脑 网络 手机 点卡 电话卡 电子器材</option>"+
-                        "<option value='医疗保健 风水开运 教会'>医疗保健 风水开运 教会</option>"+
-                        "<option value='语言学校 驾校 各种学校'></option>"+
-                        "<option value='其它'></option>"
+                        "<option value='A'>餐饮 KTV 美容美发 生活娱乐</option>"+
+                        "<option value='B'>各种店铺转让</option>"+
+                        "<option value='C'>店铺用品相关</option>"+
+                        "<option value='D'>广告印刷 看板网页 菜单制作</option>"+
+                        "<option value='E'>各种内外工事</option>"+
+                        "<option value='F'>婚介交友</option>"+
+                        "<option value='G'>不动产</option>"+
+                        "<option value='H'>保证人</option>"+
+                        "<option value='I'>中国物产 中国商城 特价商品</option>"+
+                        "<option value='J'>电脑网络 手机点卡 电子器材</option>"+
+                        "<option value='K'>医疗保健 风水开运 教会</option>"+
+                        "<option value='L'>学校 驾校</option>"+
+                        "<option value='Z'>其它</option>"
                     );
                     if(!localStorage.informationBusinessCatagory) {
                         var data =  {
@@ -225,10 +226,10 @@
                 } else if(sessionStorage.index=="ticket") {
                     $('#key_selector').html('').append(
                         "<option value='' selected='selected'>全部分类</option>"+
-                        "<option value='各地机票'>各地机票</option>"+
-                        "<option value='紧急出票 24小时出票'>紧急出票 24小时出票</option>"+
-                        "<option value='旅行社业务 地接业务'>旅行社业务 地接业务</option>"+
-                        "<option value='代办签证'>代办签证</option>"
+                        "<option value='A'>各地机票</option>"+
+                        "<option value='B'>紧急出票 24小时出票</option>"+
+                        "<option value='C'>旅行社业务 地接业务</option>"+
+                        "<option value='D'>代办签证</option>"
                     );
                     if(!localStorage.informationTicketCatagory) {
                         var data =  {
@@ -254,9 +255,9 @@
                     if(!localStorage.informationLawCatagory) {
                         $('#key_selector').html('').append(
                         "<option value='' selected='selected'>全部分类</option>"+
-                        "<option value='法律业务'>法律业务</option>"+
-                        "<option value='会计业务'>会计业务</option>"+
-                        "<option value='其它'>其它</option"
+                        "<option value='A'>法律业务</option>"+
+                        "<option value='B'>会计业务</option>"+
+                        "<option value='C'>其它业务</option"
                     );
                         var data =  {
                             index: sessionStorage.index,
