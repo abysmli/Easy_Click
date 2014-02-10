@@ -38,9 +38,13 @@
             <form>
                 <div class="ui-field-contain">
                     <select id="key_selector" data-mini="true">
-                        <option value="" selected="selected">全部</option>
-                        <option value="吸尘器">吸尘器</option>
-                        <option value="手机">手机</option>
+                        <option value="" selected="selected">分类查找</option>
+                        <option value="">全部分类</option>
+                        <option value="A">数码 手机 电器 电脑 网络</option>
+                        <option value="B">生活 交通 家具 日用 百货</option>
+                        <option value="C">服装 鞋包 配饰 手表 小物 </option>
+                        <option value="D">母婴 护理 彩妆 运动 户外</option>
+                        <option value="E">美食 特产 文化 书籍 娱乐</option>
                     </select>
                 </div>
             </form>
@@ -121,7 +125,7 @@
                             $('.userpostview_floatingBarsG').fadeOut('fast');
                             mSkip=15;
                         } else {
-                            $('#information_catagory').html("<p>该分类暂无内容</p>");
+                            $('#post_list').html("<p>该分类暂无内容</p>");
                             $('.information_catagory_floatingBarsG').hide();
                         }
                     },function(jqXHR, textStatus, errorThrown){

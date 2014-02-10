@@ -1,11 +1,12 @@
 /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/bin/classes.dex : \
-/home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/bin/classes/com/jdyd1688/easy_click/BuildConfig.class \
-/home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/bin/classes/com/jdyd1688/easy_click/R$drawable.class \
-/home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/bin/classes/com/jdyd1688/easy_click/R$string.class \
-/home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/bin/classes/com/jdyd1688/easy_click/R$attr.class \
 /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/bin/classes/com/jdyd1688/easy_click/EasyClick.class \
-/home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/bin/classes/com/jdyd1688/easy_click/R.class \
-/home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/bin/classes/com/jdyd1688/easy_click/R$xml.class \
+/home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/bin/classes/com/jdyd1688/easyclick/BuildConfig.class \
+/home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/bin/classes/com/jdyd1688/easyclick/R$drawable.class \
+/home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/bin/classes/com/jdyd1688/easyclick/R$string.class \
+/home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/bin/classes/com/jdyd1688/easyclick/R$attr.class \
+/home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/bin/classes/com/jdyd1688/easyclick/EasyClick.class \
+/home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/bin/classes/com/jdyd1688/easyclick/R.class \
+/home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/bin/classes/com/jdyd1688/easyclick/R$xml.class \
 /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/bin/classes/org/apache/cordova/device/Device.class \
 /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/bin/classes/org/apache/cordova/inappbrowser/InAppBrowser$5$5.class \
 /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/bin/classes/org/apache/cordova/inappbrowser/InAppBrowser$2.class \

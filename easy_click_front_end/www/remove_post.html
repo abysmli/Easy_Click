@@ -107,11 +107,12 @@
                             classstring = "ui-block-c";
                         }
                         $('#remove_post_list').append("<div class='"+classstring+"'>"+
-                            "<div class='information_list' id='"+post.uid+"'>"+
-                                "<a href='#' data-transition='slide'>"+
+                            "<div class='userpost_list' id='"+post.uid+"'>"+
+                                "<a href='userpostview_details.html' data-transition='slide'>"+
                                     "<img alt='img' src='"+imgstring+"'></img>"+
-                                    "<p>"+post.prevtext+"</p>"+
-                                    "<pre>"+post.prevtext2+"</pre>"+
+                                    "<div>"+
+                                        "<p>"+post.prevtext+"</p>"+
+                                    "</div>"+
                                 "</a>"+
                             "</div>"+
                         "</div>");

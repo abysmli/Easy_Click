@@ -21,7 +21,6 @@
 /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/assets/www/information.html \
 /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/assets/www/icon.png \
 /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/assets/www/about.html \
-/home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/assets/www/information_catagory_backup.html \
 /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/assets/www/post.html \
 /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/assets/www/config.xml \
 /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/assets/www/test.html \

@@ -1,5 +1,5 @@
 # view AndroidManifest.xml #generated:6
--keep class com.jdyd1688.easy_click.EasyClick { <init>(...); }
+-keep class com.jdyd1688.easyclick.EasyClick { <init>(...); }
 
 # view AndroidManifest.xml #generated:12
 -keep class de.appplant.cordova.plugin.localnotification.Receiver { <init>(...); }
