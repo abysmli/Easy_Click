@@ -84,12 +84,14 @@ Post.getAll = function getAll(db, mTags, mSkip, mLimit, callback) {
       if (err) {
         callback(err, null);
       }
-      var posts = [];
-      docs.forEach(function(doc, index) {
-        var post = new postview(doc.username, doc.title, doc.date, doc.prevtext, doc.prevtext2, doc.previmg, doc._id);
-        posts.push(post);
-      });
-      callback(null, posts);
+      if(docs!=null) {
+        var posts = [];
+        docs.forEach(function(doc, index) {
+          var post = new postview(doc.username, doc.title, doc.date, doc.prevtext, doc.prevtext2, doc.previmg, doc._id);
+          posts.push(post);
+        });
+        callback(null, posts);
+      }
     });
   });
 };
@@ -106,8 +108,10 @@ Post.getbyUid = function getbyUid(db, uid, callback) {
       if (err) {
         callback(err, null);
       }
-      var post = new Post(doc.username, doc.title, doc.content, doc.location, doc.contact, doc.price, doc.tags, doc.prevtext, doc.prevtext2, doc.previmg, doc.img, doc.date, doc._id);
-      callback(null, post);
+      if(doc!=null) {
+        var post = new Post(doc.username, doc.title, doc.content, doc.location, doc.contact, doc.price, doc.tags, doc.prevtext, doc.prevtext2, doc.previmg, doc.img, doc.date, doc._id);
+        callback(null, post);
+      }
     });
   });
 };
@@ -144,12 +148,14 @@ Post.getbyUsername = function getbyUsername(db, username, callback) {
       if (err) {
         callback(err, null);
       }
-      var posts = [];
-      docs.forEach(function(doc, index) {
-        var post = new postview(doc.username, doc.title, doc.date, doc.prevtext, doc.prevtext2, doc.previmg, doc._id);
-        posts.push(post);
-      });
-      callback(null, posts);
+      if(docs!=null) {
+        var posts = [];
+        docs.forEach(function(doc, index) {
+          var post = new postview(doc.username, doc.title, doc.date, doc.prevtext, doc.prevtext2, doc.previmg, doc._id);
+          posts.push(post);
+        });
+        callback(null, posts);
+      }
     });
   });
 };

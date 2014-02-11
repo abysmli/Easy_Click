@@ -71,12 +71,14 @@ News.getAll = function getAll(db, mSkip, mLimit, callback) {
       if (err) {
         callback(err, null);
       }
-      var news_buffer = [];
-      docs.forEach(function(doc, index) {
-        var news = new newsview(doc.title, doc.sub_title, doc.newsdate, doc.previmg, doc.date, doc._id);
-        news_buffer.push(news);
-      });
-      callback(null, news_buffer);
+      if(docs!=null) {
+        var news_buffer = [];
+        docs.forEach(function(doc, index) {
+          var news = new newsview(doc.title, doc.sub_title, doc.newsdate, doc.previmg, doc.date, doc._id);
+          news_buffer.push(news);
+        });
+        callback(null, news_buffer);
+      }
     });
   });
 };
@@ -93,8 +95,10 @@ News.getbyUid = function getbyUid(db, uid, callback) {
       if (err) {
         callback(err, null);
       }
-      var news_buffer = new News(doc.index, doc.title, doc.sub_title, doc.source, doc.sourceurl, doc.newsdate, doc.content, doc.previmg, doc.img, doc.date, doc._id);
-      callback(null, news_buffer);
+      if(doc!=null) {
+        var news_buffer = new News(doc.index, doc.title, doc.sub_title, doc.source, doc.sourceurl, doc.newsdate, doc.content, doc.previmg, doc.img, doc.date, doc._id);
+        callback(null, news_buffer);
+      }
     });
   });
 };

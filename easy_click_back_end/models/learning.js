@@ -74,12 +74,14 @@ Learn.getAll = function getAll(db, callback) {
       if (err) {
         callback(err, null);
       }
-      var learns = [];
-      docs.forEach(function(doc, index) {
-        var learn = new Learnlist(doc.index, doc.title, doc._id);
-        learns.push(learn);
-      });
-      callback(null, learns);
+      if(docs!=null) {
+        var learns = [];
+        docs.forEach(function(doc, index) {
+          var learn = new Learnlist(doc.index, doc.title, doc._id);
+          learns.push(learn);
+        });
+        callback(null, learns);
+      }
     });
   });
 };
@@ -99,12 +101,14 @@ Learn.getbyIndex = function getbyIndex(db, index, callback) {
       if (err) {
         callback(err, null);
       }
-      var learns = [];
-      docs.forEach(function(doc, index) {
-        var learn = new Learnlist(doc.index, doc.title, doc._id);
-        learns.push(learn);
-      });
-      callback(null, learns);
+      if(docs!=null) {
+        var learns = [];
+        docs.forEach(function(doc, index) {
+          var learn = new Learnlist(doc.index, doc.title, doc._id);
+          learns.push(learn);
+        });
+        callback(null, learns);
+      }
     });
   });
 };
@@ -121,8 +125,10 @@ Learn.getbyUid = function getbyUid(db, uid, callback) {
       if (err) {
         callback(err, null);
       }
-      var learn = new Learn(doc.index, doc.title, doc.content, doc.img, doc.date);
-      callback(null, learn);
+      if(doc!=null) {
+        var learn = new Learn(doc.index, doc.title, doc.content, doc.img, doc.date);
+        callback(null, learn);
+      }
     });
   });
 };

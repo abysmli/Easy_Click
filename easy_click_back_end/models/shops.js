@@ -93,12 +93,14 @@ Shops.getAll = function getAll(db, callback) {
       if (err) {
         callback(err, null);
       }
-      var shops_buffer = [];
-      docs.forEach(function(doc, index) {
-        var shop = new shopview(doc.title, doc.username, doc.expire, doc.date, doc.prevtext, doc.prevtext2, doc.previmg, doc._id);
-        shops_buffer.push(shop);
-      });
-      callback(null, shops_buffer);
+      if(docs!=null) {
+        var shops_buffer = [];
+        docs.forEach(function(doc, index) {
+          var shop = new shopview(doc.title, doc.username, doc.expire, doc.date, doc.prevtext, doc.prevtext2, doc.previmg, doc._id);
+          shops_buffer.push(shop);
+        });
+        callback(null, shops_buffer);
+      }
     });
   });
 };
@@ -118,12 +120,14 @@ Shops.getbyIndex = function getbyIndex(db, index, callback) {
       if (err) {
         callback(err, null);
       }
-      var shops = [];
-      docs.forEach(function(doc, index) {
-        var shop = new shopview(doc.title, doc.username, doc.expire, doc.date, doc.prevtext, doc.prevtext2, doc.previmg, doc._id);
-        shops.push(shop);
-      });
-      callback(null, shops);
+      if(docs!=null) {
+        var shops = [];
+        docs.forEach(function(doc, index) {
+          var shop = new shopview(doc.title, doc.username, doc.expire, doc.date, doc.prevtext, doc.prevtext2, doc.previmg, doc._id);
+          shops.push(shop);
+        });
+        callback(null, shops);
+      }
     });
   });
 };
@@ -159,14 +163,16 @@ Shops.getList_expire = function getList_expire(db, mIndex, mTags, mSkip, mLimit,
       if (err) {
         callback(err, null);
       }
-      var shops = [];
-      docs.forEach(function(doc, index) {
-        var shop = new shopview(doc.title, doc.username, doc.expire, doc.date, doc.prevtext, doc.prevtext2, doc.previmg, doc._id);
-        if (utils.checkExpire(shop.expire)) {
-          shops.push(shop);
-        }
-      });
-      callback(null, shops);
+      if(docs!=null) {
+        var shops = [];
+        docs.forEach(function(doc, index) {
+          var shop = new shopview(doc.title, doc.username, doc.expire, doc.date, doc.prevtext, doc.prevtext2, doc.previmg, doc._id);
+          if (utils.checkExpire(shop.expire)) {
+            shops.push(shop);
+          }
+        });
+        callback(null, shops);
+      }
     });
   });
 };
@@ -183,8 +189,10 @@ Shops.getbyUid = function getbyUid(db, uid, callback) {
       if (err) {
         callback(err, null);
       }
-      var shop = new Shops(doc.username, doc.index, doc.title, doc.instruction, doc.name, doc.brief, doc.comment, doc.telephone, doc.email, doc.url, doc.address, doc.path, doc.expire, doc.tags, doc.prevtext,  doc.prevtext2, doc.previmg, doc.img, doc.date, doc._id);
-      callback(null, shop);
+      if(doc!=null) {
+        var shop = new Shops(doc.username, doc.index, doc.title, doc.instruction, doc.name, doc.brief, doc.comment, doc.telephone, doc.email, doc.url, doc.address, doc.path, doc.expire, doc.tags, doc.prevtext,  doc.prevtext2, doc.previmg, doc.img, doc.date, doc._id);
+        callback(null, shop);
+      }
     });
   });
 };
