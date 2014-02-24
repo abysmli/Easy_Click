@@ -61,12 +61,14 @@ Shops_buffer.getAll = function getAll(db, callback) {
       if (err) {
         callback(err, null);
       }
-      var shops_buffer = [];
-      docs.forEach(function(doc, index) {
-        var shop = new shopview(doc.title, doc.user, doc.date, doc.handled, doc._id);
-        shops_buffer.push(shop);
-      });
-      callback(null, shops_buffer);
+      if(docs!=null) {
+        var shops_buffer = [];
+        docs.forEach(function(doc, index) {
+          var shop = new shopview(doc.title, doc.user, doc.date, doc.handled, doc._id);
+          shops_buffer.push(shop);
+        });
+        callback(null, shops_buffer);
+      }
     });
   });
 };
@@ -83,8 +85,10 @@ Shops_buffer.getbyUid = function getbyUid(db, uid, callback) {
       if (err) {
         callback(err, null);
       }
-      var shop = new Shops_buffer(doc.title, doc.content, doc.img, doc.user, doc.date, doc.handled);
-      callback(null, shop);
+      if(docs!=null) {
+        var shop = new Shops_buffer(doc.title, doc.content, doc.img, doc.user, doc.date, doc.handled);
+        callback(null, shop);
+      }
     });
   });
 };

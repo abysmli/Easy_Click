@@ -57,12 +57,14 @@ Message.getbyUsername = function getbyUsername(db, username, callback) {
       if (err) {
         callback(err, null);
       }
-      var messages = [];
-      docs.forEach(function(doc, index) {
-        var message = new Message(doc.username, doc.sender, doc.message, doc.readed, doc.date, doc._id);
-        messages.push(message);
-      });
-      callback(null, messages);
+      if(docs!=null) {
+        var messages = [];
+        docs.forEach(function(doc, index) {
+          var message = new Message(doc.username, doc.sender, doc.message, doc.readed, doc.date, doc._id);
+          messages.push(message);
+        });
+        callback(null, messages);
+      }
     });
   });
 };

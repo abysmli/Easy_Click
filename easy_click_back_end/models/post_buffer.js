@@ -59,12 +59,14 @@ Post_buffer.getAll = function getAll(db, callback) {
       if (err) {
         callback(err, null);
       }
-      var posts = [];
-      docs.forEach(function(doc, index) {
-        var post = new postview(doc.username, doc.location, doc.date, doc.handled, doc.img, doc._id);
-        posts.push(post);
-      });
-      callback(null, posts);
+      if(docs!=null) {
+        var posts = [];
+        docs.forEach(function(doc, index) {
+          var post = new postview(doc.username, doc.location, doc.date, doc.handled, doc.img, doc._id);
+          posts.push(post);
+        });
+        callback(null, posts);
+      }
     });
   });
 };
@@ -81,8 +83,10 @@ Post_buffer.getbyUid = function getbyUid(db, uid, callback) {
       if (err) {
         callback(err, null);
       }
-      var post = new Post_buffer(doc.username, doc.location, doc.content, doc.contact, doc.price, doc.handled, doc.img, doc.date);
-      callback(null, post);
+      if(docs!=null) {
+        var post = new Post_buffer(doc.username, doc.location, doc.content, doc.contact, doc.price, doc.handled, doc.img, doc.date);
+        callback(null, post);
+      }
     });
   });
 };
