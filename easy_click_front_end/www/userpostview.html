@@ -72,14 +72,21 @@
             <div class="f_circleG" id="frotateG_08"></div>
         </div>
         <script>
-            var listSelector = "#post_list",
-                lastItemSelector = listSelector + " > div:last-child",
-                pullUpflag=false;
-                mSkip=15,
-                mLimit=9,
-                mKey=$('#search_input').val();
-
-            $(document).one("pageinit","#user_post_view_page", function( event ) {
+                $(document).one("pageinit","#user_post_view_page", function( event ) {
+                $('#key_selector').html('').append(
+                    "<option value='' selected='selected'>全部分类</option>"+
+                    "<option value='A'>数码 手机 电器 电脑 网络</option>"+
+                    "<option value='B'>生活 交通 家具 日用 百货</option>"+
+                    "<option value='C'>服装 鞋包 配饰 手表 小物 </option>"+
+                    "<option value='D'>母婴 护理 彩妆 运动 户外</option>"+
+                    "<option value='E'>美食 特产 文化 书籍 娱乐</option>"
+                );
+                var listSelector = "#post_list",
+                    lastItemSelector = listSelector + " > div:last-child",
+                    pullUpflag=false;
+                    mSkip=15,
+                    mLimit=9,
+                    mKey=$('#search_input').val();
                 $("#user_post_view_page .iscroll-scroller").css("padding-top","5.6em");
                 $(".iscroll-wrapper", this).bind({
                     iscroll_onpulldown : onPullDown,
@@ -113,7 +120,7 @@
                 $('#key_selector').change(function(){
                     mKey=$('#key_selector').val();
                     $('#post_list').html("");
-                    $('.userpostview_floatingBarsG').fadeOut('fast');
+                    $('.userpostview_floatingBarsG').show();
                     var data = {
                         tags: mKey,
                         skip: 0,
@@ -122,14 +129,16 @@
                     sendAjax('/app_user_post_view', data, function(posts){
                         if(posts!="") {
                             $.each(posts, insertUserPostCatagory);
-                            $('.userpostview_floatingBarsG').fadeOut('fast');
+                            $('.userpostview_floatingBarsG').hide();
                             mSkip=15;
+                            $(".iscroll-wrapper").iscrollview("refresh").iscrollview("scrollTo", 0, 50, false);
                         } else {
                             $('#post_list').html("<p>该分类暂无内容</p>");
-                            $('.information_catagory_floatingBarsG').hide();
+                            $('.userpostview_floatingBarsG').hide();
                         }
                     },function(jqXHR, textStatus, errorThrown){
                         $('.userpostview_floatingBarsG').fadeOut('fast');
+                        showError('#user_post_view_page','网络错误！连接失败！ 请重试!');
                         mSkip=15;
                     });
                 });
@@ -162,8 +171,11 @@
             }
 
             function gotPullDownData(event, mIscroll) {
+                if(mKey==undefined) {
+                    mKey="";
+                }
                 var data =  {
-                    tags: "",
+                    tags: mKey,
                     skip: 0,
                     limit: 15
                 };
@@ -180,6 +192,9 @@
 
             function gotPullUpData(event, mIscroll) {
                 if(!pullUpflag) {
+                    if(mKey==undefined) {
+                        mKey="";
+                    }
                     pullUpflag=true;
                     var data = {
                         tags: mKey,
