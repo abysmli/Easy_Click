@@ -295,12 +295,12 @@
                         if(shops!="") {
                             $.each(shops, insertInformationCatagory);
                             $('.information_catagory_floatingBarsG').hide();
-                            mSkip=15;
-                            $(".iscroll-wrapper").iscrollview("refresh").iscrollview("scrollTo", 0, 20, 200, false);
                         } else {
                             $('#information_catagory').html("<p>该分类暂无内容</p>");
                             $('.information_catagory_floatingBarsG').hide();
                         }
+                        mSkip=15;
+                        $(".iscroll-wrapper").iscrollview("refresh").iscrollview("scrollTo", 0, 20, 200, false);
                     },function(jqXHR, textStatus, errorThrown){
                         $('.information_catagory_floatingBarsG').hide();
                         showError('#information_catagory_page','网络错误！连接失败！ 请重试!');
@@ -345,20 +345,26 @@
                     limit: 15
                 };
                 sendAjax('/app_information_catagory', data, function(shops){
-                    $('#information_catagory').html("");
-                    $.each(shops, insertInformationCatagory);
-                    if(sessionStorage.index=="find_job"){
-                        localStorage.informationFindJobCatagory = JSON.stringify(shops);
-                    } else if(sessionStorage.index=="find_house") {
-                        localStorage.informationFindHouseCatagory = JSON.stringify(shops);
-                    } else if(sessionStorage.index=="move_house") {
-                        localStorage.informationMoveHouseCatagory = JSON.stringify(shops);
-                    } else if(sessionStorage.index=="business") {
-                        localStorage.informationBusinessCatagory = JSON.stringify(shops);
-                    } else if(sessionStorage.index=="ticket") {
-                        localStorage.informationTicketCatagory = JSON.stringify(shops);
+                    if(shops!="") {
+                        $('#information_catagory').html("");
+                        $.each(shops, insertInformationCatagory);
+                        if(mKey=="") {
+                            if(sessionStorage.index=="find_job"){
+                                localStorage.informationFindJobCatagory = JSON.stringify(shops);
+                            } else if(sessionStorage.index=="find_house") {
+                                localStorage.informationFindHouseCatagory = JSON.stringify(shops);
+                            } else if(sessionStorage.index=="move_house") {
+                                localStorage.informationMoveHouseCatagory = JSON.stringify(shops);
+                            } else if(sessionStorage.index=="business") {
+                                localStorage.informationBusinessCatagory = JSON.stringify(shops);
+                            } else if(sessionStorage.index=="ticket") {
+                                localStorage.informationTicketCatagory = JSON.stringify(shops);
+                            } else {
+                                localStorage.informationLawCatagory = JSON.stringify(shops);
+                            }
+                        }
                     } else {
-                        localStorage.informationLawCatagory = JSON.stringify(shops);
+                        $('#information_catagory').html("<p>该分类暂无内容</p>");
                     }
                     mIscroll.iscrollview.refresh();
                     mSkip=15;

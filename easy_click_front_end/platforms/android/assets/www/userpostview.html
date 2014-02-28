@@ -130,12 +130,12 @@
                         if(posts!="") {
                             $.each(posts, insertUserPostCatagory);
                             $('.userpostview_floatingBarsG').hide();
-                            mSkip=15;
-                            $(".iscroll-wrapper").iscrollview("refresh").iscrollview("scrollTo", 0, 50, false);
                         } else {
                             $('#post_list').html("<p>该分类暂无内容</p>");
                             $('.userpostview_floatingBarsG').hide();
                         }
+                        mSkip=15;
+                        $(".iscroll-wrapper").iscrollview("refresh").iscrollview("scrollTo", 0, 50, false);
                     },function(jqXHR, textStatus, errorThrown){
                         $('.userpostview_floatingBarsG').fadeOut('fast');
                         showError('#user_post_view_page','网络错误！连接失败！ 请重试!');
@@ -180,9 +180,16 @@
                     limit: 15
                 };
                 sendAjax('/app_user_post_view', data, function(posts){
-                    $('#post_list').html("");
-                    $.each(posts, insertUserPostCatagory);
-                    localStorage.UserPostCatagory = JSON.stringify(posts);
+                    if(posts!="") {
+                        $('#post_list').html("");
+                        $.each(posts, insertUserPostCatagory);
+                        if(mKey=="")
+                        {
+                            localStorage.UserPostCatagory = JSON.stringify(posts);
+                        }
+                    } else {
+                        $('#post_list').html("<p>该分类暂无内容</p>");
+                    }
                     mIscroll.iscrollview.refresh();
                     mSkip=15;
                 }, function(jqXHR, textStatus, errorThrown){
