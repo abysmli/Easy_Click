@@ -211,7 +211,7 @@ body  * {
 	position: absolute;
 	text-shadow: none;
 	margin: 0;
-	font-size: 0.65em;
+	font-size: 3.3vw;
 	color: #ffffff;
 	top: 1.7%;
 	left: 4%;
@@ -227,7 +227,7 @@ body  * {
 	text-shadow: none;
 	letter-spacing: 0;
 	margin: 0;
-	font-size: 0.65em;
+	font-size: 3.3vw;
 	color: #424242;
 	top: 19%;
 	left: 4%;
