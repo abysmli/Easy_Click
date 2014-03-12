@@ -83,7 +83,7 @@
         <script>
             $(document).one("pageinit","#remove_post_page", function( event ) {
                 $('#remove_post_list').on('vmousedown','a',function(){
-                    $(this).parent('div.information_list').css({opacity:0.5}).animate({opacity:1},200);
+                    $(this).parent('div.userpost_list').css({opacity:0.5}).animate({opacity:1},200);
                 });
                 $('.remove_post_button_block').on('vmousedown','div',function(){
                     $(this).css({opacity:0.5}).animate({opacity:1},200);
@@ -107,7 +107,7 @@
                             classstring = "ui-block-c";
                         }
                         $('#remove_post_list').append("<div class='"+classstring+"'>"+
-                            "<div class='information_list' id='"+post.uid+"'>"+
+                            "<div class='userpost_list' id='"+post.uid+"'>"+
                                 "<a href='#'>"+
                                     "<img alt='img' src='"+imgstring+"'></img>"+
                                     "<div>"+
@@ -121,9 +121,9 @@
                     $('.remove_post_floatingBarsG').hide();
                     showError('#remove_post_page','网络错误！连接失败！ 请重试!');
                 });
-                $('#remove_post_list').on('click', '.information_list a', function(){
+                $('#remove_post_list').on('click', '.userpost_list a', function(){
                     $('.remove_post_floatingBarsG').show();
-                    currentID = $(this).parent('div.information_list').attr('id');
+                    currentID = $(this).parent('div.userpost_list').attr('id');
                     var data = {
                         uid: currentID
                     };
