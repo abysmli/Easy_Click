@@ -1,0 +1,169 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>News</title>
+    <link rel="stylesheet" href="resource/stylesheets/jquery.excoloSlider.css" />
+    <link rel="stylesheet" href="resource/javascripts/jquery_mobile/jquery.mobile-1.4.0.min.css" />
+    <link rel="stylesheet" href="resource/stylesheets/jquery.mobile.iscrollview.css" />
+    <link rel="stylesheet" href="resource/stylesheets/jquery.mobile.iscrollview-pull.css" />
+    <link rel="stylesheet" href="resource/stylesheets/main.css" />
+    <script src="resource/javascripts/jquery-2.0.3.min.js"></script>
+    <script src="resource/javascripts/jquery_mobile/jquery.mobile-1.4.0.min.js"></script>
+    <script src="resource/javascripts/jquery.excoloSlider.js"></script>
+    <script src="resource/javascripts/iscroll.js"></script>
+    <script src="resource/javascripts/jquery.mobile.iscrollview.js"></script>
+    <script src="resource/javascripts/main.js"></script>
+    <script src="phonegap.js"></script>
+</head>
+<body>
+    <div data-role="page" id="news_details_page" class="page_body">
+        <div class="nav_bar">
+            <a data-rel="back">
+                <img alt="" src="resource/img/icon_img/icon_back.png"></img>
+            </a>
+            <a data-transition="flip" href="index.html">
+                <img alt="" src="resource/img/icon_img/icon_home.png"></img>
+            </a>
+            <a data-transition="slide" href="post_selector.html">
+                <img alt="" src="resource/img/icon_img/icon_write.png"></img>
+            </a>
+            <a data-transition="slide" href="aboutpost.html">
+                <img alt="" src="resource/img/icon_img/icon_contact_us.png"></img>
+            </a>
+            <h3>时事</h3>
+        </div>
+        <div id="news_details_content" data-role="content" style="padding-top:2.8em !important;">
+            <div id="img_block">
+                <div id="news_details_slider">
+                </div>
+            </div>
+            <div id="information_block_back">
+            </div>
+        </div>
+        <script>
+            $(document).one("pageinit","#news_details_page", function( event ) {
+                $('#news_details_content').hide();
+                var mNewsDetails = new Array();
+                if(localStorage.NewsDetails) {
+                    mNewsDetails = JSON.parse(localStorage.NewsDetails);
+                    var result = $.grep(mNewsDetails, function(news) { return news.uid == sessionStorage.newsuid; });
+                    if (result.length!=0) {
+                        insertNewsDetails(result[0]);
+                    } else {
+                        var data = {
+                            uid: sessionStorage.newsuid
+                        };
+                        sendAjax('/app_news_details', data, function(news) {
+                            insertNewsDetails(news);
+                            mNewsDetails.push(news);
+                            localStorage.NewsDetails = JSON.stringify(mNewsDetails);
+                        }, function(jqXHR, textStatus, errorThrown){
+                            showError('#news_details_page','网络错误！连接失败！ 请重试!');
+                        });
+                    }
+                } else {
+                    var data = {
+                        uid: sessionStorage.newsuid
+                    };
+                    sendAjax('/app_news_details', data, function(news){
+                        insertNewsDetails(news);
+                        mNewsDetails.push(news);
+                        localStorage.NewsDetails = JSON.stringify(mNewsDetails);
+                    },function(jqXHR, textStatus, errorThrown){
+                        showError('#news_details_page','网络错误！连接失败！ 请重试!');
+                        $('.news_details_floatingBarsG').fadeOut('fast');
+                    });
+                }
+                $('#news_details_content').on('click', '#refresh_news_details', function() {
+                    $('.news_details_floatingBarsG').show();
+                    var data = {
+                        uid: sessionStorage.newsuid
+                    };
+                    sendAjax('/app_news_details', data, function(news) {
+                        insertNewsDetails(news);
+                        for(var i=0;i<mNewsDetails.length;i++) {
+                            if(mNewsDetails[i].uid==sessionStorage.newsuid) {
+                                mNewsDetails[i]=news;
+                            }
+                        }
+                        localStorage.NewsDetails = JSON.stringify(mNewsDetails);
+                    }, function(jqXHR, textStatus, errorThrown){
+                        showError('#news_details_page','网络错误！连接失败！ 请重试!');
+                    });
+                });
+            });
+            function insertNewsDetails(news){
+                if (news.img.length != 0) {
+                    if (Object.prototype.toString.call(news.img) === '[object Array]') { 
+                        $('#news_details_slider').html("");
+                        $('#img_block').html("<div id='news_details_slider'></div>");
+                        news.img.forEach(function(img,index) {
+                            $('#news_details_slider').append(
+                                "<img src='data:image/jpg;base64,"+img+"' alt='image'></img>"
+                            );
+                        });
+                        if(news.img.length===3) {
+                            $('#news_details_slider').append(
+                                "<img src='data:image/jpg;base64,"+news.img[1]+"' alt='image'></img>"
+                            );
+                        } else if(news.img.length===2) {
+                            $('#news_details_slider').append(
+                                "<img src='data:image/jpg;base64,"+news.img[0]+"' alt='image'></img>"
+                            );
+                            $('#news_details_slider').append(
+                                "<img src='data:image/jpg;base64,"+news.img[1]+"' alt='image'></img>"
+                            );
+                        }
+                        $('#news_details_slider').excoloSlider({
+                            width: $(window).width(),
+                            height: $(window).width()*0.6,
+                            autoPlay: false,
+                            autoSize: false,
+                            touchNav: true,
+                            mouseNav: true,
+                            prevnextNav: false,
+                            prevnextAutoHide: false,
+                            pagerNav: true,
+                            pagerImage: "resource/img/slider_images/pagericon.png",
+                            prevButtonImage: "resource/img/slider_images/prev.png",
+                            nextButtonImage: "resource/img/slider_images/next.png",
+                            hoverPause: false,
+                            interval: 15000,
+                        });
+                    } else {
+                        $('#img_block').html("<div id='news_details_slider'></div>").append(
+                            "<img src='data:image/jpg;base64,"+news.img+"' width='100%' alt='image'>"
+                        );
+                    }
+                }
+                $('#information_block_back').html("");
+                $('#information_block_back').append(
+                    "<div class='user_container'>"+
+                        "<div class='news_container'>"+
+                            "<h4 style='letter-spacing: 0.05em;'>"+news.title+"</h4>"+
+                            "<p>"+news.newsdate.substr(0,10)+"</p>"+
+                            "<div style='display:block; margin: 0.5em 0 0 0; border-bottom: 1px solid #e6e6e6'></div>"+
+                            "<pre style='letter-spacing: 0.05em;'>"+news.content+"</pre>"+
+                        "</div>"+
+                    "</div>"+
+                    "<a id='refresh_news_details' style='color:#0086ab; float:right; text-decoration: underline; font-size: 0.7em; margin-right:1em; margin-top:0.5em; margin-bottom:1.5em;' href='#'>查看本页有无更新</a>"
+                );
+                $('#news_details_content').fadeIn('fast');
+                $('.news_details_floatingBarsG').fadeOut('fast');                
+            }
+        </script>
+        <div id="floatingCirclesG" class="news_details_floatingBarsG">
+            <div class="f_circleG" id="frotateG_01"></div>
+            <div class="f_circleG" id="frotateG_02"></div>
+            <div class="f_circleG" id="frotateG_03"></div>
+            <div class="f_circleG" id="frotateG_04"></div>
+            <div class="f_circleG" id="frotateG_05"></div>
+            <div class="f_circleG" id="frotateG_06"></div>
+            <div class="f_circleG" id="frotateG_07"></div>
+            <div class="f_circleG" id="frotateG_08"></div>
+        </div>
+    </div>
+</body>
+</html>

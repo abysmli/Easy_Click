@@ -1,0 +1,117 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Learning</title>
+    <link rel="stylesheet" href="resource/stylesheets/jquery.excoloSlider.css" />
+    <link rel="stylesheet" href="resource/javascripts/jquery_mobile/jquery.mobile-1.4.0.min.css" />
+    <link rel="stylesheet" href="resource/stylesheets/jquery.mobile.iscrollview.css" />
+    <link rel="stylesheet" href="resource/stylesheets/jquery.mobile.iscrollview-pull.css" />
+    <link rel="stylesheet" href="resource/stylesheets/main.css" />
+    <script src="resource/javascripts/jquery-2.0.3.min.js"></script>
+    <script src="resource/javascripts/jquery_mobile/jquery.mobile-1.4.0.min.js"></script>
+    <script src="resource/javascripts/jquery.excoloSlider.js"></script>
+    <script src="resource/javascripts/iscroll.js"></script>
+    <script src="resource/javascripts/jquery.mobile.iscrollview.js"></script>
+    <script src="resource/javascripts/main.js"></script>
+    <script src="phonegap.js"></script>
+</head>
+<body>
+    <div data-role="page" id="learning_details_page" class="page_body">
+        <div class="nav_bar">
+            <a data-rel="back">
+                <img alt="" src="resource/img/icon_img/icon_back.png"></img>
+            </a>
+            <a data-transition="flip" href="index.html">
+                <img alt="" src="resource/img/icon_img/icon_home.png"></img>
+            </a>
+            <a data-transition="slide" href="post_selector.html">
+                <img alt="" src="resource/img/icon_img/icon_write.png"></img>
+            </a>
+            <a data-transition="slide" href="aboutpost.html">
+                <img alt="" src="resource/img/icon_img/icon_contact_us.png"></img>
+            </a>
+            <h3>日语</h3>
+        </div>
+        <div id="learning_details_content" data-role="content" style="padding-top:2.8em !important;">
+            <div id="img_block">
+                <div id="learning_details_slider">
+                </div>
+            </div>
+        </div>
+        <script>
+            $(document).one("pageinit","#learning_details_page", function( event ) {
+                $('.nav_bar h3').text(sessionStorage.learningtitle);
+                $('#learning_details_content').hide();
+                var data = {
+                    uid: sessionStorage.learninguid
+                };
+                sendAjax('/app_learning_details', data, function(learning){
+                    if (learning.img.length != 0) {
+                        if (Object.prototype.toString.call(learning.img) === '[object Array]') { 
+                            learning.img.forEach(function(img,index) {
+                                $('#learning_details_slider').append(
+                                    "<img src='data:image/jpg;base64,"+img+"' alt='image'></img>"
+                                );
+                            });
+                            if(learning.img.length===3) {
+                                $('#learning_details_slider').append(
+                                    "<img src='data:image/jpg;base64,"+learning.img[1]+"' alt='image'></img>"
+                                );
+                            } else if(learning.img.length===2) {
+                                $('#learning_details_slider').append(
+                                    "<img src='data:image/jpg;base64,"+learning.img[0]+"' alt='image'></img>"
+                                );
+                                $('#learning_details_slider').append(
+                                    "<img src='data:image/jpg;base64,"+learning.img[1]+"' alt='image'></img>"
+                                );
+                            }
+                            $('#learning_details_slider').excoloSlider({
+                                width: $(window).width(),
+                                height: $(window).width()*0.6,
+                                autoPlay: false,
+                                autoSize: false,
+                                touchNav: true,
+                                mouseNav: true,
+                                prevnextNav: false,
+                                prevnextAutoHide: false,
+                                pagerNav: true,
+                                pagerImage: "resource/img/slider_images/pagericon.png",
+                                prevButtonImage: "resource/img/slider_images/prev.png",
+                                nextButtonImage: "resource/img/slider_images/next.png",
+                                hoverPause: false,
+                                interval: 15000,
+                            });
+                        } else {
+                            $('#img_block').append(
+                                "<img src='data:image/jpg;base64,"+learning.img+"' width='100%' alt='image'>"
+                            );
+                        }
+                    }
+                    $('#learning_details_content').append(
+                        "<div class='user_container'>"+
+                            "<pre>"+learning.content+"</pre>"+
+                        "</div>"
+                    );
+                    $('#learning_details_content').fadeIn('fast');
+                    $('.learning_details_floatingBarsG').fadeOut('fast');
+                },function(jqXHR, textStatus, errorThrown){
+                    showError('#learning_details_page','网络错误！连接失败！ 请重试!');
+                    $('.learning_details_floatingBarsG').fadeOut('fast');
+                });
+            });
+        </script>
+        <div id="floatingCirclesG" class="learning_details_floatingBarsG">
+            <div class="f_circleG" id="frotateG_01"></div>
+            <div class="f_circleG" id="frotateG_02"></div>
+            <div class="f_circleG" id="frotateG_03"></div>
+            <div class="f_circleG" id="frotateG_04"></div>
+            <div class="f_circleG" id="frotateG_05"></div>
+            <div class="f_circleG" id="frotateG_06"></div>
+            <div class="f_circleG" id="frotateG_07"></div>
+            <div class="f_circleG" id="frotateG_08"></div>
+        </div>
+    </div>
+</body>
+</html>

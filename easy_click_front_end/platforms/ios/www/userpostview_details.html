@@ -1,0 +1,223 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>User Post</title>
+    <link rel="stylesheet" href="resource/stylesheets/jquery.excoloSlider.css" />
+    <link rel="stylesheet" href="resource/javascripts/jquery_mobile/jquery.mobile-1.4.0.min.css" />
+    <link rel="stylesheet" href="resource/stylesheets/jquery.mobile.iscrollview.css" />
+    <link rel="stylesheet" href="resource/stylesheets/jquery.mobile.iscrollview-pull.css" />
+    <link rel="stylesheet" href="resource/stylesheets/main.css" />
+    <script src="resource/javascripts/jquery-2.0.3.min.js"></script>
+    <script src="resource/javascripts/jquery_mobile/jquery.mobile-1.4.0.min.js"></script>
+    <script src="resource/javascripts/jquery.excoloSlider.js"></script>
+    <script src="resource/javascripts/iscroll.js"></script>
+    <script src="resource/javascripts/jquery.mobile.iscrollview.js"></script>
+    <script src="resource/javascripts/main.js"></script>
+    <script src="phonegap.js"></script>
+</head>
+<body>
+    <div data-role="page" id="userpostview_details_page" class="page_body">
+        <div class="nav_bar">
+            <a data-rel="back">
+                <img alt="" src="resource/img/icon_img/icon_back.png"></img>
+            </a>
+            <a data-transition="flip" href="index.html">
+                <img alt="" src="resource/img/icon_img/icon_home.png"></img>
+            </a>
+            <a data-transition="slide" href="post_selector.html">
+                <img alt="" src="resource/img/icon_img/icon_write.png"></img>
+            </a>
+            <a data-transition="slide" href="aboutpost.html">
+                <img alt="" src="resource/img/icon_img/icon_contact_us.png"></img>
+            </a>
+            <h3>交流</h3>
+        </div>
+        <div id="userpostview_details_content" data-role="content" style="padding-top:2.8em !important;">
+            <div data-role='fieldcontain'>
+                <div class='information_block'>
+                    <div id="img_block">
+                        <div id="user_post_details_slider">
+                        </div>
+                    </div>
+                    <div>
+                        <div style='border: none !important;' data-role='fieldcontain'>
+                            <h3 style='padding-left:1em; padding-right:1em;' id="userpostview_details_title"></h3>
+                        </div>
+                    </div>
+                    <pre id="userpostview_details_instruction" style='padding-left:1em; padding-right:1em;'></pre>
+                </div>
+                <div style="display:block; margin: 0 1em 0 1em; border-bottom: 1px solid #e6e6e6"></div>
+                <div id="information_block_back">
+                </div>
+            </div>
+        </div>
+        <script>
+            $(document).one("pageinit","#userpostview_details_page", function( event ) {
+                $('#userpostview_details_content').hide();
+                var mUserPostDetails=new Array();
+                if(localStorage.UserPostDetails) {
+                    mUserPostDetails =  JSON.parse(localStorage.UserPostDetails);
+                    var result = $.grep(mUserPostDetails, function(post) { return post.uid == sessionStorage.postuid; });
+                    if (result.length!=0) {
+                        insertUserPostDetails(result[0]);
+                    } else {
+                        var data = {
+                            uid: sessionStorage.postuid
+                        };
+                        sendAjax('/app_user_post_details', data, function(post) {
+                            insertUserPostDetails(post);
+                            mUserPostDetails.push(post);
+                            localStorage.UserPostDetails = JSON.stringify(mUserPostDetails);
+                        }, function(jqXHR, textStatus, errorThrown){
+                            alert('网络错误！连接失败！ 请重试');
+                        });
+                    }
+                } else {
+                    var data = {
+                        uid: sessionStorage.postuid
+                    };
+                    sendAjax('/app_user_post_details', data, function(post) {
+                        insertUserPostDetails(post);
+                        mUserPostDetails.push(post);
+                        localStorage.UserPostDetails = JSON.stringify(mUserPostDetails);
+                    }, function(jqXHR, textStatus, errorThrown){
+                        alert('网络错误！连接失败！ 请重试');
+                    });
+                }
+                $('#userpostview_details_content').on('click', '#refresh_userpost_details', function() {
+                    $('.userpostview_details_floatingBarsG').show();
+                    var data = {
+                        uid: sessionStorage.postuid
+                    };
+                    sendAjax('/app_user_post_details', data, function(post) {
+                        insertUserPostDetails(post);
+                        for(var i=0;i<mUserPostDetails.length;i++) {
+                            if(mUserPostDetails[i].uid==sessionStorage.postuid) {
+                                mUserPostDetails[i]=post;
+                            }
+                        }
+                        localStorage.UserPostDetails = JSON.stringify(mUserPostDetails);
+                    }, function(jqXHR, textStatus, errorThrown){
+                        alert('网络错误！连接失败！ 请重试');
+                    });
+                });
+            });
+            function insertUserPostDetails(post) {
+                if (post.img.length != 0) {
+                    if (Object.prototype.toString.call(post.img) === '[object Array]') { 
+                        $('#user_post_details_slider').html("");
+                        $('#img_block').html("<div id='user_post_details_slider'></div>");
+                        post.img.forEach(function(img,index) {
+                            $('#user_post_details_slider').append(
+                                "<img src='data:image/jpg;base64,"+img+"' alt='image'></img>"
+                            );
+                        });
+                        if(post.img.length===3) {
+                            $('#user_post_details_slider').append(
+                                "<img src='data:image/jpg;base64,"+post.img[1]+"' alt='image'></img>"
+                            );
+                        } else if(post.img.length===2) {
+                            $('#user_post_details_slider').append(
+                                "<img src='data:image/jpg;base64,"+post.img[0]+"' alt='image'></img>"
+                            );
+                            $('#user_post_details_slider').append(
+                                "<img src='data:image/jpg;base64,"+post.img[1]+"' alt='image'></img>"
+                            );
+                        }
+                        $('#user_post_details_slider').excoloSlider({
+                            width: $(window).width(),
+                            height: $(window).width()*0.8,
+                            autoPlay: false,
+                            autoSize: false,
+                            touchNav: true,
+                            mouseNav: true,
+                            prevnextNav: false,
+                            prevnextAutoHide: false,
+                            pagerNav: true,
+                            pagerImage: "resource/img/slider_images/pagericon.png",
+                            prevButtonImage: "resource/img/slider_images/prev.png",
+                            nextButtonImage: "resource/img/slider_images/next.png",
+                            hoverPause: false,
+                            interval: 15000,
+                        });
+                    } else {
+                        $('#img_block').html("<div id='user_post_details_slider'></div>").append(
+                            "<img src='data:image/jpg;base64,"+post.img+"' width='100%' alt='image'>"
+                        );
+                    }
+                }
+                $('#userpostview_details_title').text(post.title);
+                $('#userpostview_details_instruction').text(post.content);
+                $('#information_block_back').html("");
+                if(post.location.length!=0){
+                    $('#information_block_back').append(
+                        "<div data-role='fieldcontain'>"+
+                            "<div class='content_block'>"+
+                                "<div>"+
+                                    "<img src='resource/img/icon_img/icon_content_address.png'></img>"+
+                                "</div>"+
+                                "<div>"+
+                                    "<pre>"+post.location+"</pre>"+
+                                "</div>"+
+                            "</div> "+
+                        "</div>"+
+                        "<div style='display:block; margin: 0 1em 0 1em; border-bottom: 1px solid #e6e6e6'></div>"
+                    );
+                }
+                if(post.contact.length!=0){
+                    var allnumber = post.contact.split(/\r\n|\r|\n/g);
+                    var finnumber ="";
+                    allnumber.forEach(function(number,index) {
+                        finnumber+="<pre><a href='tel:"+number.replace(/[^\d.]/g,'')+"'>"+number+"</a></pre>";
+                    });
+                    $('#information_block_back').append(
+                        "<div data-role='fieldcontain'>"+
+                            "<div class='content_block'>"+
+                                "<div>"+
+                                    "<img src='resource/img/icon_img/icon_content_telephone.png'></img>"+
+                                "</div>"+
+                                "<div>"+
+                                finnumber+
+                                "</div>"+
+                            "</div> "+
+                        "</div>"+
+                        "<div style='display:block; margin: 0 1em 0 1em; border-bottom: 1px solid #e6e6e6'></div>"
+                    );
+                }
+                if(post.price.length!=0){
+                    $('#information_block_back').append(
+                        "<div data-role='fieldcontain'>"+
+                            "<div class='content_block'>"+
+                                "<div>"+
+                                    "<img src='resource/img/icon_img/icon_content_price.png'></img>"+
+                                "</div>"+
+                                "<div>"+
+                                    "<pre>"+post.price+"</pre>"+
+                                "</div>"+
+                            "</div> "+
+                        "</div>"+
+                        "<div style='display:block; margin: 0 1em 0 1em; border-bottom: 1px solid #e6e6e6'></div>"
+                    );
+                }
+                $('#information_block_back').append(
+                    "<a id='refresh_userpost_details' style='color:#0086ab; float:right; text-decoration: underline; font-size: 0.7em; margin-right:1em; margin-top:0.5em; margin-bottom:1.5em;' href='#'>查看本页有无更新</a>"
+                );
+                $('#userpostview_details_content').fadeIn('fast');
+                $('.userpostview_details_floatingBarsG').fadeOut('fast');
+            }
+        </script>
+        <div id="floatingCirclesG" class="userpostview_details_floatingBarsG">
+            <div class="f_circleG" id="frotateG_01"></div>
+            <div class="f_circleG" id="frotateG_02"></div>
+            <div class="f_circleG" id="frotateG_03"></div>
+            <div class="f_circleG" id="frotateG_04"></div>
+            <div class="f_circleG" id="frotateG_05"></div>
+            <div class="f_circleG" id="frotateG_06"></div>
+            <div class="f_circleG" id="frotateG_07"></div>
+            <div class="f_circleG" id="frotateG_08"></div>
+        </div>
+    </div>
+</body>
+</html>
