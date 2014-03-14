@@ -1,0 +1,94 @@
+$(document).on("pageinit", ".page_body", function(event) {
+  $(document).bind("contextmenu",function(e){   
+    return false;   
+  });
+  localStorage.mURL="www.digital-messages.net";
+  //localStorage.mURL="192.168.1.118";
+  //localStorage.mURL="37.187.71.48";
+  $('.nav_bar').on('vmousedown','a',function(){
+    $(this).children('img').css({opacity:0.5}).animate({opacity:1},200);
+  });
+  var navbarHeight=$('.nav_bar').height(),
+  titleHeight=$('.nav_bar h3').height();
+  var marginTop = (navbarHeight/2-titleHeight/2)+'px';
+  $('.nav_bar h3').css("margin-top",marginTop);
+});
+
+function sendAjax(url, data, success, error) {
+  $.ajax({
+    url: 'http://'+localStorage.mURL+url,
+    type:'POST',
+    timeout: 30000,
+    dataType:'json',
+    data: data,
+    success: success,
+    error: error,
+  });
+}
+
+function showSuccess(pageid, message){
+  $("<div class='post_success'>"+
+    "<p>"+message+"</p>"+
+    "<div>"+
+    "<p style='color: white; text-decoration: none; font-weight: normal; text-shadow:none;'>确定</p>"+
+    "</div>"+
+    "</div>"+
+    "<script>"+
+    "$('.post_success div').click(function(){"+
+      "$('.post_success').fadeOut().remove();"+
+      "$.mobile.changePage('index.html',{transition: 'pop'});"+
+      "});"+
+  "</script>"
+  ).hide().appendTo(pageid).show();
+}
+
+function showError(pageid, message){
+  $("<div class='post_failed'>"+
+    "<p>"+message+"</p>"+
+    "<div>"+
+    "<p style='color: white; text-decoration: none; font-weight: normal; text-shadow:none;'>确定</p>"+
+    "</div>"+
+    "</div>"+
+    "<script>"+
+    "$('.post_failed div').click(function(){"+
+      "$('.post_failed').fadeOut().remove();"+
+      "});"+
+  "</script>"
+  ).hide().appendTo(pageid).show();
+}
+
+function loginAction() {
+  if(localStorage.certificate) {
+    var data = {
+      username: (JSON.parse(localStorage.certificate)).username,
+      password: (JSON.parse(localStorage.certificate)).password
+    };
+    sendAjax('/app_login',data, function(result){
+      if(result.result=="error") {
+        localStorage.removeItem('certificate');
+      }
+    }, function(jqXHR, textStatus, errorThrown){
+    });
+  }
+}
+
+function logoutAction() {
+  localStorage.removeItem('certificate');
+  sendAjax('/app_logout',"");
+}
+
+function clearbufferAction() {
+  localStorage.removeItem('informationFindJobCatagory');
+  localStorage.removeItem('informationFindHouseCatagory');
+  localStorage.removeItem('informationMoveHouseCatagory');
+  localStorage.removeItem('informationBusinessCatagory');
+  localStorage.removeItem('informationTicketCatagory');
+  localStorage.removeItem('informationLawCatagory');
+  localStorage.removeItem('InformationDetails');
+  localStorage.removeItem('Exchange');
+  localStorage.removeItem('NewsCatagory');
+  localStorage.removeItem('NewsIDBuffer');
+  localStorage.removeItem('NewsDetails');
+  localStorage.removeItem('UserPostCatagory');
+  localStorage.removeItem('UserPostDetails');
+}
