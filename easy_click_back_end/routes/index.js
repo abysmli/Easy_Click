@@ -672,7 +672,6 @@ module.exports = function(app) {
       res.redirect('/');
     });
   });
-
   //################################################# background routing############################################
   app.get('/background', function(req, res) {
     res.render('./background/main', {
@@ -1122,21 +1121,18 @@ module.exports = function(app) {
   app.post('/app_information_catagory', function(req, res){
     Shops.getList_expire(req.database, req.body.index, req.body.tags, req.body.skip, req.body.limit, function(err, shops) {
       res.json(shops);
-      console.log("app_information_catagory number: "+shops.length);
     });
   });
 
   app.post('/app_information_details', function(req, res){
     Shops.getbyUid(req.database, req.body.uid, function(err, shop) {
       res.json(shop);
-      console.log("app_information_details");
     });
   });
 
   app.post('/app_user_post_view', function(req, res) {
     Posts.getAll(req.database, req.body.tags, req.body.skip, req.body.limit, function(err, posts) {
       res.json(posts);
-      console.log("app_user_post_view: "+posts.length);
     });   
   });
   
@@ -1144,14 +1140,12 @@ module.exports = function(app) {
   app.post('/app_user_post_post', function(req, res) {
     Posts.getbyUsername(req.database, req.session.user.name, function(err, posts) {
       res.json(posts);
-      console.log("app_user_post_post: "+posts.length);
     });
   });
 
   app.post('/app_user_post_details', function(req, res) {
     Posts.getbyUid(req.database, req.body.uid, function(err, post) {
       res.json(post);
-      console.log("app_user_post_details");
     });
   });
 
@@ -1177,35 +1171,30 @@ module.exports = function(app) {
   app.post('/app_news',function(req, res){
     News.getAll(req.database, req.body.skip, req.body.limit, function(err, news) {
       res.json(news);
-      console.log("app_news: "+news.length);
     });
   });
 
   app.post('/app_exchange',function(req, res){
     Modules.getbyId(req.database, 1, function(err, modules) {
       res.json(modules);
-      console.log("app_modules");
     });
   });
 
   app.post('/app_news_details', function(req, res){
     News.getbyUid(req.database, req.body.uid, function(err, news) {
       res.json(news);
-      console.log("app_news_details");
     });
   });
 
   app.post('/app_learning', function(req, res){
     Learn.getbyIndex(req.database, req.body.index, function(err, learns) {
       res.json(learns);
-      console.log("app_learning: "+learns.length);
     });
   });
 
   app.post('/app_learning_details', function(req, res){
     Learn.getbyUid(req.database, req.body.uid, function(err, learn) {
       res.json(learn);
-      console.log("app_learning_details");
     });
   });
 
@@ -1312,6 +1301,5 @@ module.exports = function(app) {
 
   app.post('/app_logout', function(req, res) {
     req.session.user = null;
-    console.log("logout");
   });
 }

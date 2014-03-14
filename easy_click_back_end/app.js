@@ -8,18 +8,21 @@ var MongoStore = require('connect-mongo')(express);
 var partials = require('express-partials');
 var flash = require('connect-flash');
 var mongodb = require('./models/db');
+var fs = require('fs');
+var accessLogfile = fs.createWriteStream('./logs/access.log',{flags: 'a'});
 var app = express();
-
+module.exports = app;
 // Configuration
 app.configure(function() {
   app.set('views', __dirname + '/views');
   app.set('view engine', 'ejs');
   app.use(partials());
-  //app.use(express.json({limit: '50mb'}));
-  //app.use(express.urlencoded({limit: '50mb'}));
-  app.use(express.bodyParser({limit: '50mb'}));
+  app.use(express.json({limit: '50mb'}));
+  app.use(express.urlencoded({limit: '50mb'}));
+  //app.use(express.bodyParser({limit: '50mb'}));
   app.use(express.methodOverride());
   app.use(express.cookieParser());
+  app.use(express.logger({stream: accessLogfile}));
   app.use(express.session({
     secret: settings.cookieSecret,
     store: new MongoStore({
@@ -72,5 +75,10 @@ app.all('*', function(req, res, next) {
 
 routes(app);
 
-app.listen(80);
-console.log("Express server started in %s mode", app.settings.env);
+if (!module.parent) {
+  app.listen(80);
+  console.log("Express server started in %s mode", app.settings.env);
+}
+
+
+
