@@ -20,6 +20,9 @@ if (cluster.isMaster) {
 		console.log('listening: Worker '+worker.process.pid+', Address: '+address.address+':'+address.port);
 	});
 	cluster.on('exit', function (worker, code, signal){
+		delete workers[worker.pid];
+		worker = cluster.fork();
+		workers[worker.pid] = worker;
 		console.log('Exit: Worker '+worker.process.pid+' died');
 	});
 } else {
