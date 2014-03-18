@@ -83,7 +83,7 @@ Post_buffer.getbyUid = function getbyUid(db, uid, callback) {
       if (err) {
         callback(err, null);
       }
-      if(doc!=null) {
+      if(docs!=null) {
         var post = new Post_buffer(doc.username, doc.location, doc.content, doc.contact, doc.price, doc.handled, doc.img, doc.date);
         callback(null, post);
       }
