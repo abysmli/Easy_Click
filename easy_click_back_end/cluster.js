@@ -10,12 +10,6 @@ if (cluster.isMaster) {
 		var worker = cluster.fork();
 		workers[worker.pid] = worker;
 	}
-	cluster.on('death',function (worker) {
-		delete workers[worker.pid];
-		worker = cluster.fork();
-		workers[worker.pid] = worker;
-		console.log('Death: Worker '+worker.process.pid+' died');
-	});
 	cluster.on('listening', function (worker, address){
 		console.log('listening: Worker '+worker.process.pid+', Address: '+address.address+':'+address.port);
 	});
@@ -23,7 +17,7 @@ if (cluster.isMaster) {
 		delete workers[worker.pid];
 		worker = cluster.fork();
 		workers[worker.pid] = worker;
-		console.log('Exit: Worker '+worker.process.pid+' died');
+		console.log('Exit: Worker '+worker.process.pid+' died, signal: '+signal+', code: '+code);
 	});
 } else {
 	var app = require('./app');
