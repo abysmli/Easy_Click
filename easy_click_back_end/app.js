@@ -17,8 +17,8 @@ app.configure(function() {
   app.set('views', __dirname + '/views');
   app.set('view engine', 'ejs');
   app.use(partials());
-  app.use(express.json({limit: '50mb'}));
-  app.use(express.urlencoded({limit: '50mb'}));
+  //app.use(express.json({limit: '50mb'}));
+  //app.use(express.urlencoded({limit: '50mb'}));
   app.use(express.bodyParser({limit: '50mb'}));
   app.use(express.methodOverride());
   app.use(express.cookieParser());
