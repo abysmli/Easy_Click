@@ -1,6 +1,6 @@
 {
-    "name": "7channel"
-  , "version": "0.0.1"
+    "name": "easy_click"
+  , "version": "1.0.0"
   , "private": true
   , "dependencies": {
       "express": "*"
