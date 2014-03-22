@@ -71,7 +71,7 @@
                             mUserPostDetails.push(post);
                             localStorage.UserPostDetails = JSON.stringify(mUserPostDetails);
                         }, function(jqXHR, textStatus, errorThrown){
-                            alert('网络错误！连接失败！ 请重试');
+                            alert('网速好像有些慢o(>_<)o');
                         });
                     }
                 } else {
@@ -83,7 +83,7 @@
                         mUserPostDetails.push(post);
                         localStorage.UserPostDetails = JSON.stringify(mUserPostDetails);
                     }, function(jqXHR, textStatus, errorThrown){
-                        alert('网络错误！连接失败！ 请重试');
+                        alert('网速好像有些慢o(>_<)o');
                     });
                 }
                 $('#userpostview_details_content').on('click', '#refresh_userpost_details', function() {
@@ -100,7 +100,7 @@
                         }
                         localStorage.UserPostDetails = JSON.stringify(mUserPostDetails);
                     }, function(jqXHR, textStatus, errorThrown){
-                        alert('网络错误！连接失败！ 请重试');
+                        alert('网速好像有些慢o(>_<)o');
                     });
                 });
             });
