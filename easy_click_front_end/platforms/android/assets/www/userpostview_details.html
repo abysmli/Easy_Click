@@ -62,6 +62,30 @@
                     var result = $.grep(mUserPostDetails, function(post) { return post.uid == sessionStorage.postuid; });
                     if (result.length!=0) {
                         insertUserPostDetails(result[0]);
+                        var data = {
+                            uid: sessionStorage.postuid
+                        }
+                        sendAjax('/app_user_post_newst_date', data, function(newst_date){
+                            if(newst_date != result[0].date) {
+                                var data = {
+                                    uid: sessionStorage.postuid
+                                };
+                                sendAjax('/app_user_post_details', data, function(post) {
+                                    insertUserPostDetails(post);
+                                    for(var i=0;i<mUserPostDetails.length;i++) {
+                                        if(mUserPostDetails[i].uid==sessionStorage.postuid) {
+                                            mUserPostDetails[i]=post;
+                                        }
+                                    }
+                                    localStorage.UserPostDetails = JSON.stringify(mUserPostDetails);
+                                }, function(jqXHR, textStatus, errorThrown){
+                                    showError('#user_post_view_page','网络错误！连接失败！ 请重试!');
+                                });
+                            }
+                        },function(jqXHR, textStatus, errorThrown){
+                            $('.userpostview_floatingBarsG').fadeOut('fast');
+                            showError('#user_post_view_page','网络错误！连接失败！ 请重试!');
+                        });
                     } else {
                         var data = {
                             uid: sessionStorage.postuid
@@ -71,7 +95,7 @@
                             mUserPostDetails.push(post);
                             localStorage.UserPostDetails = JSON.stringify(mUserPostDetails);
                         }, function(jqXHR, textStatus, errorThrown){
-                            alert('网络错误！连接失败！ 请重试');
+                            showError('#user_post_view_page','网络错误！连接失败！ 请重试!');
                         });
                     }
                 } else {
@@ -83,7 +107,7 @@
                         mUserPostDetails.push(post);
                         localStorage.UserPostDetails = JSON.stringify(mUserPostDetails);
                     }, function(jqXHR, textStatus, errorThrown){
-                        alert('网络错误！连接失败！ 请重试');
+                        showError('#user_post_view_page','网络错误！连接失败！ 请重试!');
                     });
                 }
                 $('#userpostview_details_content').on('click', '#refresh_userpost_details', function() {
@@ -100,7 +124,7 @@
                         }
                         localStorage.UserPostDetails = JSON.stringify(mUserPostDetails);
                     }, function(jqXHR, textStatus, errorThrown){
-                        alert('网络错误！连接失败！ 请重试');
+                        showError('#user_post_view_page','网络错误！连接失败！ 请重试!');
                     });
                 });
             });

@@ -51,6 +51,30 @@
                     var result = $.grep(mNewsDetails, function(news) { return news.uid == sessionStorage.newsuid; });
                     if (result.length!=0) {
                         insertNewsDetails(result[0]);
+                        var data = {
+                            uid: sessionStorage.newsuid
+                        }
+                        sendAjax('/app_news_newst_date', data, function(newst_date){
+                            if(newst_date != result[0].date) {
+                                var data = {
+                                    uid: sessionStorage.newsuid
+                                };
+                                sendAjax('/app_news_details', data, function(news) {
+                                    insertNewsDetails(news);
+                                    for(var i=0;i<mNewsDetails.length;i++) {
+                                        if(mNewsDetails[i].uid==sessionStorage.newsuid) {
+                                            mNewsDetails[i]=news;
+                                        }
+                                    }
+                                    localStorage.NewsDetails = JSON.stringify(mNewsDetails);
+                                }, function(jqXHR, textStatus, errorThrown){
+                                    showError('#news_details_page','网络错误！连接失败！ 请重试!');
+                                });
+                            }
+                        },function(jqXHR, textStatus, errorThrown){
+                            $('.userpostview_floatingBarsG').fadeOut('fast');
+                            showError('#user_post_view_page','网络错误！连接失败！ 请重试!');
+                        });
                     } else {
                         var data = {
                             uid: sessionStorage.newsuid

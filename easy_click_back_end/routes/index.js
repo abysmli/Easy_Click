@@ -1120,6 +1120,7 @@ module.exports = function(app) {
   var counter=0;
   app.post('/app_information_catagory', function(req, res){
     Shops.getList_expire(req.database, req.body.index, req.body.tags, req.body.skip, req.body.limit, function(err, shops) {
+      console.log("information_catagory: "+utils.sizeOf(shops));
       res.json(shops);
     });
   });
@@ -1130,12 +1131,25 @@ module.exports = function(app) {
     });
   });
 
+  app.post('/app_information_newst_date', function(req, res) {
+    Shops.getNewstDate(req.database, req.body.index, req.body.uid, function(err, date){
+      res.json(date);
+    });
+  });
+
   app.post('/app_user_post_view', function(req, res) {
     Posts.getAll(req.database, req.body.tags, req.body.skip, req.body.limit, function(err, posts) {
+      console.log("user_post_catagory: "+utils.sizeOf(posts));
       res.json(posts);
     });   
   });
   
+  app.post('/app_user_post_newst_date', function(req, res) {
+    Posts.getNewstDate(req.database, req.body.uid,function(err, date){
+      res.json(date);
+    });
+  });
+
   app.post('/app_user_post_post', utils.appcheckLogin);
   app.post('/app_user_post_post', function(req, res) {
     Posts.getbyUsername(req.database, req.session.user.name, function(err, posts) {
@@ -1145,6 +1159,7 @@ module.exports = function(app) {
 
   app.post('/app_user_post_details', function(req, res) {
     Posts.getbyUid(req.database, req.body.uid, function(err, post) {
+      console.log("app_user_post_details");
       res.json(post);
     });
   });
@@ -1186,6 +1201,12 @@ module.exports = function(app) {
     });
   });
 
+  app.post('/app_news_newst_date', function(req, res) {
+    News.getNewstDate(req.database, req.body.uid,function(err, date){
+      res.json(date);
+    });
+  });
+
   app.post('/app_learning', function(req, res){
     Learn.getbyIndex(req.database, req.body.index, function(err, learns) {
       res.json(learns);
@@ -1195,6 +1216,12 @@ module.exports = function(app) {
   app.post('/app_learning_details', function(req, res){
     Learn.getbyUid(req.database, req.body.uid, function(err, learn) {
       res.json(learn);
+    });
+  });
+
+  app.post('/app_learning_newst_date', function(req, res) {
+    Learn.getNewstDate(req.database, req.body.uid,function(err, date){
+      res.json(date);
     });
   });
 

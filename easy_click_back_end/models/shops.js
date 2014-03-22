@@ -218,6 +218,30 @@ Shops.getbyTele = function getbyTele(db, tel, callback) {
   });
 };
 
+Shops.getNewstDate = function getNewstDate(db, index, uid, callback) {
+  db.collection('shops', function(err, collection){
+    if (err) {
+      return callback(err);
+    }
+    if(uid=="") {
+      var query = {index: index};
+    } else {
+      var oid = new require('mongodb').ObjectID(uid);
+      var query = {
+        _id: oid
+      };
+    }
+    collection.find().sort({date:-1}).limit(1).toArray(function(err, doc){
+      if (err) {
+        callback(err, null);
+      }
+      if (doc!=null) {
+        callback(null, doc[0].date);
+      }
+    });
+  });
+}
+
 Shops.prototype.modifybyUid = function modifybyUid(db, uid, callback) {
   var shop = {
     username: this.username,

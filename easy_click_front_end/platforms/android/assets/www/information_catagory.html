@@ -108,24 +108,9 @@
                        "<option value='Z'>综合 其它</option>"
                        );
                     if(!localStorage.informationFindJobCatagory) {
-                        var data =  {
-                            index: sessionStorage.index,
-                            tags: "",
-                            skip: 0,
-                            limit: 15
-                        };
-                        sendAjax('/app_information_catagory', data, function(shops){
-                            $('.information_catagory_floatingBarsG').hide();
-                            $.each(shops, insertInformationCatagory);
-                            localStorage.informationFindJobCatagory = JSON.stringify(shops);
-                        }, function(jqXHR, textStatus, errorThrown){
-                            $('.information_catagory_floatingBarsG').hide();
-                            showError('#information_catagory_page','网络错误！连接失败！ 请重试!');
-                        });
+                        getRemoteContent(null);
                     } else {
-                        var shops = JSON.parse(localStorage.informationFindJobCatagory);
-                        $('.information_catagory_floatingBarsG').hide();
-                        $.each(shops, insertInformationCatagory);
+                        getLocalContent(localStorage.informationFindJobCatagory);
                     }
                 } else if(sessionStorage.index=="find_house") {
                     $('#key_selector').html('').append(
@@ -137,24 +122,9 @@
                         "<option value=‘Z’>其它物件</option>"
                     );
                     if(!localStorage.informationFindHouseCatagory) {
-                        var data =  {
-                            index: sessionStorage.index,
-                            tags: "",
-                            skip: 0,
-                            limit: 15
-                        };
-                        sendAjax('/app_information_catagory', data, function(shops){
-                            $('.information_catagory_floatingBarsG').hide();
-                            $.each(shops, insertInformationCatagory);
-                            localStorage.informationFindHouseCatagory = JSON.stringify(shops);
-                        }, function(jqXHR, textStatus, errorThrown){
-                            $('.information_catagory_floatingBarsG').hide();
-                            showError('#information_catagory_page','网络错误！连接失败！ 请重试!');
-                        });
+                        getRemoteContent(null);
                     } else {
-                        var shops = JSON.parse(localStorage.informationFindHouseCatagory);
-                        $('.information_catagory_floatingBarsG').hide();
-                        $.each(shops, insertInformationCatagory);
+                        getLocalContent(localStorage.informationFindHouseCatagory);
                     }
                 } else if(sessionStorage.index=="move_house") {
                     $('#key_selector').html('').append(
@@ -167,24 +137,9 @@
                         "<option value='F'>工事 地陪导游 翻译 其它</option>"
                     );
                     if(!localStorage.informationMoveHouseCatagory) {
-                        var data =  {
-                            index: sessionStorage.index,
-                            tags: "",
-                            skip: 0,
-                            limit: 15
-                        };
-                        sendAjax('/app_information_catagory', data, function(shops){
-                            $('.information_catagory_floatingBarsG').hide();
-                            $.each(shops, insertInformationCatagory);
-                            localStorage.informationMoveHouseCatagory = JSON.stringify(shops);
-                        }, function(jqXHR, textStatus, errorThrown){
-                            $('.information_catagory_floatingBarsG').hide();
-                            showError('#information_catagory_page','网络错误！连接失败！ 请重试!');
-                        });
+                        getRemoteContent(null);
                     } else {
-                        var shops = JSON.parse(localStorage.informationMoveHouseCatagory);
-                        $('.information_catagory_floatingBarsG').hide();
-                        $.each(shops, insertInformationCatagory);
+                        getLocalContent(localStorage.informationMoveHouseCatagory);
                     }                   
                 } else if(sessionStorage.index=="business") {
                     $('#key_selector').html('').append(
@@ -203,24 +158,9 @@
                         "<option value='L'>综合商务 综合贸易 综合业务</option>"
                     );
                     if(!localStorage.informationBusinessCatagory) {
-                        var data =  {
-                            index: sessionStorage.index,
-                            tags: "",
-                            skip: 0,
-                            limit: 15
-                        };
-                        sendAjax('/app_information_catagory', data, function(shops){
-                            $('.information_catagory_floatingBarsG').hide();
-                            $.each(shops, insertInformationCatagory);
-                            localStorage.informationBusinessCatagory = JSON.stringify(shops);
-                        }, function(jqXHR, textStatus, errorThrown){
-                            $('.information_catagory_floatingBarsG').hide();
-                            showError('#information_catagory_page','网络错误！连接失败！ 请重试!');
-                        });
+                        getRemoteContent(null);
                     } else {
-                        var shops = JSON.parse(localStorage.informationBusinessCatagory);
-                        $('.information_catagory_floatingBarsG').hide();
-                        $.each(shops, insertInformationCatagory);
+                        getLocalContent(localStorage.informationBusinessCatagory);
                     }                    
                 } else if(sessionStorage.index=="ticket") {
                     $('#key_selector').html('').append(
@@ -231,53 +171,24 @@
                         "<option value='D'>代办各国签证</option>"
                     );
                     if(!localStorage.informationTicketCatagory) {
-                        var data =  {
-                            index: sessionStorage.index,
-                            tags: "",
-                            skip: 0,
-                            limit: 15
-                        };
-                        sendAjax('/app_information_catagory', data, function(shops){
-                            $('.information_catagory_floatingBarsG').hide();
-                            $.each(shops, insertInformationCatagory);
-                            localStorage.informationTicketCatagory = JSON.stringify(shops);
-                        }, function(jqXHR, textStatus, errorThrown){
-                            $('.information_catagory_floatingBarsG').hide();
-                            showError('#information_catagory_page','网络错误！连接失败！ 请重试!');
-                        });
+                        getRemoteContent(null);
                     } else {
-                        var shops = JSON.parse(localStorage.informationTicketCatagory);
-                        $('.information_catagory_floatingBarsG').hide();
-                        $.each(shops, insertInformationCatagory);
+                        getLocalContent(localStorage.informationTicketCatagory);
                     }                    
                 } else {
-                    if(!localStorage.informationLawCatagory) {
-                        $('#key_selector').html('').append(
+                    $('#key_selector').html('').append(
                         "<option value='' selected='selected'>全部分类</option>"+
                         "<option value='A'>法律业务</option>"+
                         "<option value='B'>会计业务</option>"+
                         "<option value='C'>其它业务</option"
                     );
-                        var data =  {
-                            index: sessionStorage.index,
-                            tags: "",
-                            skip: 0,
-                            limit: 15
-                        };
-                        sendAjax('/app_information_catagory', data, function(shops){
-                            $('.information_catagory_floatingBarsG').hide();
-                            $.each(shops, insertInformationCatagory);
-                            localStorage.informationLawCatagory = JSON.stringify(shops);
-                        }, function(jqXHR, textStatus, errorThrown){
-                            $('.information_catagory_floatingBarsG').hide();
-                            showError('#information_catagory_page','网络错误！连接失败！ 请重试!');
-                        });
+                    if(!localStorage.informationLawCatagory) {
+                        getRemoteContent(null);
                     } else {
-                        var shops = JSON.parse(localStorage.informationLawCatagory);
-                        $('.information_catagory_floatingBarsG').hide();
-                        $.each(shops, insertInformationCatagory);
+                        getLocalContent(localStorage.informationLawCatagory);
                     }
                 }
+                checkUpdate();
                 $('#information_catagory').on('click', '.information_list a', function(){
                     sessionStorage.uid = $(this).parent('div.information_list').attr('id');
                 });
@@ -300,7 +211,7 @@
                             $('.information_catagory_floatingBarsG').hide();
                         }
                         mSkip=15;
-                        $(".iscroll-wrapper").iscrollview("refresh").iscrollview("scrollTo", 0, 20, 200, false);
+                        $(".iscroll-wrapper").iscrollview("refresh").iscrollview("scrollTo", 0, 50, false);
                     },function(jqXHR, textStatus, errorThrown){
                         $('.information_catagory_floatingBarsG').hide();
                         showError('#information_catagory_page','网络错误！连接失败！ 请重试!');
@@ -349,19 +260,7 @@
                         $('#information_catagory').html("");
                         $.each(shops, insertInformationCatagory);
                         if(mKey=="") {
-                            if(sessionStorage.index=="find_job"){
-                                localStorage.informationFindJobCatagory = JSON.stringify(shops);
-                            } else if(sessionStorage.index=="find_house") {
-                                localStorage.informationFindHouseCatagory = JSON.stringify(shops);
-                            } else if(sessionStorage.index=="move_house") {
-                                localStorage.informationMoveHouseCatagory = JSON.stringify(shops);
-                            } else if(sessionStorage.index=="business") {
-                                localStorage.informationBusinessCatagory = JSON.stringify(shops);
-                            } else if(sessionStorage.index=="ticket") {
-                                localStorage.informationTicketCatagory = JSON.stringify(shops);
-                            } else {
-                                localStorage.informationLawCatagory = JSON.stringify(shops);
-                            }
+                            storeLocalContent(shops);
                         }
                     } else {
                         $('#information_catagory').html("<p>该分类暂无内容</p>");
@@ -387,16 +286,15 @@
                     };
                     sendAjax('/app_information_catagory', data, function(shops){
                         mSkip+=mLimit;
-                        pullUpflag=false;
                         $.each(shops, insertInformationCatagory);
                         iscrollview = mIscroll.iscrollview,
                         iscrollview.refresh(null, null, $.proxy(function (iscrollview) { 
                             this.scrollToElement(lastItemSelector, 400); 
                         }, iscrollview) ); 
+                        pullUpflag=false;
                     },function(jqXHR, textStatus, errorThrown){
                         showError('#information_catagory_page','网络错误！连接失败！ 请重试!');
                     });
-
                 }
             }
 
@@ -406,6 +304,68 @@
 
             function onPullUp (event, data) { 
                 gotPullUpData(event, data); 
+            }
+
+            function checkUpdate() {
+                var data = {
+                    index: sessionStorage.index,
+                    uid: ""
+                };
+                sendAjax('/app_information_newst_date', data, function(newst_date){
+                    if(!localStorage.InformationCatagoryCheckDate) {
+                        localStorage.InformationCatagoryCheckDate = newst_date;
+                    } else {
+                        if(newst_date != localStorage.InformationCatagoryCheckDate) {
+                            getRemoteContent(newst_date);
+                        }
+                    }
+                },function(jqXHR, textStatus, errorThrown){
+                    $('.userpostview_floatingBarsG').fadeOut('fast');
+                    showError('#user_post_view_page','网络错误！连接失败！ 请重试!');
+                });
+            }
+
+            function getLocalContent(localcontent) {
+                var shops = JSON.parse(localcontent);
+                $('.information_catagory_floatingBarsG').hide();
+                $.each(shops, insertInformationCatagory);
+                $(".iscroll-wrapper").iscrollview("refresh");
+            }
+
+            function getRemoteContent(newst_date) {
+                var data =  {
+                    index: sessionStorage.index,
+                    tags: "",
+                    skip: 0,
+                    limit: 15
+                };
+                sendAjax('/app_information_catagory', data, function(shops){
+                    $('#information_catagory').html("");
+                    $('.information_catagory_floatingBarsG').hide();
+                    $.each(shops, insertInformationCatagory);
+                    storeLocalContent(shops);
+                    $(".iscroll-wrapper").iscrollview("refresh");
+                    localStorage.InformationCatagoryCheckDate = newst_date;
+                }, function(jqXHR, textStatus, errorThrown){
+                    $('.information_catagory_floatingBarsG').hide();
+                    showError('#information_catagory_page','网络错误！连接失败！ 请重试!');
+                });
+            }
+
+            function storeLocalContent(shops) {
+                if(sessionStorage.index=="find_job"){
+                    localStorage.informationFindJobCatagory = JSON.stringify(shops);
+                } else if(sessionStorage.index=="find_house") {
+                    localStorage.informationFindHouseCatagory = JSON.stringify(shops);
+                } else if(sessionStorage.index=="move_house") {
+                    localStorage.informationMoveHouseCatagory = JSON.stringify(shops);
+                } else if(sessionStorage.index=="business") {
+                    localStorage.informationBusinessCatagory = JSON.stringify(shops);
+                } else if(sessionStorage.index=="ticket") {
+                    localStorage.informationTicketCatagory = JSON.stringify(shops);     
+                } else {
+                    localStorage.informationLawCatagory = JSON.stringify(shops);
+                }                
             }
 
         </script>

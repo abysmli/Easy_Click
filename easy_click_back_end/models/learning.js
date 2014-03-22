@@ -133,6 +133,30 @@ Learn.getbyUid = function getbyUid(db, uid, callback) {
   });
 };
 
+Learn.getNewstDate = function getNewstDate(db, uid, callback) {
+  db.collection('learning', function(err, collection){
+    if (err) {
+      return callback(err);
+    }
+    if(uid=="") {
+      var query = {};
+    } else {
+      var oid = new require('mongodb').ObjectID(uid);
+      var query = {
+        _id: oid
+      };
+    }
+    collection.find().sort({date:-1}).limit(1).toArray(function(err, doc){
+      if (err) {
+        callback(err, null);
+      }
+      if (doc!=null) {
+        callback(null, doc[0].date);
+      }
+    });
+  });
+}
+
 Learn.remove = function remove(db, callback) {
   db.collection('learning', function(err, collection) {
     if (err) {

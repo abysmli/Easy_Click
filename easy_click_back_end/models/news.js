@@ -103,6 +103,30 @@ News.getbyUid = function getbyUid(db, uid, callback) {
   });
 };
 
+News.getNewstDate = function getNewstDate(db, uid, callback) {
+  db.collection('news', function(err, collection){
+    if (err) {
+      return callback(err);
+    }
+    if(uid=="") {
+      var query = {};
+    } else {
+      var oid = new require('mongodb').ObjectID(uid);
+      var query = {
+        _id: oid
+      };
+    }
+    collection.find().sort({date:-1}).limit(1).toArray(function(err, doc){
+      if (err) {
+        callback(err, null);
+      }
+      if (doc!=null) {
+        callback(null, doc[0].date);
+      }
+    });
+  });
+}
+
 News.prototype.modifybyUid = function modifybyUid(db, uid, callback) {
   var news = {
     index: this.index,

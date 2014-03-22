@@ -67,6 +67,31 @@
                     var result=$.grep(mInformationDetails, function(shop){return shop.uid==sessionStorage.uid; });
                     if(result.length!=0) {
                         insertInformationDetails(result[0]);
+                        var data = {
+                            uid: sessionStorage.uid
+                        }
+                        sendAjax('/app_information_newst_date', data, function(newst_date){
+                            if(newst_date != result[0].date) {
+                                var data = {
+                                    index: "",
+                                    uid: sessionStorage.uid
+                                };
+                                sendAjax('/app_information_details', data, function(shop) {
+                                    insertInformationDetails(shop);
+                                    for(var i=0;i<mInformationDetails.length;i++) {
+                                        if(mInformationDetails[i].uid==sessionStorage.uid) {
+                                            mInformationDetails[i]=shop;
+                                        }
+                                    }
+                                    localStorage.InformationDetails = JSON.stringify(mInformationDetails);
+                                }, function(jqXHR, textStatus, errorThrown){
+                                  showError('#information_details_page','网络错误！连接失败！ 请重试!');  
+                                });
+                            }
+                        },function(jqXHR, textStatus, errorThrown){
+                            $('.userpostview_floatingBarsG').fadeOut('fast');
+                            showError('#user_post_view_page','网络错误！连接失败！ 请重试!');
+                        });
                     } else {
                         var data = {
                             uid: sessionStorage.uid

@@ -2,8 +2,8 @@ $(document).on("pageinit", ".page_body", function(event) {
   $(document).bind("contextmenu",function(e){   
     return false;   
   });
-  localStorage.mURL="www.digital-messages.net";
-  //localStorage.mURL="192.168.1.118";
+  //localStorage.mURL="www.digital-messages.net";
+  localStorage.mURL="192.168.1.108";
   //localStorage.mURL="37.187.71.48";
   $('.nav_bar').on('vmousedown','a',function(){
     $(this).children('img').css({opacity:0.5}).animate({opacity:1},200);
@@ -91,4 +91,8 @@ function clearbufferAction() {
   localStorage.removeItem('NewsDetails');
   localStorage.removeItem('UserPostCatagory');
   localStorage.removeItem('UserPostDetails');
+  localStorage.removeItem('InformationCatagoryCheckDate');
+  localStorage.removeItem('UserPostCatagoryCheckDate');
+  localStorage.removeItem('NewsCatagoryCheckDate');
+  localStorage.removeItem('LearningCatagoryCheckDate');
 }

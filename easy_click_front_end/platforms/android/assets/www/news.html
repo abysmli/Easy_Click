@@ -65,42 +65,25 @@
             mLimit=9,
             mKey=$('#search_input').val(),
             mIDBuffer=[];
-
 		$(document).one("pageinit","#news_page", function( event ) {
             $("#news_page .iscroll-scroller").css("padding-top","2.8em");
             $(".iscroll-wrapper", this).bind({
                 iscroll_onpulldown : onPullDown,
                 iscroll_onpullup   : onPullUp
             });
-            if(!localStorage.Exchange){
-                getExchange();
-            } else {
+            if(localStorage.Exchange){
                 $('#exchange_block').text(localStorage.Exchange);
             }
+            getExchange();
             if(localStorage.NewsIDBuffer) {
                 mIDBuffer=JSON.parse(localStorage.NewsIDBuffer);
             }
             if(!localStorage.NewsCatagory) {
-                var data = {
-                    skip: 0,
-                    limit: 15
-                };
-                sendAjax('/app_news', data, function(News){
-                    $('.news_floatingBarsG').fadeOut('fast');
-                    $.each(News, insertNewsCatagory);
-                    localStorage.NewsCatagory = JSON.stringify(News);
-                    $('#news_list_group').listview('refresh');
-                    getExchange();
-                },function(jqXHR, textStatus, errorThrown){
-                    $('.news_floatingBarsG').fadeOut('fast');
-                    showError('#news_page','网络错误！连接失败！ 请重试!');
-                });
+                getRemoteContent();
             } else {
-                var News = JSON.parse(localStorage.NewsCatagory);
-                $('.news_floatingBarsG').hide();
-                $.each(News, insertNewsCatagory);
-                $('#news_list_group').listview('refresh');
+                getLocalContent();
             }
+            checkUpdate();
             $('#news_list_group').on('click', 'li a', function(){
                 sessionStorage.newsuid = $(this).children('p').attr('id');
                 if(mIDBuffer.indexOf(sessionStorage.newsuid)==-1) {
@@ -109,7 +92,6 @@
                 }
             });
 		});
-
         function insertNewsCatagory(key, news){
             $('#news_list_group').append(
                 "<li data-theme='c' data-icon='false'>"+
@@ -125,7 +107,6 @@
                 $('#'+news.uid).siblings("h2").css("color","#545454");
             }
         }
-
         function gotPullDownData(event, mIscroll) {
             var data =  {
                 skip: 0,
@@ -143,7 +124,6 @@
                 showError('#news_page','网络错误！连接失败！ 请重试!');
             });
         }
-
         function gotPullUpData(event, mIscroll) {
             if(!pullUpflag) {
                 pullUpflag=true;
@@ -165,15 +145,12 @@
                 });
             }
         }
-
         function onPullDown (event, data) { 
             gotPullDownData(event, data); 
         }    
-
         function onPullUp (event, data) { 
             gotPullUpData(event, data); 
         }
-
         function getExchange() {
             sendAjax('/app_exchange', "", function(exchange){
                 $('#exchange_block').text(exchange.content);
@@ -181,6 +158,46 @@
             },function(jqXHR, textStatus, errorThrown){
                 showError('#news_page','网络错误！连接失败！ 请重试!');
             });
+        }
+        function checkUpdate() {
+            var data = {
+                uid: ""
+            };
+            sendAjax('/app_news_newst_date', data, function(newst_date){
+                if(!localStorage.NewsCatagoryCheckDate) {
+                    localStorage.NewsCatagoryCheckDate = newst_date;
+                } else {
+                    if(newst_date != localStorage.NewsCatagoryCheckDate) {
+                        getRemoteContent();
+                    }
+                }
+            },function(jqXHR, textStatus, errorThrown){
+                $('.userpostview_floatingBarsG').fadeOut('fast');
+                showError('#user_post_view_page','网络错误！连接失败！ 请重试!');
+            });            
+        }
+        function getRemoteContent() {
+            var data = {
+                skip: 0,
+                limit: 15
+            };
+            sendAjax('/app_news', data, function(News){
+                $(listSelector).html("<li id='exchange_block' data-role='list-divider'></li>");
+                $('.news_floatingBarsG').hide();
+                $.each(News, insertNewsCatagory);
+                localStorage.NewsCatagory = JSON.stringify(News);
+                $('#news_list_group').listview('refresh');
+                getExchange();
+            },function(jqXHR, textStatus, errorThrown){
+                $('.news_floatingBarsG').fadeOut('fast');
+                showError('#news_page','网络错误！连接失败！ 请重试!');
+            });
+        }
+        function getLocalContent(){
+            var News = JSON.parse(localStorage.NewsCatagory);
+            $('.news_floatingBarsG').hide();
+            $.each(News, insertNewsCatagory);
+            $('#news_list_group').listview('refresh');
         }
 		</script>
 	</div>
