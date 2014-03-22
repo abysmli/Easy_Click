@@ -207,7 +207,7 @@ body  * {
 	height: 100%;
 }
 
-.information_list p {
+.information_list pre.one {
 	position: absolute;
 	text-shadow: none;
 	margin: 0;
@@ -219,7 +219,7 @@ body  * {
 	min-height: 9em;
 }
 
-.information_list pre {
+.information_list pre.two {
 	position: absolute;
 	text-shadow: none;
 	letter-spacing: 0;
