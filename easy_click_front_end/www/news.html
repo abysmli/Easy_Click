@@ -102,7 +102,7 @@
                     "</a>"+
                 "</li>"
             );
-            $('#'+news.uid).text($('#'+news.uid).text().substr(0,50)+'...');
+            $('#'+news.uid).text($('#'+news.uid).text().substr(0,35)+'...');
             if(mIDBuffer.indexOf(news.uid)!=-1){
                 $('#'+news.uid).siblings("h2").css("color","#545454");
             }
@@ -121,7 +121,7 @@
                 mSkip=15;
                 getExchange();
             }, function(jqXHR, textStatus, errorThrown){
-                showError('#news_page','网络错误！连接失败！ 请重试!');
+                showError('#news_page','网速好像有些慢o(>_<)o');
             });
         }
         function gotPullUpData(event, mIscroll) {
@@ -141,7 +141,7 @@
                         this.scrollToElement(lastItemSelector, 400); 
                     }, iscrollview) ); 
                 },function(jqXHR, textStatus, errorThrown){
-                    showError('#news_page','网络错误！连接失败！ 请重试!');
+                    showError('#news_page','网速好像有些慢o(>_<)o');
                 });
             }
         }
@@ -156,7 +156,7 @@
                 $('#exchange_block').text(exchange.content);
                 localStorage.Exchange = exchange.content;
             },function(jqXHR, textStatus, errorThrown){
-                showError('#news_page','网络错误！连接失败！ 请重试!');
+                showError('#news_page','网速好像有些慢o(>_<)o');
             });
         }
         function checkUpdate() {

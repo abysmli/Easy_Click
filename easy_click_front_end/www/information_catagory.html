@@ -214,7 +214,7 @@
                         $(".iscroll-wrapper").iscrollview("refresh").iscrollview("scrollTo", 0, 50, false);
                     },function(jqXHR, textStatus, errorThrown){
                         $('.information_catagory_floatingBarsG').hide();
-                        showError('#information_catagory_page','网络错误！连接失败！ 请重试!');
+                        showError('#information_catagory_page','网速好像有些慢o(>_<)o');
                         mSkip=15;
                     });
                 });
@@ -238,8 +238,8 @@
                     "<div class='information_list' id='"+shop.uid+"'>"+
                     "<a href='information_details.html' data-transition='slide'>"+
                     "<img alt='img' src='"+imgstring+"'></img>"+
-                    "<p>"+shop.prevtext+"</p>"+
-                    "<pre>"+shop.prevtext2+"</pre>"+
+                    "<pre class='one'>"+shop.prevtext+"</pre>"+
+                    "<pre class='two'>"+shop.prevtext2+"</pre>"+
                     "</a>"+
                     "</div>"+
                     "</div>");
@@ -268,7 +268,7 @@
                     mIscroll.iscrollview.refresh();
                     mSkip=15;
                 }, function(jqXHR, textStatus, errorThrown){
-                    showError('#information_catagory_page','网络错误！连接失败！ 请重试!');
+                    showError('#information_catagory_page','网速好像有些慢o(>_<)o');
                 });
             }
 
@@ -293,7 +293,7 @@
                         }, iscrollview) ); 
                         pullUpflag=false;
                     },function(jqXHR, textStatus, errorThrown){
-                        showError('#information_catagory_page','网络错误！连接失败！ 请重试!');
+                        showError('#information_catagory_page','网速好像有些慢o(>_<)o');
                     });
                 }
             }

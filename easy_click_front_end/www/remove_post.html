@@ -119,7 +119,7 @@
                     });
                 },function(jqXHR, textStatus, errorThrown){
                     $('.remove_post_floatingBarsG').hide();
-                    showError('#remove_post_page','网络错误！连接失败！ 请重试!');
+                    showError('#remove_post_page','网速好像有些慢o(>_<)o');
                 });
                 $('#remove_post_list').on('click', '.userpost_list a', function(){
                     $('.remove_post_floatingBarsG').show();
@@ -219,7 +219,7 @@
                         $('.remove_post_block').show();
                         $('.remove_post_floatingBarsG').hide();
                     },function(jqXHR, textStatus, errorThrown){
-                        showError('#remove_post_page','网络错误！连接失败！ 请重试!');
+                        showError('#remove_post_page','网速好像有些慢o(>_<)o');
                     });
                 });
                 $('.remove_post_cancel_button').click(function(){
@@ -236,7 +236,7 @@
                             showSuccess('#remove_post_page',result.message);
                         } 
                     },function(jqXHR, textStatus, errorThrown){
-                        showError('#remove_post_page','网络错误！连接失败！ 请重试!');
+                        showError('#remove_post_page','网速好像有些慢o(>_<)o');
                     });
                 });
             });

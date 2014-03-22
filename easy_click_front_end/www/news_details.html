@@ -84,7 +84,7 @@
                             mNewsDetails.push(news);
                             localStorage.NewsDetails = JSON.stringify(mNewsDetails);
                         }, function(jqXHR, textStatus, errorThrown){
-                            showError('#news_details_page','网络错误！连接失败！ 请重试!');
+                            showError('#news_details_page','网速好像有些慢o(>_<)o');
                         });
                     }
                 } else {
@@ -96,7 +96,7 @@
                         mNewsDetails.push(news);
                         localStorage.NewsDetails = JSON.stringify(mNewsDetails);
                     },function(jqXHR, textStatus, errorThrown){
-                        showError('#news_details_page','网络错误！连接失败！ 请重试!');
+                        showError('#news_details_page','网速好像有些慢o(>_<)o');
                         $('.news_details_floatingBarsG').fadeOut('fast');
                     });
                 }
@@ -114,7 +114,7 @@
                         }
                         localStorage.NewsDetails = JSON.stringify(mNewsDetails);
                     }, function(jqXHR, textStatus, errorThrown){
-                        showError('#news_details_page','网络错误！连接失败！ 请重试!');
+                        showError('#news_details_page','网速好像有些慢o(>_<)o');
                     });
                 });
             });
