@@ -120,7 +120,7 @@
                     "</a>"+
                 "</li>"
             );
-            $('#'+news.uid).text($('#'+news.uid).text().substr(0,50)+'...');
+            $('#'+news.uid).text($('#'+news.uid).text().substr(0,35)+'...');
             if(mIDBuffer.indexOf(news.uid)!=-1){
                 $('#'+news.uid).siblings("h2").css("color","#545454");
             }
