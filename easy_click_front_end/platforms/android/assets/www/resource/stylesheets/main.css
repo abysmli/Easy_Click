@@ -155,13 +155,13 @@ body  * {
 
 /*---------- search toolbar -----------*/
 .search_block {
-	padding-top: 2.95em;
+	padding: 0;
 	padding-left: 0.3em;
 	padding-right: 0.3em;
-	padding-bottom: 0.3em;
+	padding-bottom: 0.2em;
 	width: 97.5%;
 	height: 2.15em;
-	position: fixed;
+	margin: 0;
 	display: block;
 	background-color: #F8F8F8;
 	z-index: 1040;

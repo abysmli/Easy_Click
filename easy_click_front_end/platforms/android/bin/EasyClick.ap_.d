@@ -171,7 +171,6 @@
 /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/assets/www/resource/javascripts/bootstrap.js \
 /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/assets/www/resource/javascripts/jquery.excoloSlider.js \
 /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/assets/www/resource/javascripts/bootstrap.min.js \
-/home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/assets/www/resource/javascripts/pull-example.js \
 /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/assets/www/resource/javascripts/jquery.excoloSlider.min.js \
 /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/assets/www/resource/javascripts/jquery_mobile \
 /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/assets/www/resource/javascripts/jquery.mobile.iscrollview.js \

@@ -34,7 +34,8 @@
             </a>
             <h3>资讯</h3>
         </div>
-        <div class="search_block">
+        <div class="nav_bar_holder" data-iscroll-fixed=""></div>
+        <div class="search_block" data-iscroll-fixed="" >
             <form>
                 <div class="ui-field-contain">
                     <select id="key_selector" data-mini="true">
@@ -49,6 +50,7 @@
                 </div>
             </form>
         </div>
+
         <div data-iscroll="" data-role="content">
             <div class="iscroll-pulldown">
                 <span class="iscroll-pull-icon"></span>
@@ -87,7 +89,7 @@
             });
 
             function onDeviceReady_information_catagory(){
-                $("#information_catagory_page .iscroll-scroller").css("padding-top","5.6em");
+                //$("#information_catagory_page .iscroll-page").css("padding-top","5.1em");
                 $('.nav_bar h3').text(sessionStorage.title);
                 $('#information_catagory').on('vmousedown','a',function(){
                     $(this).parent('div.information_list').css({opacity:0.5}).animate({opacity:1},200);
