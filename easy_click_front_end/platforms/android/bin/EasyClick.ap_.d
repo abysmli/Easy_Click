@@ -23,7 +23,6 @@
 /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/assets/www/about.html \
 /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/assets/www/post.html \
 /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/assets/www/config.xml \
-/home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/assets/www/test.html \
 /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/assets/www/reg.html \
 /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/assets/www/userpostview_details.html \
 /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/assets/www/announce.html \

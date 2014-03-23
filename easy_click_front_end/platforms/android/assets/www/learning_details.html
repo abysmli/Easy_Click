@@ -1,8 +1,8 @@
 <!doctype html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
     <title>Learning</title>
     <link rel="stylesheet" href="resource/stylesheets/jquery.excoloSlider.css" />
     <link rel="stylesheet" href="resource/javascripts/jquery_mobile/jquery.mobile-1.4.0.min.css" />
@@ -41,66 +41,141 @@
             </div>
         </div>
         <script>
+            var mLearningDetails = new Array();
+
             $(document).one("pageinit","#learning_details_page", function( event ) {
+                onDeviceReady_learning_details();
+            });
+
+            function onDeviceReady_learning_details() {
                 $('.nav_bar h3').text(sessionStorage.learningtitle);
                 $('#learning_details_content').hide();
+                checkLocalContent();
+                $('#learning_details_content').on('click', '#refresh_learning_details', function() {
+                    updateContent();
+                });   
+            }
+
+            function checkLocalContent() {
+                if(localStorage.LearningDetails) {
+                    mLearningDetails = JSON.parse(localStorage.LearningDetails);
+                    var result=$.grep(mLearningDetails, function(learning){return learning.uid==sessionStorage.learninguid; });
+                    if(result.length!=0) {
+                        insertLearningDetails(result[0]);
+                        checkUpdate(result[0].date);
+                    } else {
+                        getRemoteContent();
+                    }
+                } else {
+                    getRemoteContent();
+                }
+            }
+
+            function getRemoteContent() {
                 var data = {
                     uid: sessionStorage.learninguid
                 };
                 sendAjax('/app_learning_details', data, function(learning){
-                    if (learning.img.length != 0) {
-                        if (Object.prototype.toString.call(learning.img) === '[object Array]') { 
-                            learning.img.forEach(function(img,index) {
-                                $('#learning_details_slider').append(
-                                    "<img src='data:image/jpg;base64,"+img+"' alt='image'></img>"
-                                );
-                            });
-                            if(learning.img.length===3) {
-                                $('#learning_details_slider').append(
-                                    "<img src='data:image/jpg;base64,"+learning.img[1]+"' alt='image'></img>"
-                                );
-                            } else if(learning.img.length===2) {
-                                $('#learning_details_slider').append(
-                                    "<img src='data:image/jpg;base64,"+learning.img[0]+"' alt='image'></img>"
-                                );
-                                $('#learning_details_slider').append(
-                                    "<img src='data:image/jpg;base64,"+learning.img[1]+"' alt='image'></img>"
-                                );
-                            }
-                            $('#learning_details_slider').excoloSlider({
-                                width: $(window).width(),
-                                height: $(window).width()*0.6,
-                                autoPlay: false,
-                                autoSize: false,
-                                touchNav: true,
-                                mouseNav: true,
-                                prevnextNav: false,
-                                prevnextAutoHide: false,
-                                pagerNav: true,
-                                pagerImage: "resource/img/slider_images/pagericon.png",
-                                prevButtonImage: "resource/img/slider_images/prev.png",
-                                nextButtonImage: "resource/img/slider_images/next.png",
-                                hoverPause: false,
-                                interval: 15000,
-                            });
-                        } else {
-                            $('#img_block').append(
-                                "<img src='data:image/jpg;base64,"+learning.img+"' width='100%' alt='image'>"
-                            );
+                    insertLearningDetails(learning);
+                    mLearningDetails.push(learning);
+                    localStorage.LearningDetails = JSON.stringify(mLearningDetails);
+                }, function(jqXHR, textStatus, errorThrown){
+                    $('.learning_details_floatingBarsG').hide();
+                    showError('#learning_details_page','网速好像有些慢o(>_<)o');
+                });
+            }
+
+            function updateContent() {
+                $('.learning_details_floatingBarsG').show();
+                var data = {
+                    uid: sessionStorage.learninguid
+                };
+                sendAjax('/app_learning_details', data, function(learning) {
+                    insertLearningDetails(learning);
+                    for(var i=0;i<mLearningDetails.length;i++) {
+                        if(mLearningDetails[i].uid==sessionStorage.learninguid) {
+                            mLearningDetails[i]=learning;
                         }
                     }
-                    $('#learning_details_content').append(
-                        "<div class='user_container'>"+
-                            "<pre>"+learning.content+"</pre>"+
-                        "</div>"
-                    );
-                    $('#learning_details_content').fadeIn('fast');
-                    $('.learning_details_floatingBarsG').fadeOut('fast');
+                    localStorage.LearningDetails = JSON.stringify(mLearningDetails);
+                }, function(jqXHR, textStatus, errorThrown){
+                    $('.learning_details_floatingBarsG').hide();
+                    showError('#learning_details_page','网速好像有些慢o(>_<)o');
+                });                
+            }
+
+            function checkUpdate(old_time) {
+                var data = {
+                    uid: sessionStorage.learninguid
+                }
+                sendAjax('/app_learning_newst_date', data, function(newst_date){
+                    if(newst_date != old_time) {
+                        updateContent();
+                    }
                 },function(jqXHR, textStatus, errorThrown){
-                    showError('#learning_details_page','网络错误！连接失败！ 请重试!');
-                    $('.learning_details_floatingBarsG').fadeOut('fast');
+                    showError('#learning_details_page','网速好像有些慢o(>_<)o');
                 });
-            });
+            }
+
+            function insertLearningDetails(learning) {
+                $('#learning_details_content').html(
+                    "<div id='img_block'>"+
+                    "<div id='learning_details_slider'>"+
+                    "</div>"+
+                    "</div>"
+                );
+                if (learning.img.length != 0) {
+                    if (Object.prototype.toString.call(learning.img) === '[object Array]') { 
+                        learning.img.forEach(function(img,index) {
+                            $('#learning_details_slider').append(
+                                "<img src='data:image/jpg;base64,"+img+"' alt='image'></img>"
+                            );
+                        });
+                        if(learning.img.length===3) {
+                            $('#learning_details_slider').append(
+                                "<img src='data:image/jpg;base64,"+learning.img[1]+"' alt='image'></img>"
+                            );
+                        } else if(learning.img.length===2) {
+                            $('#learning_details_slider').append(
+                                "<img src='data:image/jpg;base64,"+learning.img[0]+"' alt='image'></img>"
+                            );
+                            $('#learning_details_slider').append(
+                                "<img src='data:image/jpg;base64,"+learning.img[1]+"' alt='image'></img>"
+                            );
+                        }
+                        $('#learning_details_slider').excoloSlider({
+                            width: $(window).width(),
+                            height: $(window).width()*0.6,
+                            autoPlay: false,
+                            autoSize: false,
+                            touchNav: true,
+                            mouseNav: true,
+                            prevnextNav: false,
+                            prevnextAutoHide: false,
+                            pagerNav: true,
+                            pagerImage: "resource/img/slider_images/pagericon.png",
+                            prevButtonImage: "resource/img/slider_images/prev.png",
+                            nextButtonImage: "resource/img/slider_images/next.png",
+                            hoverPause: false,
+                            interval: 15000,
+                        });
+                    } else {
+                        $('#img_block').append(
+                            "<img src='data:image/jpg;base64,"+learning.img+"' width='100%' alt='image'>"
+                        );
+                    }
+                }
+                $('#learning_details_content').append(
+                    "<div class='user_container'>"+
+                        "<pre>"+learning.content+"</pre>"+
+                    "</div>"
+                );
+                $('#learning_details_content').append(
+                    "<a id='refresh_learning_details' style='color:#0086ab; float:right; text-decoration: underline; font-size: 0.7em; margin-right:1em; margin-top:0.5em; margin-bottom:1.5em;' href='#'>查看本页有无更新</a>"
+                );
+                $('#learning_details_content').fadeIn('fast');
+                $('.learning_details_floatingBarsG').hide();
+            }
         </script>
         <div id="floatingCirclesG" class="learning_details_floatingBarsG">
             <div class="f_circleG" id="frotateG_01"></div>

@@ -100,6 +100,8 @@ Shops.getAll = function getAll(db, callback) {
           shops_buffer.push(shop);
         });
         callback(null, shops_buffer);
+      } else {
+        callback(null, "");
       }
     });
   });
@@ -127,6 +129,8 @@ Shops.getbyIndex = function getbyIndex(db, index, callback) {
           shops.push(shop);
         });
         callback(null, shops);
+      } else {
+        callback(null, "");
       }
     });
   });
@@ -172,6 +176,8 @@ Shops.getList_expire = function getList_expire(db, mIndex, mTags, mSkip, mLimit,
           }
         });
         callback(null, shops);
+      } else {
+        callback(null, "");
       }
     });
   });
@@ -192,6 +198,8 @@ Shops.getbyUid = function getbyUid(db, uid, callback) {
       if(doc!=null) {
         var shop = new Shops(doc.username, doc.index, doc.title, doc.instruction, doc.name, doc.brief, doc.comment, doc.telephone, doc.email, doc.url, doc.address, doc.path, doc.expire, doc.tags, doc.prevtext,  doc.prevtext2, doc.previmg, doc.img, doc.date, doc._id);
         callback(null, shop);
+      } else {
+        callback(null, "");
       }
     });
   });
@@ -231,12 +239,14 @@ Shops.getNewstDate = function getNewstDate(db, index, uid, callback) {
         _id: oid
       };
     }
-    collection.find().sort({date:-1}).limit(1).toArray(function(err, doc){
+    collection.find(query).sort({date:-1}).limit(1).toArray(function(err, doc){
       if (err) {
         callback(err, null);
       }
-      if (doc!=null) {
+      if (doc[0]!=null) {
         callback(null, doc[0].date);
+      } else {
+        callback(null, "");
       }
     });
   });

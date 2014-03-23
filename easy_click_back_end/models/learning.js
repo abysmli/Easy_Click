@@ -1,7 +1,7 @@
 var mongodb = require('./db');
 module.exports = Learn;
 
-function Learn(index, title, content, img, date) {
+function Learn(index, title, content, img, date, uid) {
   this.index = index;
   this.title = title;
   this.content = content;
@@ -10,6 +10,11 @@ function Learn(index, title, content, img, date) {
     this.date = date;
   } else {
     this.date = new Date();
+  }
+  if (uid) {
+    this.uid = uid;
+  } else {
+    this.uid = null;
   }
 };
 
@@ -81,6 +86,8 @@ Learn.getAll = function getAll(db, callback) {
           learns.push(learn);
         });
         callback(null, learns);
+      } else {
+        callback(null, "");
       }
     });
   });
@@ -108,6 +115,8 @@ Learn.getbyIndex = function getbyIndex(db, index, callback) {
           learns.push(learn);
         });
         callback(null, learns);
+      } else {
+        callback(null, "");
       }
     });
   });
@@ -126,32 +135,36 @@ Learn.getbyUid = function getbyUid(db, uid, callback) {
         callback(err, null);
       }
       if(doc!=null) {
-        var learn = new Learn(doc.index, doc.title, doc.content, doc.img, doc.date);
+        var learn = new Learn(doc.index, doc.title, doc.content, doc.img, doc.date, doc._id);
         callback(null, learn);
+      } else {
+        callback(null, "");
       }
     });
   });
 };
 
-Learn.getNewstDate = function getNewstDate(db, uid, callback) {
+Learn.getNewstDate = function getNewstDate(db, index, uid, callback) {
   db.collection('learning', function(err, collection){
     if (err) {
       return callback(err);
     }
     if(uid=="") {
-      var query = {};
+      var query = {index: index};
     } else {
       var oid = new require('mongodb').ObjectID(uid);
       var query = {
         _id: oid
       };
     }
-    collection.find().sort({date:-1}).limit(1).toArray(function(err, doc){
+    collection.find(query).sort({date:-1}).limit(1).toArray(function(err, doc){
       if (err) {
         callback(err, null);
       }
-      if (doc!=null) {
+      if (doc[0]!=null) {
         callback(null, doc[0].date);
+      } else {
+        callback(null, "");
       }
     });
   });

@@ -1,8 +1,8 @@
 <!doctype html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
     <title>Information</title>
     <link rel="stylesheet" href="resource/stylesheets/jquery.excoloSlider.css" />
     <link rel="stylesheet" href="resource/javascripts/jquery_mobile/jquery.mobile-1.4.0.min.css" />
@@ -55,84 +55,81 @@
         </div>
 
         <script>
+            var mInformationDetails = new Array();
+            
             $(document).one("pageinit","#information_details_page", function( event ) {
-                document.addEventListener("deviceready", onDeviceReady_information_details, false);
+                onDeviceReady_information_details();
             });
+
             function onDeviceReady_information_details(){
                 $('.nav_bar h3').text(sessionStorage.title);
                 $('#information_details_content').hide();
-                var mInformationDetails = new Array();
+                checkLocalContent();
+                $('#information_details_content').on('click', '#refresh_information_details', function() {
+                    updateContent();
+                });                
+            }
+
+            function checkLocalContent() {
                 if(localStorage.InformationDetails) {
                     mInformationDetails = JSON.parse(localStorage.InformationDetails);
                     var result=$.grep(mInformationDetails, function(shop){return shop.uid==sessionStorage.uid; });
                     if(result.length!=0) {
                         insertInformationDetails(result[0]);
-                        var data = {
-                            uid: sessionStorage.uid
-                        }
-                        sendAjax('/app_information_newst_date', data, function(newst_date){
-                            if(newst_date != result[0].date) {
-                                var data = {
-                                    index: "",
-                                    uid: sessionStorage.uid
-                                };
-                                sendAjax('/app_information_details', data, function(shop) {
-                                    insertInformationDetails(shop);
-                                    for(var i=0;i<mInformationDetails.length;i++) {
-                                        if(mInformationDetails[i].uid==sessionStorage.uid) {
-                                            mInformationDetails[i]=shop;
-                                        }
-                                    }
-                                    localStorage.InformationDetails = JSON.stringify(mInformationDetails);
-                                }, function(jqXHR, textStatus, errorThrown){
-                                  showError('#information_details_page','网络错误！连接失败！ 请重试!');  
-                                });
-                            }
-                        },function(jqXHR, textStatus, errorThrown){
-                            $('.userpostview_floatingBarsG').fadeOut('fast');
-                            showError('#user_post_view_page','网络错误！连接失败！ 请重试!');
-                        });
+                        checkUpdate(result[0].date);
                     } else {
-                        var data = {
-                            uid: sessionStorage.uid
-                        };
-                        sendAjax('/app_information_details', data, function(shop){
-                            insertInformationDetails(shop);
-                            mInformationDetails.push(shop);
-                            localStorage.InformationDetails = JSON.stringify(mInformationDetails);
-                        }, function(jqXHR, textStatus, errorThrown){
-                            showError('#information_details_page','网速好像有些慢o(>_<)o');
-                        });                        
+                        getRemoteContent();
                     }
                 } else {
-                    var data = {
-                        uid: sessionStorage.uid
-                    };
-                    sendAjax('/app_information_details', data, function(shop){
-                        insertInformationDetails(shop);
-                        mInformationDetails.push(shop);
-                        localStorage.InformationDetails = JSON.stringify(mInformationDetails);
-                    }, function(jqXHR, textStatus, errorThrown){
-                        showError('#information_details_page','网速好像有些慢o(>_<)o');
-                    });
+                    getRemoteContent();
                 }
-                $('#information_details_content').on('click', '#refresh_information_details', function() {
-                    $('.information_details_floatingBarsG').show();
-                    var data = {
-                        uid: sessionStorage.uid
-                    };
-                    sendAjax('/app_information_details', data, function(shop) {
-                        insertInformationDetails(shop);
-                        for(var i=0;i<mInformationDetails.length;i++) {
-                            if(mInformationDetails[i].uid==sessionStorage.uid) {
-                                mInformationDetails[i]=shop;
-                            }
+            }
+
+            function getRemoteContent() {
+                var data = {
+                    uid: sessionStorage.uid
+                };
+                sendAjax('/app_information_details', data, function(shop){
+                    insertInformationDetails(shop);
+                    mInformationDetails.push(shop);
+                    localStorage.InformationDetails = JSON.stringify(mInformationDetails);
+                }, function(jqXHR, textStatus, errorThrown){
+                    $('.information_details_floatingBarsG').hide();
+                    showError('#information_details_page','网速好像有些慢o(>_<)o');
+                });
+            }
+
+            function updateContent() {
+                $('.information_details_floatingBarsG').show();
+                var data = {
+                    uid: sessionStorage.uid
+                };
+                sendAjax('/app_information_details', data, function(shop) {
+                    insertInformationDetails(shop);
+                    for(var i=0;i<mInformationDetails.length;i++) {
+                        if(mInformationDetails[i].uid==sessionStorage.uid) {
+                            mInformationDetails[i]=shop;
                         }
-                        localStorage.InformationDetails = JSON.stringify(mInformationDetails);
-                    }, function(jqXHR, textStatus, errorThrown){
-                      showError('#information_details_page','网速好像有些慢o(>_<)o');  
-                    });
+                    }
+                    localStorage.InformationDetails = JSON.stringify(mInformationDetails);
+                }, function(jqXHR, textStatus, errorThrown){
+                    $('.information_details_floatingBarsG').hide();
+                    showError('#information_details_page','网速好像有些慢o(>_<)o');  
                 });                
+            }
+
+            function checkUpdate(old_time) {
+                var data = {
+                    index: "",
+                    uid: sessionStorage.uid
+                }
+                sendAjax('/app_information_newst_date', data, function(newst_date){
+                    if(newst_date != old_time) {
+                        updateContent();
+                    }
+                },function(jqXHR, textStatus, errorThrown){
+                    showError('#user_post_view_page','网络错误！连接失败！ 请重试!');
+                });
             }
 
             function insertInformationDetails(shop){

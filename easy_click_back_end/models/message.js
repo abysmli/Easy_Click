@@ -64,6 +64,8 @@ Message.getbyUsername = function getbyUsername(db, username, callback) {
           messages.push(message);
         });
         callback(null, messages);
+      } else {
+        callback(null, "");
       }
     });
   });

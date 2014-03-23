@@ -1,8 +1,8 @@
 <!doctype html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
     <title>User Post</title>
     <link rel="stylesheet" href="resource/stylesheets/jquery.excoloSlider.css" />
     <link rel="stylesheet" href="resource/javascripts/jquery_mobile/jquery.mobile-1.4.0.min.css" />
@@ -54,80 +54,81 @@
             </div>
         </div>
         <script>
+            var mUserPostDetails=new Array();
+
             $(document).one("pageinit","#userpostview_details_page", function( event ) {
+                onDeviceReady_userpostview_details();
+            });
+
+            function onDeviceReady_userpostview_details() {
                 $('#userpostview_details_content').hide();
-                var mUserPostDetails=new Array();
+                checkLocalContent();
+                $('#userpostview_details_content').on('click', '#refresh_userpost_details', function() {
+                    updateContent();
+                });
+            }
+
+            function updateContent() {
+                $('.userpostview_details_floatingBarsG').show();
+                var data = {
+                    uid: sessionStorage.postuid
+                };
+                sendAjax('/app_user_post_details', data, function(post) {
+                    insertUserPostDetails(post);
+                    for(var i=0;i<mUserPostDetails.length;i++) {
+                        if(mUserPostDetails[i].uid==sessionStorage.postuid) {
+                            mUserPostDetails[i]=post;
+                        }
+                    }
+                    localStorage.UserPostDetails = JSON.stringify(mUserPostDetails);
+                }, function(jqXHR, textStatus, errorThrown){
+                    $('.userpostview_details_floatingBarsG').hide();
+                    showError('#user_post_view_page','网速好像有些慢o(>_<)o');
+                });
+            }
+
+            function checkLocalContent() {
                 if(localStorage.UserPostDetails) {
                     mUserPostDetails =  JSON.parse(localStorage.UserPostDetails);
                     var result = $.grep(mUserPostDetails, function(post) { return post.uid == sessionStorage.postuid; });
                     if (result.length!=0) {
                         insertUserPostDetails(result[0]);
-                        var data = {
-                            uid: sessionStorage.postuid
-                        }
-                        sendAjax('/app_user_post_newst_date', data, function(newst_date){
-                            if(newst_date != result[0].date) {
-                                var data = {
-                                    uid: sessionStorage.postuid
-                                };
-                                sendAjax('/app_user_post_details', data, function(post) {
-                                    insertUserPostDetails(post);
-                                    for(var i=0;i<mUserPostDetails.length;i++) {
-                                        if(mUserPostDetails[i].uid==sessionStorage.postuid) {
-                                            mUserPostDetails[i]=post;
-                                        }
-                                    }
-                                    localStorage.UserPostDetails = JSON.stringify(mUserPostDetails);
-                                }, function(jqXHR, textStatus, errorThrown){
-                                    showError('#user_post_view_page','网络错误！连接失败！ 请重试!');
-                                });
-                            }
-                        },function(jqXHR, textStatus, errorThrown){
-                            $('.userpostview_floatingBarsG').fadeOut('fast');
-                            showError('#user_post_view_page','网络错误！连接失败！ 请重试!');
-                        });
+                        checkUpdate(result[0].date);
                     } else {
-                        var data = {
-                            uid: sessionStorage.postuid
-                        };
-                        sendAjax('/app_user_post_details', data, function(post) {
-                            insertUserPostDetails(post);
-                            mUserPostDetails.push(post);
-                            localStorage.UserPostDetails = JSON.stringify(mUserPostDetails);
-                        }, function(jqXHR, textStatus, errorThrown){
-                            showError('#user_post_view_page','网络错误！连接失败！ 请重试!');
-                        });
+                        getRemoteContent();
                     }
                 } else {
-                    var data = {
-                        uid: sessionStorage.postuid
-                    };
-                    sendAjax('/app_user_post_details', data, function(post) {
-                        insertUserPostDetails(post);
-                        mUserPostDetails.push(post);
-                        localStorage.UserPostDetails = JSON.stringify(mUserPostDetails);
-                    }, function(jqXHR, textStatus, errorThrown){
-                        showError('#user_post_view_page','网络错误！连接失败！ 请重试!');
-                    });
+                    getRemoteContent();
                 }
-                $('#userpostview_details_content').on('click', '#refresh_userpost_details', function() {
-                    $('.userpostview_details_floatingBarsG').show();
-                    var data = {
-                        uid: sessionStorage.postuid
-                    };
-                    sendAjax('/app_user_post_details', data, function(post) {
-                        insertUserPostDetails(post);
-                        for(var i=0;i<mUserPostDetails.length;i++) {
-                            if(mUserPostDetails[i].uid==sessionStorage.postuid) {
-                                mUserPostDetails[i]=post;
-                            }
-                        }
-                        localStorage.UserPostDetails = JSON.stringify(mUserPostDetails);
-                    }, function(jqXHR, textStatus, errorThrown){
-                        showError('#user_post_view_page','网络错误！连接失败！ 请重试!');
-                    });
+            }
+
+            function getRemoteContent() {
+                var data = {
+                    uid: sessionStorage.postuid
+                };
+                sendAjax('/app_user_post_details', data, function(post) {
+                    insertUserPostDetails(post);
+                    mUserPostDetails.push(post);
+                    localStorage.UserPostDetails = JSON.stringify(mUserPostDetails);
+                }, function(jqXHR, textStatus, errorThrown){
+                    $('.userpostview_details_floatingBarsG').hide();
+                    showError('#user_post_view_page','网速好像有些慢o(>_<)o');
                 });
-            });
+            }
+
+            function checkUpdate(old_time) {
+                var data = {
+                    uid: sessionStorage.postuid
+                }
+                sendAjax('/app_user_post_newst_date', data, function(newst_date){
+                    if(newst_date != old_time) {
+                        updateContent();
+                    }
+                },function(jqXHR, textStatus, errorThrown){
+                    showError('#user_post_view_page','网速好像有些慢o(>_<)o');
+                });
+            }
+
             function insertUserPostDetails(post) {
                 if (post.img.length != 0) {
                     if (Object.prototype.toString.call(post.img) === '[object Array]') { 

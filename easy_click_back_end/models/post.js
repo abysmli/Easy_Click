@@ -91,6 +91,8 @@ Post.getAll = function getAll(db, mTags, mSkip, mLimit, callback) {
           posts.push(post);
         });
         callback(null, posts);
+      } else {
+        callback(null, "");
       }
     });
   });
@@ -111,6 +113,8 @@ Post.getbyUid = function getbyUid(db, uid, callback) {
       if(doc!=null) {
         var post = new Post(doc.username, doc.title, doc.content, doc.location, doc.contact, doc.price, doc.tags, doc.prevtext, doc.prevtext2, doc.previmg, doc.img, doc.date, doc._id);
         callback(null, post);
+      } else {
+        callback(null, "");
       }
     });
   });
@@ -155,6 +159,8 @@ Post.getbyUsername = function getbyUsername(db, username, callback) {
           posts.push(post);
         });
         callback(null, posts);
+      } else {
+        callback(null, "");
       }
     });
   });
@@ -173,12 +179,14 @@ Post.getNewstDate = function getNewstDate(db, uid, callback) {
         _id: oid
       };
     }
-    collection.find().sort({date:-1}).limit(1).toArray(function(err, doc){
+    collection.find(query).sort({date:-1}).limit(1).toArray(function(err, doc){
       if (err) {
         callback(err, null);
       }
-      if (doc!=null) {
+      if (doc[0]!=null) {
         callback(null, doc[0].date);
+      } else {
+        callback(null, "");
       }
     });
   });

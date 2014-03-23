@@ -88,6 +88,8 @@ Shops_buffer.getbyUid = function getbyUid(db, uid, callback) {
       if(doc!=null) {
         var shop = new Shops_buffer(doc.title, doc.content, doc.img, doc.user, doc.date, doc.handled);
         callback(null, shop);
+      } else {
+        callback(null, "");
       }
     });
   });

@@ -78,6 +78,8 @@ News.getAll = function getAll(db, mSkip, mLimit, callback) {
           news_buffer.push(news);
         });
         callback(null, news_buffer);
+      } else {
+        callback(null, "");
       }
     });
   });
@@ -98,6 +100,8 @@ News.getbyUid = function getbyUid(db, uid, callback) {
       if(doc!=null) {
         var news_buffer = new News(doc.index, doc.title, doc.sub_title, doc.source, doc.sourceurl, doc.newsdate, doc.content, doc.previmg, doc.img, doc.date, doc._id);
         callback(null, news_buffer);
+      } else {
+        callback(null, "");
       }
     });
   });
@@ -116,12 +120,14 @@ News.getNewstDate = function getNewstDate(db, uid, callback) {
         _id: oid
       };
     }
-    collection.find().sort({date:-1}).limit(1).toArray(function(err, doc){
+    collection.find(query).sort({date:-1}).limit(1).toArray(function(err, doc){
       if (err) {
         callback(err, null);
       }
-      if (doc!=null) {
+      if (doc[0]!=null) {
         callback(null, doc[0].date);
+      } else {
+        callback(null, "");
       }
     });
   });

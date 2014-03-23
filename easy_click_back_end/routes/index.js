@@ -1120,32 +1120,35 @@ module.exports = function(app) {
   var counter=0;
   app.post('/app_information_catagory', function(req, res){
     Shops.getList_expire(req.database, req.body.index, req.body.tags, req.body.skip, req.body.limit, function(err, shops) {
-      console.log("information_catagory: "+utils.sizeOf(shops));
+      console.log("app_information_catagory: "+utils.sizeOf(shops)/1000+" kByte Time: "+(new Date()).toLocaleTimeString());
       res.json(shops);
     });
   });
 
   app.post('/app_information_details', function(req, res){
     Shops.getbyUid(req.database, req.body.uid, function(err, shop) {
+      console.log("app_information_details: "+utils.sizeOf(shop)/1000+" kByte Time: "+(new Date()).toLocaleTimeString());
       res.json(shop);
     });
   });
 
   app.post('/app_information_newst_date', function(req, res) {
     Shops.getNewstDate(req.database, req.body.index, req.body.uid, function(err, date){
+      console.log("app_information_newst_date: "+utils.sizeOf(date)/1000+" kByte Time: "+(new Date()).toLocaleTimeString());
       res.json(date);
     });
   });
 
   app.post('/app_user_post_view', function(req, res) {
     Posts.getAll(req.database, req.body.tags, req.body.skip, req.body.limit, function(err, posts) {
-      console.log("user_post_catagory: "+utils.sizeOf(posts));
+      console.log("app_user_post_view: "+utils.sizeOf(posts)/1000+" kByte Time: "+(new Date()).toLocaleTimeString());
       res.json(posts);
     });   
   });
   
   app.post('/app_user_post_newst_date', function(req, res) {
     Posts.getNewstDate(req.database, req.body.uid,function(err, date){
+      console.log("app_user_post_newst_date: "+utils.sizeOf(date)/1000+" kByte Time: "+(new Date()).toLocaleTimeString());
       res.json(date);
     });
   });
@@ -1153,13 +1156,14 @@ module.exports = function(app) {
   app.post('/app_user_post_post', utils.appcheckLogin);
   app.post('/app_user_post_post', function(req, res) {
     Posts.getbyUsername(req.database, req.session.user.name, function(err, posts) {
+      console.log("app_user_post_post: "+utils.sizeOf(posts)/1000+" kByte Time: "+(new Date()).toLocaleTimeString());
       res.json(posts);
     });
   });
 
   app.post('/app_user_post_details', function(req, res) {
     Posts.getbyUid(req.database, req.body.uid, function(err, post) {
-      console.log("app_user_post_details");
+      console.log("app_user_post_details: "+utils.sizeOf(post)/1000+" kByte Time: "+(new Date()).toLocaleTimeString());
       res.json(post);
     });
   });
@@ -1185,42 +1189,49 @@ module.exports = function(app) {
 
   app.post('/app_news',function(req, res){
     News.getAll(req.database, req.body.skip, req.body.limit, function(err, news) {
+      console.log("app_news: "+utils.sizeOf(news)/1000+" kByte Time: "+(new Date()).toLocaleTimeString());
       res.json(news);
     });
   });
 
   app.post('/app_exchange',function(req, res){
     Modules.getbyId(req.database, 1, function(err, modules) {
+      console.log("app_exchange: "+utils.sizeOf(modules)/1000+" kByte Time: "+(new Date()).toLocaleTimeString());
       res.json(modules);
     });
   });
 
   app.post('/app_news_details', function(req, res){
     News.getbyUid(req.database, req.body.uid, function(err, news) {
+      console.log("app_news_details: "+utils.sizeOf(news)/1000+" kByte Time: "+(new Date()).toLocaleTimeString());
       res.json(news);
     });
   });
 
   app.post('/app_news_newst_date', function(req, res) {
     News.getNewstDate(req.database, req.body.uid,function(err, date){
+      console.log("app_news_newst_date: "+utils.sizeOf(date)/1000+" kByte Time: "+(new Date()).toLocaleTimeString());
       res.json(date);
     });
   });
 
   app.post('/app_learning', function(req, res){
     Learn.getbyIndex(req.database, req.body.index, function(err, learns) {
+      console.log("app_learning: "+utils.sizeOf(learns)/1000+" kByte Time: "+(new Date()).toLocaleTimeString());
       res.json(learns);
     });
   });
 
   app.post('/app_learning_details', function(req, res){
     Learn.getbyUid(req.database, req.body.uid, function(err, learn) {
+      console.log("app_learning_details: "+utils.sizeOf(learn)/1000+" kByte Time: "+(new Date()).toLocaleTimeString());
       res.json(learn);
     });
   });
 
   app.post('/app_learning_newst_date', function(req, res) {
-    Learn.getNewstDate(req.database, req.body.uid,function(err, date){
+    Learn.getNewstDate(req.database, req.body.index, req.body.uid,function(err, date){
+      console.log("app_learning_newst_date: "+utils.sizeOf(date)/1000+" kByte Time: "+(new Date()).toLocaleTimeString());
       res.json(date);
     });
   });

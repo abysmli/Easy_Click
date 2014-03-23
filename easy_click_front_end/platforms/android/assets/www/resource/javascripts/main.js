@@ -91,8 +91,23 @@ function clearbufferAction() {
   localStorage.removeItem('NewsDetails');
   localStorage.removeItem('UserPostCatagory');
   localStorage.removeItem('UserPostDetails');
-  localStorage.removeItem('InformationCatagoryCheckDate');
+  localStorage.removeItem('LearningDetails');
+  localStorage.removeItem('LearningBeginnerCatagory');
+  localStorage.removeItem('LearningSentenceCatagory');
+  localStorage.removeItem('LearningTestCatagory');
+  localStorage.removeItem('LearningVocabularyCatagory');
+  localStorage.removeItem('LearningArticleCatagory');
+  localStorage.removeItem('informationFindJobCatagoryCheckDate');
+  localStorage.removeItem('informationFindHouseCatagoryCheckDate');
+  localStorage.removeItem('informationMoveHouseCatagoryCheckDate');
+  localStorage.removeItem('informationBusinessCatagoryCheckDate');
+  localStorage.removeItem('informationTicketCatagoryCheckDate');
+  localStorage.removeItem('informationLawCatagoryCheckDate');
   localStorage.removeItem('UserPostCatagoryCheckDate');
   localStorage.removeItem('NewsCatagoryCheckDate');
-  localStorage.removeItem('LearningCatagoryCheckDate');
+  localStorage.removeItem('LearningBeginnerCheckDate');
+  localStorage.removeItem('LearningSentenceCheckDate');
+  localStorage.removeItem('LearningTestCheckDate');
+  localStorage.removeItem('LearningVocabularyCheckDate');
+  localStorage.removeItem('LearningArticleCheckDate');
 }
