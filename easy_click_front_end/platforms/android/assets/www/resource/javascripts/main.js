@@ -57,6 +57,10 @@ function showError(pageid, message){
   ).hide().appendTo(pageid).show();
 }
 
+function displayNetworkError(pageid) {
+  showError(pageid,'网速好像有些慢o(>_<)o');
+}
+
 function loginAction() {
   if(localStorage.certificate) {
     var data = {

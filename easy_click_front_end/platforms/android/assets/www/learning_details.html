@@ -51,9 +51,9 @@
                 $('.nav_bar h3').text(sessionStorage.learningtitle);
                 $('#learning_details_content').hide();
                 checkLocalContent();
-                $('#learning_details_content').on('click', '#refresh_learning_details', function() {
+                /*$('#learning_details_content').on('click', '#refresh_learning_details', function() {
                     updateContent();
-                });   
+                });*/
             }
 
             function checkLocalContent() {
@@ -81,7 +81,7 @@
                     localStorage.LearningDetails = JSON.stringify(mLearningDetails);
                 }, function(jqXHR, textStatus, errorThrown){
                     $('.learning_details_floatingBarsG').hide();
-                    showError('#learning_details_page','网速好像有些慢o(>_<)o');
+                    displayNetworkError('#learning_details_page');
                 });
             }
 
@@ -100,7 +100,7 @@
                     localStorage.LearningDetails = JSON.stringify(mLearningDetails);
                 }, function(jqXHR, textStatus, errorThrown){
                     $('.learning_details_floatingBarsG').hide();
-                    showError('#learning_details_page','网速好像有些慢o(>_<)o');
+                    displayNetworkError('#learning_details_page');
                 });                
             }
 
@@ -113,7 +113,7 @@
                         updateContent();
                     }
                 },function(jqXHR, textStatus, errorThrown){
-                    showError('#learning_details_page','网速好像有些慢o(>_<)o');
+                    displayNetworkError('#learning_details_page');
                 });
             }
 
@@ -170,9 +170,9 @@
                         "<pre>"+learning.content+"</pre>"+
                     "</div>"
                 );
-                $('#learning_details_content').append(
+                /*$('#learning_details_content').append(
                     "<a id='refresh_learning_details' style='color:#0086ab; float:right; text-decoration: underline; font-size: 0.7em; margin-right:1em; margin-top:0.5em; margin-bottom:1.5em;' href='#'>查看本页有无更新</a>"
-                );
+                );*/
                 $('#learning_details_content').fadeIn('fast');
                 $('.learning_details_floatingBarsG').hide();
             }

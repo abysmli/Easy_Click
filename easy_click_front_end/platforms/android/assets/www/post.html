@@ -129,7 +129,7 @@
                 }
             },function(jqXHR, textStatus, errorThrown){
                 $('.post_floatingBarsG').hide();
-                showError('#post_page','网速好像有些慢o(>_<)o'); 
+                displayNetworkError('#post_page');
             });
         }
 
@@ -137,7 +137,10 @@
             $('#add_images_block').animate({bottom:'-200px'},300);
             // Take picture using device camera and retrieve image as base64-encoded string
             navigator.camera.getPicture(onPhotoDataSuccess, onFail, { 
-                quality: 90,
+                quality: 80,
+                allowEdit: true,
+                targetWidth:640,
+                targetHeight:512,
                 destinationType: navigator.camera.DestinationType.DATA_URL 
             });
         }
@@ -146,7 +149,10 @@
             $('#add_images_block').animate({bottom:'-200px'},300);
             // Retrieve image file location from specified source
             navigator.camera.getPicture(onPhotoDataSuccess, onFail, { 
-                quality: 90,
+                quality: 80,
+                allowEdit: true,
+                targetWidth:640,
+                targetHeight:512,
                 destinationType: navigator.camera.DestinationType.DATA_URL,
                 sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY
             });
