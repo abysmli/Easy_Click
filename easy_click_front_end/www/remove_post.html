@@ -113,7 +113,7 @@
                 };
                 sendAjax('/app_user_post_details', data, generatePost, function(jqXHR, textStatus, errorThrown) {
                     $('.remove_post_floatingBarsG').hide();
-                    showError('#remove_post_page','网速好像有些慢o(>_<)o');
+                    showError('#remove_post_page','网络好像断开了o(>_<)o');
                 });
             }
 
@@ -128,7 +128,7 @@
                     }
                 },function(jqXHR, textStatus, errorThrown){
                     $('.remove_post_floatingBarsG').hide();
-                    showError('#remove_post_page','网速好像有些慢o(>_<)o');
+                    showError('#remove_post_page','网络好像断开了o(>_<)o');
                 });
             }
 
@@ -262,7 +262,7 @@
                         showSuccess('#remove_post_page',result.message);
                     } 
                 },function(jqXHR, textStatus, errorThrown){
-                    showError('#remove_post_page','网速好像有些慢o(>_<)o');
+                    showError('#remove_post_page','网络好像断开了o(>_<)o');
                 });
             }
         </script>

@@ -1,8 +1,8 @@
 <!doctype html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
     <title>Remove Post</title>
     <link rel="stylesheet" href="resource/stylesheets/jquery.excoloSlider.css" />
     <link rel="stylesheet" href="resource/javascripts/jquery_mobile/jquery.mobile-1.4.0.min.css" />
@@ -81,165 +81,190 @@
             <div class="f_circleG" id="frotateG_08"></div>
         </div>
         <script>
+            var currentID;
+
             $(document).one("pageinit","#remove_post_page", function( event ) {
+                onDeviceReady_remove_post();
+            });
+
+            function onDeviceReady_remove_post() {
                 $('#remove_post_list').on('vmousedown','a',function(){
                     $(this).parent('div.userpost_list').css({opacity:0.5}).animate({opacity:1},200);
                 });
                 $('.remove_post_button_block').on('vmousedown','div',function(){
                     $(this).css({opacity:0.5}).animate({opacity:1},200);
                 });
-                var currentID;
-                $('.remove_post_block').hide();
-                sendAjax('/app_user_post_post', "", function(posts){
-                    $('.remove_post_floatingBarsG').hide();
-                    $.each(posts, function( key, post ) {
-                        var imgstring="", classstring="";
-                        if (post.previmg.length==0){
-                            imgstring = "resource/img/information_img/information_box.png";
-                        } else {
-                            imgstring = "data:image/jpg;base64,"+post.previmg;
-                        }
-                        if(key % 3 ==0) {
-                            classstring = "ui-block-a";
-                        } else if(key % 3 ==1) {
-                            classstring = "ui-block-b";
-                        } else if(key % 3 ==2) {
-                            classstring = "ui-block-c";
-                        }
-                        $('#remove_post_list').append("<div class='"+classstring+"'>"+
-                            "<div class='userpost_list' id='"+post.uid+"'>"+
-                                "<a href='#'>"+
-                                    "<img alt='img' src='"+imgstring+"'></img>"+
-                                    "<div>"+
-                                        "<p>"+post.prevtext+"</p>"+
-                                    "</div>"+
-                                "</a>"+
-                            "</div>"+
-                        "</div>");
-                    });
-                },function(jqXHR, textStatus, errorThrown){
-                    $('.remove_post_floatingBarsG').hide();
-                    showError('#remove_post_page','网速好像有些慢o(>_<)o');
-                });
-                $('#remove_post_list').on('click', '.userpost_list a', function(){
-                    $('.remove_post_floatingBarsG').show();
-                    currentID = $(this).parent('div.userpost_list').attr('id');
-                    var data = {
-                        uid: currentID
-                    };
-                    sendAjax('/app_user_post_details', data, function(post){
-                        if (post.img.length != 0) {
-                            if (Object.prototype.toString.call(post.img) === '[object Array]') { 
-                                $('#user_post_details_slider').html("");
-                                $('#img_block').html("<div id='user_post_details_slider'></div>");
-                                post.img.forEach(function(img,index) {
-                                    $('#user_post_details_slider').append(
-                                        "<img src='data:image/jpg;base64,"+img+"' alt='image'></img>"
-                                    );
-                                });
-                                if(post.img.length===3) {
-                                    $('#user_post_details_slider').append(
-                                        "<img src='data:image/jpg;base64,"+post.img[1]+"' alt='image'></img>"
-                                    );
-                                } else if(post.img.length===2) {
-                                    $('#user_post_details_slider').append(
-                                        "<img src='data:image/jpg;base64,"+post.img[0]+"' alt='image'></img>"
-                                    );
-                                    $('#user_post_details_slider').append(
-                                        "<img src='data:image/jpg;base64,"+post.img[1]+"' alt='image'></img>"
-                                    );
-                                }
-                                $('#user_post_details_slider').excoloSlider({
-                                    width: $(window).width(),
-                                    height: $(window).width()*0.8,
-                                    autoPlay: false,
-                                    autoSize: false,
-                                    touchNav: true,
-                                    mouseNav: true,
-                                    prevnextNav: false,
-                                    prevnextAutoHide: false,
-                                    pagerNav: true,
-                                    pagerImage: "resource/img/slider_images/pagericon.png",
-                                    prevButtonImage: "resource/img/slider_images/prev.png",
-                                    nextButtonImage: "resource/img/slider_images/next.png",
-                                    hoverPause: false,
-                                    interval: 15000,
-                                });
-                            } else {
-                                $('#img_block').html("<div id='user_post_details_slider'></div>").append(
-                                    "<img src='data:image/jpg;base64,"+post.img+"' width='100%' alt='image'>"
-                                );
-                            }
-                        }
-                        $('#userpostview_details_title').text(post.title);
-                        $('#userpostview_details_instruction').text(post.content);
-                        $('#information_block_back').html("");
-                        if(post.location.length!=0){
-                            $('#information_block_back').append(
-                                "<div data-role='fieldcontain'>"+
-                                    "<div class='content_block'>"+
-                                        "<div>"+
-                                            "<img src='resource/img/icon_img/icon_content_address.png'></img>"+
-                                        "</div>"+
-                                        "<div>"+
-                                            "<pre>"+post.location+"</pre>"+
-                                        "</div>"+
-                                    "</div> "+
-                                "</div>"
-                            );
-                        }
-                        if(post.contact.length!=0){
-                            $('#information_block_back').append(
-                                "<div data-role='fieldcontain'>"+
-                                    "<div class='content_block'>"+
-                                        "<div>"+
-                                            "<img src='resource/img/icon_img/icon_content_telephone.png'></img>"+
-                                        "</div>"+
-                                        "<div>"+
-                                            "<pre>"+post.contact+"</pre>"+
-                                        "</div>"+
-                                    "</div> "+
-                                "</div>"
-                            );
-                        }
-                        if(post.price.length!=0){
-                            $('#information_block_back').append(
-                                "<div data-role='fieldcontain'>"+
-                                    "<div class='content_block'>"+
-                                        "<div>"+
-                                            "<img src='resource/img/icon_img/icon_content_price.png'></img>"+
-                                        "</div>"+
-                                        "<div>"+
-                                            "<pre>"+post.price+"</pre>"+
-                                        "</div>"+
-                                    "</div> "+
-                                "</div>"
-                            );
-                        }
-                        $('.remove_post_block').show();
-                        $('.remove_post_floatingBarsG').hide();
-                    },function(jqXHR, textStatus, errorThrown){
-                        showError('#remove_post_page','网速好像有些慢o(>_<)o');
-                    });
-                });
                 $('.remove_post_cancel_button').click(function(){
                     $('.remove_post_block').hide();
                 });
-                $('.remove_post_button').click(function(){
-                    var data = {
-                        uid: currentID
-                    };
-                    sendAjax('/app_user_remove_post',data, function(result){
-                        if(result.result=="error") {
-                            showError('#remove_post_page',result.message);
-                        } else {
-                            showSuccess('#remove_post_page',result.message);
-                        } 
-                    },function(jqXHR, textStatus, errorThrown){
-                        showError('#remove_post_page','网速好像有些慢o(>_<)o');
-                    });
+                $('.remove_post_block').hide();
+                $('.remove_post_button').click(sendRemoveCommand);
+                $('#remove_post_list').on('click', '.userpost_list a', function(){
+                    currentID = $(this).parent('div.userpost_list').attr('id');
+                    getUserPost();
                 });
-            });
+                getUserPosts();
+            }
+
+            function getUserPost() {
+                $('.remove_post_floatingBarsG').show();
+                var data = {
+                    uid: currentID
+                };
+                sendAjax('/app_user_post_details', data, generatePost, function(jqXHR, textStatus, errorThrown) {
+                    $('.remove_post_floatingBarsG').hide();
+                    showError('#remove_post_page','网络好像断开了o(>_<)o');
+                });
+            }
+
+            function getUserPosts() {
+                $('.remove_post_floatingBarsG').show();
+                sendAjax('/app_user_post_post', "", function(posts){
+                    $('.remove_post_floatingBarsG').hide();
+                    if(posts!="") {
+                        $.each(posts, insertUserPosts);
+                    } else {
+                        $('#remove_post_list').html("<p style='margin-left:1em;'>您还没有发布任何物品</p>");
+                    }
+                },function(jqXHR, textStatus, errorThrown){
+                    $('.remove_post_floatingBarsG').hide();
+                    showError('#remove_post_page','网络好像断开了o(>_<)o');
+                });
+            }
+
+            function insertUserPosts(key, post) {
+                var imgstring="", classstring="";
+                if (post.previmg.length==0){
+                    imgstring = "resource/img/information_img/information_box.png";
+                } else {
+                    imgstring = "data:image/jpg;base64,"+post.previmg;
+                }
+                if(key % 3 ==0) {
+                    classstring = "ui-block-a";
+                } else if(key % 3 ==1) {
+                    classstring = "ui-block-b";
+                } else if(key % 3 ==2) {
+                    classstring = "ui-block-c";
+                }
+                $('#remove_post_list').append("<div class='"+classstring+"'>"+
+                    "<div class='userpost_list' id='"+post.uid+"'>"+
+                        "<a href='#'>"+
+                            "<img alt='img' src='"+imgstring+"'></img>"+
+                            "<div>"+
+                                "<p>"+post.prevtext+"</p>"+
+                            "</div>"+
+                        "</a>"+
+                    "</div>"+
+                "</div>");
+            }
+
+            function generatePost(post) {
+                if (post.img.length != 0) {
+                    if (Object.prototype.toString.call(post.img) === '[object Array]') { 
+                        $('#user_post_details_slider').html("");
+                        $('#img_block').html("<div id='user_post_details_slider'></div>");
+                        post.img.forEach(function(img,index) {
+                            $('#user_post_details_slider').append(
+                                "<img src='data:image/jpg;base64,"+img+"' alt='image'></img>"
+                            );
+                        });
+                        if(post.img.length===3) {
+                            $('#user_post_details_slider').append(
+                                "<img src='data:image/jpg;base64,"+post.img[1]+"' alt='image'></img>"
+                            );
+                        } else if(post.img.length===2) {
+                            $('#user_post_details_slider').append(
+                                "<img src='data:image/jpg;base64,"+post.img[0]+"' alt='image'></img>"
+                            );
+                            $('#user_post_details_slider').append(
+                                "<img src='data:image/jpg;base64,"+post.img[1]+"' alt='image'></img>"
+                            );
+                        }
+                        $('#user_post_details_slider').excoloSlider({
+                            width: $(window).width(),
+                            height: $(window).width()*0.8,
+                            autoPlay: false,
+                            autoSize: false,
+                            touchNav: true,
+                            mouseNav: true,
+                            prevnextNav: false,
+                            prevnextAutoHide: false,
+                            pagerNav: true,
+                            pagerImage: "resource/img/slider_images/pagericon.png",
+                            prevButtonImage: "resource/img/slider_images/prev.png",
+                            nextButtonImage: "resource/img/slider_images/next.png",
+                            hoverPause: false,
+                            interval: 15000,
+                        });
+                    } else {
+                        $('#img_block').html("<div id='user_post_details_slider'></div>").append(
+                            "<img src='data:image/jpg;base64,"+post.img+"' width='100%' alt='image'>"
+                        );
+                    }
+                }
+                $('#userpostview_details_title').text(post.title);
+                $('#userpostview_details_instruction').text(post.content);
+                $('#information_block_back').html("");
+                if(post.location.length!=0){
+                    $('#information_block_back').append(
+                        "<div data-role='fieldcontain'>"+
+                            "<div class='content_block'>"+
+                                "<div>"+
+                                    "<img src='resource/img/icon_img/icon_content_address.png'></img>"+
+                                "</div>"+
+                                "<div>"+
+                                    "<pre>"+post.location+"</pre>"+
+                                "</div>"+
+                            "</div> "+
+                        "</div>"
+                    );
+                }
+                if(post.contact.length!=0){
+                    $('#information_block_back').append(
+                        "<div data-role='fieldcontain'>"+
+                            "<div class='content_block'>"+
+                                "<div>"+
+                                    "<img src='resource/img/icon_img/icon_content_telephone.png'></img>"+
+                                "</div>"+
+                                "<div>"+
+                                    "<pre>"+post.contact+"</pre>"+
+                                "</div>"+
+                            "</div> "+
+                        "</div>"
+                    );
+                }
+                if(post.price.length!=0){
+                    $('#information_block_back').append(
+                        "<div data-role='fieldcontain'>"+
+                            "<div class='content_block'>"+
+                                "<div>"+
+                                    "<img src='resource/img/icon_img/icon_content_price.png'></img>"+
+                                "</div>"+
+                                "<div>"+
+                                    "<pre>"+post.price+"</pre>"+
+                                "</div>"+
+                            "</div> "+
+                        "</div>"
+                    );
+                }
+                $('.remove_post_block').show();
+                $('.remove_post_floatingBarsG').hide();
+            }
+
+            function sendRemoveCommand() {
+                var data = {
+                    uid: currentID
+                };
+                sendAjax('/app_user_remove_post',data, function(result){
+                    if(result.result=="error") {
+                        showError('#remove_post_page',result.message);
+                    } else {
+                        showSuccess('#remove_post_page',result.message);
+                    } 
+                },function(jqXHR, textStatus, errorThrown){
+                    showError('#remove_post_page','网络好像断开了o(>_<)o');
+                });
+            }
         </script>
     </div>
 </body>

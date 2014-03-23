@@ -95,7 +95,7 @@
                     localStorage.InformationDetails = JSON.stringify(mInformationDetails);
                 }, function(jqXHR, textStatus, errorThrown){
                     $('.information_details_floatingBarsG').hide();
-                    showError('#information_details_page','网速好像有些慢o(>_<)o');
+                    showError('#information_details_page','网络好像断开了o(>_<)o');
                 });
             }
 
@@ -114,7 +114,7 @@
                     localStorage.InformationDetails = JSON.stringify(mInformationDetails);
                 }, function(jqXHR, textStatus, errorThrown){
                     $('.information_details_floatingBarsG').hide();
-                    showError('#information_details_page','网速好像有些慢o(>_<)o');  
+                    showError('#information_details_page','网络好像断开了o(>_<)o');  
                 });                
             }
 
@@ -128,7 +128,7 @@
                         updateContent();
                     }
                 },function(jqXHR, textStatus, errorThrown){
-                    showError('#user_post_view_page','网络错误！连接失败！ 请重试!');
+                    showError('#user_post_view_page','网络好像断开了o(>_<)o');
                 });
             }
 
