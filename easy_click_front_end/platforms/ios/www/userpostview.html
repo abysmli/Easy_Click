@@ -1,8 +1,8 @@
 <!doctype html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
     <title>User Post</title>
     <link rel="stylesheet" href="resource/stylesheets/jquery.excoloSlider.css" />
     <link rel="stylesheet" href="resource/javascripts/jquery_mobile/jquery.mobile-1.4.0.min.css" />
@@ -72,7 +72,22 @@
             <div class="f_circleG" id="frotateG_08"></div>
         </div>
         <script>
-                $(document).one("pageinit","#user_post_view_page", function( event ) {
+            var listSelector = "#post_list",
+                lastItemSelector = listSelector + " > div:last-child",
+                pullUpflag=false;
+                mSkip=15,
+                mLimit=9,
+                mKey=$('#search_input').val();
+
+            $(document).one("pageinit","#user_post_view_page", function( event ) {
+                $(".iscroll-wrapper", this).bind({
+                    iscroll_onpulldown : onPullDown,
+                    iscroll_onpullup   : onPullUp
+                });
+                onDeviceReady_userpostview();
+            });
+
+            function onDeviceReady_userpostview() {
                 $('#key_selector').html('').append(
                     "<option value='' selected='selected'>全部分类</option>"+
                     "<option value='A'>数码 手机 电器 电脑 网络</option>"+
@@ -81,36 +96,7 @@
                     "<option value='D'>母婴 护理 彩妆 运动 户外</option>"+
                     "<option value='E'>美食 特产 文化 书籍 娱乐</option>"
                 );
-                var listSelector = "#post_list",
-                    lastItemSelector = listSelector + " > div:last-child",
-                    pullUpflag=false;
-                    mSkip=15,
-                    mLimit=9,
-                    mKey=$('#search_input').val();
                 $("#user_post_view_page .iscroll-scroller").css("padding-top","5.6em");
-                $(".iscroll-wrapper", this).bind({
-                    iscroll_onpulldown : onPullDown,
-                    iscroll_onpullup   : onPullUp
-                });
-                if(!localStorage.UserPostCatagory) {
-                    var data = {
-                        tags: "",
-                        skip: 0,
-                        limit: 15
-                    };
-                    sendAjax('/app_user_post_view', data, function(posts){
-                        $('.userpostview_floatingBarsG').fadeOut('fast');
-                        $.each(posts, insertUserPostCatagory);
-                        localStorage.UserPostCatagory = JSON.stringify(posts);
-                    },function(jqXHR, textStatus, errorThrown){
-                        $('.userpostview_floatingBarsG').fadeOut('fast');
-                        showError('#user_post_view_page','网速好像有些慢o(>_<)o');
-                    });
-                } else {
-                    var posts = JSON.parse(localStorage.UserPostCatagory);
-                    $('.userpostview_floatingBarsG').hide();
-                    $.each(posts, insertUserPostCatagory);
-                }
                 $('#post_list').on('click', '.userpost_list a', function(){
                     sessionStorage.postuid = $(this).parent('div.userpost_list').attr('id');
                 });
@@ -118,31 +104,39 @@
                     $(this).parent('div.userpost_list').css({opacity:0.5}).animate({opacity:1},200);
                 });
                 $('#key_selector').change(function(){
-                    mKey=$('#key_selector').val();
-                    $('#post_list').html("");
-                    $('.userpostview_floatingBarsG').show();
-                    var data = {
-                        tags: mKey,
-                        skip: 0,
-                        limit: 15
-                    };
-                    sendAjax('/app_user_post_view', data, function(posts){
-                        if(posts!="") {
-                            $.each(posts, insertUserPostCatagory);
-                            $('.userpostview_floatingBarsG').hide();
-                        } else {
-                            $('#post_list').html("<p>该分类暂无内容</p>");
-                            $('.userpostview_floatingBarsG').hide();
-                        }
-                        mSkip=15;
-                        $(".iscroll-wrapper").iscrollview("refresh").iscrollview("scrollTo", 0, 50, false);
-                    },function(jqXHR, textStatus, errorThrown){
-                        $('.userpostview_floatingBarsG').fadeOut('fast');
-                        showError('#user_post_view_page','网速好像有些慢o(>_<)o');
-                        mSkip=15;
-                    });
+                    changeSelector();
                 });
-            });
+                if(localStorage.UserPostCatagory) {
+                    getLocalContent();
+                }
+                checkUpdate();
+            }
+
+            function changeSelector() {
+                mKey=$('#key_selector').val();
+                $('#post_list').html("");
+                $('.userpostview_floatingBarsG').show();
+                var data = {
+                    tags: mKey,
+                    skip: 0,
+                    limit: 15
+                };
+                sendAjax('/app_user_post_view', data, function(posts){
+                    if(posts!="") {
+                        $.each(posts, insertUserPostCatagory);
+                        $('.userpostview_floatingBarsG').hide();
+                    } else {
+                        $('#post_list').html("<p>该分类暂无内容</p>");
+                        $('.userpostview_floatingBarsG').hide();
+                    }
+                    mSkip=15;
+                    $(".iscroll-wrapper").iscrollview("refresh").iscrollview("scrollTo", 0, 50, false);
+                },function(jqXHR, textStatus, errorThrown){
+                    $('.userpostview_floatingBarsG').hide();
+                    showError('#user_post_view_page','网络好像断开了o(>_<)o');
+                    mSkip=15;
+                });
+            }
 
             function insertUserPostCatagory(key, post) {
                 var imgstring="", classstring="";
@@ -167,7 +161,7 @@
                             "</div>"+
                         "</a>"+
                     "</div>"+
-                "</div>"); 
+                "</div>");
             }
 
             function gotPullDownData(event, mIscroll) {
@@ -193,16 +187,16 @@
                     mIscroll.iscrollview.refresh();
                     mSkip=15;
                 }, function(jqXHR, textStatus, errorThrown){
-                    showError('#user_post_view_page','网速好像有些慢o(>_<)o');
+                    showError('#user_post_view_page','网络好像断开了o(>_<)o');
                 });
             }
 
             function gotPullUpData(event, mIscroll) {
                 if(!pullUpflag) {
+                    pullUpflag=true;
                     if(mKey==undefined) {
                         mKey="";
                     }
-                    pullUpflag=true;
                     var data = {
                         tags: mKey,
                         skip: mSkip,
@@ -210,19 +204,17 @@
                     };
                     sendAjax('/app_user_post_view', data, function(posts){
                         mSkip+=mLimit;
-                        pullUpflag=false;
                         $.each(posts, insertUserPostCatagory);
                         iscrollview = mIscroll.iscrollview,
                         iscrollview.refresh(null, null, $.proxy(function (iscrollview) { 
                             this.scrollToElement(lastItemSelector, 400); 
                         }, iscrollview) ); 
+                        pullUpflag=false;
                     },function(jqXHR, textStatus, errorThrown){
-                        showError('#user_post_view_page','网速好像有些慢o(>_<)o');
+                        showError('#user_post_view_page','网络好像断开了o(>_<)o');
                     });
-
                 }
             }
-
             function onPullDown (event, data) { 
                 gotPullDownData(event, data); 
             }    
@@ -230,7 +222,43 @@
             function onPullUp (event, data) { 
                 gotPullUpData(event, data); 
             }
-
+            function checkUpdate() {
+                var data = {
+                    uid: ""
+                };
+                sendAjax('/app_user_post_newst_date', data, function(newst_date){
+                    if(newst_date != localStorage.UserPostCatagoryCheckDate) {
+                        getRemoteContent(newst_date);
+                    }
+                },function(jqXHR, textStatus, errorThrown){
+                    showError('#user_post_view_page','网络好像断开了o(>_<)o');
+                });
+            }
+            function getRemoteContent(newst_date) {
+                $('.userpostview_floatingBarsG').show();
+                var data = {
+                    tags: "",
+                    skip: 0,
+                    limit: 15
+                };
+                sendAjax('/app_user_post_view', data, function(posts){
+                    $('#post_list').html("");
+                    $.each(posts, insertUserPostCatagory);
+                    $(".iscroll-wrapper").iscrollview("refresh");
+                    localStorage.UserPostCatagory = JSON.stringify(posts);
+                    localStorage.UserPostCatagoryCheckDate = newst_date;
+                    $('.userpostview_floatingBarsG').hide();
+                },function(jqXHR, textStatus, errorThrown){
+                    $('.userpostview_floatingBarsG').hide();
+                    showError('#user_post_view_page','网络好像断开了o(>_<)o');
+                });
+            }
+            function getLocalContent() {
+                var posts = JSON.parse(localStorage.UserPostCatagory);
+                $('.userpostview_floatingBarsG').hide();
+                $.each(posts, insertUserPostCatagory);
+                $(".iscroll-wrapper").iscrollview("refresh");
+            }
         </script>
     </div>
 </body>

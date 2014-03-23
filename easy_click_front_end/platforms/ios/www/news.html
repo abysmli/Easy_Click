@@ -1,8 +1,8 @@
 <!doctype html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
     <title>News</title>
     <link rel="stylesheet" href="resource/stylesheets/jquery.excoloSlider.css" />
     <link rel="stylesheet" href="resource/javascripts/jquery_mobile/jquery.mobile-1.4.0.min.css" />
@@ -67,39 +67,17 @@
             mIDBuffer=[];
 
 		$(document).one("pageinit","#news_page", function( event ) {
-            $("#news_page .iscroll-scroller").css("padding-top","2.8em");
             $(".iscroll-wrapper", this).bind({
                 iscroll_onpulldown : onPullDown,
                 iscroll_onpullup   : onPullUp
             });
-            if(!localStorage.Exchange){
-                getExchange();
-            } else {
-                $('#exchange_block').text(localStorage.Exchange);
-            }
+            onDeviceReady_news();
+		});
+
+        function onDeviceReady_news() {
+            $("#news_page .iscroll-scroller").css("padding-top","2.8em");
             if(localStorage.NewsIDBuffer) {
                 mIDBuffer=JSON.parse(localStorage.NewsIDBuffer);
-            }
-            if(!localStorage.NewsCatagory) {
-                var data = {
-                    skip: 0,
-                    limit: 15
-                };
-                sendAjax('/app_news', data, function(News){
-                    $('.news_floatingBarsG').fadeOut('fast');
-                    $.each(News, insertNewsCatagory);
-                    localStorage.NewsCatagory = JSON.stringify(News);
-                    $('#news_list_group').listview('refresh');
-                    getExchange();
-                },function(jqXHR, textStatus, errorThrown){
-                    $('.news_floatingBarsG').fadeOut('fast');
-                    showError('#news_page','网速好像有些慢o(>_<)o');
-                });
-            } else {
-                var News = JSON.parse(localStorage.NewsCatagory);
-                $('.news_floatingBarsG').hide();
-                $.each(News, insertNewsCatagory);
-                $('#news_list_group').listview('refresh');
             }
             $('#news_list_group').on('click', 'li a', function(){
                 sessionStorage.newsuid = $(this).children('p').attr('id');
@@ -108,7 +86,15 @@
                     localStorage.NewsIDBuffer = JSON.stringify(mIDBuffer);
                 }
             });
-		});
+            if(localStorage.Exchange){
+                $('#exchange_block').text(localStorage.Exchange);
+            }
+            getExchange();
+            if(localStorage.NewsCatagory) {
+                getLocalContent();
+            }
+            checkUpdate();
+        }
 
         function insertNewsCatagory(key, news){
             $('#news_list_group').append(
@@ -140,7 +126,7 @@
                 mSkip=15;
                 getExchange();
             }, function(jqXHR, textStatus, errorThrown){
-                showError('#news_page','网速好像有些慢o(>_<)o');
+                showError('#news_page','网络好像断开了o(>_<)o');
             });
         }
 
@@ -161,7 +147,7 @@
                         this.scrollToElement(lastItemSelector, 400); 
                     }, iscrollview) ); 
                 },function(jqXHR, textStatus, errorThrown){
-                    showError('#news_page','网速好像有些慢o(>_<)o');
+                    showError('#news_page','网络好像断开了o(>_<)o');
                 });
             }
         }
@@ -179,8 +165,49 @@
                 $('#exchange_block').text(exchange.content);
                 localStorage.Exchange = exchange.content;
             },function(jqXHR, textStatus, errorThrown){
-                showError('#news_page','网速好像有些慢o(>_<)o');
+                showError('#news_page','网络好像断开了o(>_<)o');
             });
+        }
+
+        function checkUpdate() {
+            var data = {
+                uid: ""
+            };
+            sendAjax('/app_news_newst_date', data, function(newst_date){
+                if(newst_date != localStorage.NewsCatagoryCheckDate) {
+                    getRemoteContent(newst_date);
+                }
+            },function(jqXHR, textStatus, errorThrown){
+                $('.userpostview_floatingBarsG').fadeOut('fast');
+                showError('#user_post_view_page','网络好像断开了o(>_<)o');
+            });            
+        }
+
+        function getRemoteContent(newst_date) {
+            $('.news_floatingBarsG').show();
+            var data = {
+                skip: 0,
+                limit: 15
+            };
+            sendAjax('/app_news', data, function(News){
+                $(listSelector).html("<li id='exchange_block' data-role='list-divider'></li>");
+                $('.news_floatingBarsG').hide();
+                $.each(News, insertNewsCatagory);
+                localStorage.NewsCatagory = JSON.stringify(News);
+                localStorage.NewsCatagoryCheckDate = newst_date;
+                $('#news_list_group').listview('refresh');
+                getExchange();
+            },function(jqXHR, textStatus, errorThrown){
+                $('.news_floatingBarsG').fadeOut('fast');
+                showError('#news_page','网络好像断开了o(>_<)o');
+            });
+        }
+
+        function getLocalContent(){
+            var News = JSON.parse(localStorage.NewsCatagory);
+            $('.news_floatingBarsG').hide();
+            $.each(News, insertNewsCatagory);
+            $('#news_list_group').listview('refresh');
         }
 		</script>
 	</div>

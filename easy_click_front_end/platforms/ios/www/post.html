@@ -1,8 +1,8 @@
 <!doctype html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
     <title>Post</title>
     <link rel="stylesheet" href="resource/stylesheets/jquery.excoloSlider.css" />
     <link rel="stylesheet" href="resource/javascripts/jquery_mobile/jquery.mobile-1.4.0.min.css" />
@@ -76,37 +76,23 @@
         <script>
         var uploadImag=[];
         var image_counter=0;
+
         $(document).one("pageinit","#post_page", function( event ) {
+            onDeviceReady_post();
+        });
+
+        function onDeviceReady_post() {
             $('.post_floatingBarsG').hide();
             $('#prev_images_block').hide();
             $('#prev_images').hide();
             $('#post_button').click(function(){
-                $('.post_floatingBarsG').show();
                 if (uploadImag.length===1){
                     uploadImag=uploadImag[0];
-                } else  if(uploadImag.length===0) {
+                } else if(uploadImag.length===0) {
                     uploadImag="";
                 }
-                var data = {
-                    location: $('#location_input').val(),
-                    content: $('#content_input').val(),
-                    contact: $('#contact_input').val(),
-                    price: $('#price_input').val(),
-                    image: uploadImag
-                };
-                sendAjax('/app_post', data, function(result){
-                    $('.post_floatingBarsG').fadeOut('fast');
-                    if(result.result=="success"){
-                        showSuccess('#post_page',result.message);
-                    } else {
-                        showError('#post_page',result.message);
-                    }
-                },function(jqXHR, textStatus, errorThrown){
-                    showError('#post_page','网速好像有些慢o(>_<)o');
-                    $('.post_floatingBarsG').fadeOut('fast');
-                });
+                sendClick(uploadImag);
             });
-            
             $('#add_images').click(function(){
                 $('#add_images_block').animate({bottom:0},300);
             });
@@ -123,7 +109,29 @@
                 uploadImag=[];
                 $('#prev_images_block_inner').html("");
             });            
-        });
+        }
+
+        function sendClick(uploadImag) {
+            $('.post_floatingBarsG').show();
+            var data = {
+                location: $('#location_input').val(),
+                content: $('#content_input').val(),
+                contact: $('#contact_input').val(),
+                price: $('#price_input').val(),
+                image: uploadImag
+            };
+            sendAjax('/app_post', data, function(result){
+                $('.post_floatingBarsG').hide();
+                if(result.result=="success"){
+                    showSuccess('#post_page',result.message);
+                } else {
+                    showError('#post_page',result.message);
+                }
+            },function(jqXHR, textStatus, errorThrown){
+                $('.post_floatingBarsG').hide();
+                showError('#post_page','网络好像断开了o(>_<)o'); 
+            });
+        }
 
         function capturePhoto() {
             $('#add_images_block').animate({bottom:'-200px'},300);
@@ -133,6 +141,7 @@
                 destinationType: navigator.camera.DestinationType.DATA_URL 
             });
         }
+
         function getPhoto() {
             $('#add_images_block').animate({bottom:'-200px'},300);
             // Retrieve image file location from specified source
@@ -142,9 +151,11 @@
                 sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY
             });
         }
+
         function onFail(message) {
             $('#add_images_block').animate({bottom:'-200px'},300);
         }
+
         // Called when a photo is successfully retrieved
         //
         function onPhotoDataSuccess(imageData) {
@@ -168,6 +179,7 @@
                 "</div>"
             );
         }
+
         </script>
     </div>
 </body>
