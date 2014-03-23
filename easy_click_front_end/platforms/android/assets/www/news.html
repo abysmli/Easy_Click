@@ -34,6 +34,7 @@
             </a>
             <h3>时事</h3>
         </div>
+        <div class="nav_bar_holder" data-iscroll-fixed=""></div>
     	<div data-iscroll="" data-role="content">
             <div class="iscroll-pulldown">
                 <span class="iscroll-pull-icon"></span>
@@ -75,7 +76,7 @@
 		});
 
         function onDeviceReady_news() {
-            $("#news_page .iscroll-scroller").css("padding-top","2.8em");
+            //$("#news_page .iscroll-scroller").css("padding-top","2.8em");
             if(localStorage.NewsIDBuffer) {
                 mIDBuffer=JSON.parse(localStorage.NewsIDBuffer);
             }
