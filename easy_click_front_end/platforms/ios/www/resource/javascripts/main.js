@@ -2,9 +2,9 @@ $(document).on("pageinit", ".page_body", function(event) {
   $(document).bind("contextmenu",function(e){   
     return false;   
   });
-  localStorage.mURL="www.digital-messages.net";
+  //localStorage.mURL="www.digital-messages.net";
   //localStorage.mURL="192.168.1.108";
-  //localStorage.mURL="37.187.71.48";
+  localStorage.mURL="37.187.71.48";
   $('.nav_bar').on('vmousedown','a',function(){
     $(this).children('img').css({opacity:0.5}).animate({opacity:1},200);
   });
@@ -57,6 +57,10 @@ function showError(pageid, message){
   ).hide().appendTo(pageid).show();
 }
 
+function displayNetworkError(pageid) {
+  showError(pageid,'网速好像有些慢o(>_<)o');
+}
+
 function loginAction() {
   if(localStorage.certificate) {
     var data = {
@@ -67,8 +71,7 @@ function loginAction() {
       if(result.result=="error") {
         localStorage.removeItem('certificate');
       }
-    }, function(jqXHR, textStatus, errorThrown){
-    });
+    }, function(jqXHR, textStatus, errorThrown){});
   }
 }
 

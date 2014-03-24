@@ -31,7 +31,7 @@ regexp:false, todo:true */
 
 /*
 jquery.mobile.iscrollview.js
-Version: 1.3.6
+Version: 1.3.7
 jQuery Mobile iScroll4 view widget
 Copyright (c), 2012, 2013 Watusiware Corporation
 Distributed under the MIT License
@@ -67,7 +67,6 @@ dependency:  iScroll 4.1.9 https://github.com/cubiq/iscroll or later (4.2 provid
              jQuery - see jQuery Mobile documentation, depends on JQM version
              JQuery Mobile = 1.0.1 through 1.3.1
 */
-
 
 ;   // Ignore jslint/jshint warning - for safety - terminate previous file if unterminated
 
@@ -1601,7 +1600,9 @@ function jqmIscrollviewRemoveLayerXYProps(e) {
         // Setup bindings for window resize and orientationchange
 
     if (this.options.resizeWrapper) {
-      this._isvBind(this.$window, this.options.resizeEvents, this._windowResizeFunc, "$window");
+      if (this.options.resizeEvents.length) {
+        this._isvBind(this.$window, this.options.resizeEvents, this._windowResizeFunc, "$window");
+      }
       if (this.options.scrollTopOnOrientationChange) {
          this._isvBind(this.$window, "orientationchange", this._orientationChangeFunc, "$window");
          }
@@ -1627,7 +1628,9 @@ function jqmIscrollviewRemoveLayerXYProps(e) {
 
     // Unbind events
     this._isvUnbind(this.$scrollerContent, "updatelayout", "$scrollerContent");
-    this._isvUnbind(this.$window, this.options.resizeEvents, "$window");
+    if (this.options.resizeEvents.length) {
+      this._isvUnbind(this.$window, this.options.resizeEvents, "$window");
+    }
     this._isvUnbind(this.$window, "orientationchange", "$window");
     if (this._instanceCount() === 1) {
       this._unbindPage("pagebeforeshow");

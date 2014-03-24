@@ -34,7 +34,8 @@
             </a>
             <h3>交流</h3>
         </div>
-        <div class="search_block">
+        <div class="nav_bar_holder" data-iscroll-fixed=""></div>
+        <div class="search_block" data-iscroll-fixed="">
             <form>
                 <div class="ui-field-contain">
                     <select id="key_selector" data-mini="true">
@@ -96,7 +97,7 @@
                     "<option value='D'>母婴 护理 彩妆 运动 户外</option>"+
                     "<option value='E'>美食 特产 文化 书籍 娱乐</option>"
                 );
-                $("#user_post_view_page .iscroll-scroller").css("padding-top","5.6em");
+                //$("#user_post_view_page .iscroll-scroller").css("padding-top","5.6em");
                 $('#post_list').on('click', '.userpost_list a', function(){
                     sessionStorage.postuid = $(this).parent('div.userpost_list').attr('id');
                 });
@@ -133,7 +134,7 @@
                     $(".iscroll-wrapper").iscrollview("refresh").iscrollview("scrollTo", 0, 50, false);
                 },function(jqXHR, textStatus, errorThrown){
                     $('.userpostview_floatingBarsG').hide();
-                    showError('#user_post_view_page','网络好像断开了o(>_<)o');
+                    displayNetworkError('#user_post_view_page');
                     mSkip=15;
                 });
             }
@@ -187,7 +188,7 @@
                     mIscroll.iscrollview.refresh();
                     mSkip=15;
                 }, function(jqXHR, textStatus, errorThrown){
-                    showError('#user_post_view_page','网络好像断开了o(>_<)o');
+                    displayNetworkError('#user_post_view_page');
                 });
             }
 
@@ -211,7 +212,7 @@
                         }, iscrollview) ); 
                         pullUpflag=false;
                     },function(jqXHR, textStatus, errorThrown){
-                        showError('#user_post_view_page','网络好像断开了o(>_<)o');
+                        displayNetworkError('#user_post_view_page');
                     });
                 }
             }
@@ -231,7 +232,7 @@
                         getRemoteContent(newst_date);
                     }
                 },function(jqXHR, textStatus, errorThrown){
-                    showError('#user_post_view_page','网络好像断开了o(>_<)o');
+                    displayNetworkError('#user_post_view_page');
                 });
             }
             function getRemoteContent(newst_date) {
@@ -250,7 +251,7 @@
                     $('.userpostview_floatingBarsG').hide();
                 },function(jqXHR, textStatus, errorThrown){
                     $('.userpostview_floatingBarsG').hide();
-                    showError('#user_post_view_page','网络好像断开了o(>_<)o');
+                    displayNetworkError('#user_post_view_page');
                 });
             }
             function getLocalContent() {

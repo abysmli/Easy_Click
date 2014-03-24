@@ -10,7 +10,6 @@
 /* The iscroll-page style is added to the page when the first iscrollview widget is created
  * on the page, and removed when the last iscrollview widget on the page is destroyed.
  */
-
 .iscroll-page {
   /* Add any styles that you want on pages that use iScroll */
 }
@@ -42,7 +41,6 @@
  * creates this element for you. It wraps all of the children of the wrapper.
  */
 .iscroll-scroller {
-  padding-top: 2.8em;
   /* Add any styles that you want to add to scrollers */
 }
 

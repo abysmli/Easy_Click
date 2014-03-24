@@ -77,7 +77,7 @@
                     }
                 },function(jqXHR, textStatus, errorThrown){
                     $('.learning_catagory_floatingBarsG').fadeOut('fast');
-                    showError('#learning_catagory_page','网络好像断开了o(>_<)o');
+                    displayNetworkError('#learning_catagory_page');
                 });            
             }
 
@@ -95,7 +95,7 @@
                     $('#learning_list').listview('refresh');
                 },function(jqXHR, textStatus, errorThrown){
                     $('.learning_catagory_floatingBarsG').hide();
-                    showError('#learning_catagory_page','网络好像断开了o(>_<)o');
+                    displayNetworkError('#learning_catagory_page');
                 });
             }
 
