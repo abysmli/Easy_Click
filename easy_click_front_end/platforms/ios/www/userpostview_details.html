@@ -63,9 +63,9 @@
             function onDeviceReady_userpostview_details() {
                 $('#userpostview_details_content').hide();
                 checkLocalContent();
-                $('#userpostview_details_content').on('click', '#refresh_userpost_details', function() {
+                /*$('#userpostview_details_content').on('click', '#refresh_userpost_details', function() {
                     updateContent();
-                });
+                });*/
             }
 
             function updateContent() {
@@ -83,7 +83,7 @@
                     localStorage.UserPostDetails = JSON.stringify(mUserPostDetails);
                 }, function(jqXHR, textStatus, errorThrown){
                     $('.userpostview_details_floatingBarsG').hide();
-                    showError('#user_post_view_page','网络好像断开了o(>_<)o');
+                    displayNetworkError('#userpostview_details_page');
                 });
             }
 
@@ -112,7 +112,7 @@
                     localStorage.UserPostDetails = JSON.stringify(mUserPostDetails);
                 }, function(jqXHR, textStatus, errorThrown){
                     $('.userpostview_details_floatingBarsG').hide();
-                    showError('#user_post_view_page','网络好像断开了o(>_<)o');
+                    displayNetworkError('#userpostview_details_page');
                 });
             }
 
@@ -125,7 +125,7 @@
                         updateContent();
                     }
                 },function(jqXHR, textStatus, errorThrown){
-                    showError('#user_post_view_page','网络好像断开了o(>_<)o');
+                    displayNetworkError('#userpostview_details_page');
                 });
             }
 
@@ -226,9 +226,9 @@
                         "<div style='display:block; margin: 0 1em 0 1em; border-bottom: 1px solid #e6e6e6'></div>"
                     );
                 }
-                $('#information_block_back').append(
+                /*$('#information_block_back').append(
                     "<a id='refresh_userpost_details' style='color:#0086ab; float:right; text-decoration: underline; font-size: 0.7em; margin-right:1em; margin-top:0.5em; margin-bottom:1.5em;' href='#'>查看本页有无更新</a>"
-                );
+                );*/
                 $('#userpostview_details_content').fadeIn('fast');
                 $('.userpostview_details_floatingBarsG').fadeOut('fast');
             }

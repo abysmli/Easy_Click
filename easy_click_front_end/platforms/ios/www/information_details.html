@@ -65,9 +65,9 @@
                 $('.nav_bar h3').text(sessionStorage.title);
                 $('#information_details_content').hide();
                 checkLocalContent();
-                $('#information_details_content').on('click', '#refresh_information_details', function() {
+                /*$('#information_details_content').on('click', '#refresh_information_details', function() {
                     updateContent();
-                });                
+                });*/                
             }
 
             function checkLocalContent() {
@@ -95,7 +95,7 @@
                     localStorage.InformationDetails = JSON.stringify(mInformationDetails);
                 }, function(jqXHR, textStatus, errorThrown){
                     $('.information_details_floatingBarsG').hide();
-                    showError('#information_details_page','网络好像断开了o(>_<)o');
+                    displayNetworkError('#information_details_page');
                 });
             }
 
@@ -114,7 +114,7 @@
                     localStorage.InformationDetails = JSON.stringify(mInformationDetails);
                 }, function(jqXHR, textStatus, errorThrown){
                     $('.information_details_floatingBarsG').hide();
-                    showError('#information_details_page','网络好像断开了o(>_<)o');  
+                    displayNetworkError('#information_details_page');
                 });                
             }
 
@@ -128,7 +128,7 @@
                         updateContent();
                     }
                 },function(jqXHR, textStatus, errorThrown){
-                    showError('#user_post_view_page','网络好像断开了o(>_<)o');
+                    displayNetworkError('#information_details_page');
                 });
             }
 
@@ -305,9 +305,9 @@
                         "<div style='display:block; margin: 0 1em 0 1em; border-bottom: 1px solid #e6e6e6'></div>"
                         );
                 }
-                $('#information_block_back').append(
+                /*$('#information_block_back').append(
                     "<a id='refresh_information_details' style='color:#0086ab; float:right; text-decoration: underline; font-size: 0.7em; margin-right:1em; margin-top:0.5em; margin-bottom:1.5em;' href='#'>查看本页有无更新</a>"
-                );
+                );*/
                 $('.information_details_floatingBarsG').hide();
                 $('#information_details_content').fadeIn('fast');
                 $('#url_button').click(function(){

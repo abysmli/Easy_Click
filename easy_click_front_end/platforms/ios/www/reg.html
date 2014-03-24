@@ -98,7 +98,7 @@
                             $.mobile.changePage('post_selector.html',{transition: 'pop'});
                         }
                     }, function(jqXHR, textStatus, errorThrown){
-                        showError('#reg_page','网络好像断开了o(>_<)o');
+                        displayNetworkError('#reg_page');
                     });
                 }
                 e.preventDefault();

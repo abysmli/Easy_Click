@@ -58,7 +58,7 @@ function showError(pageid, message){
 }
 
 function displayNetworkError(pageid) {
-  showError(pageid,'网速好像有些慢o(>_<)o');
+  showError(pageid,'网络好像断开了o(>_<)o');
 }
 
 function loginAction() {
