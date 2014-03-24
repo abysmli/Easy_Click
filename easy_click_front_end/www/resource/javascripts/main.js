@@ -18,7 +18,7 @@ function sendAjax(url, data, success, error) {
   $.ajax({
     url: 'http://'+localStorage.mURL+url,
     type:'POST',
-    timeout: 30000,
+    timeout: 20000,
     dataType:'json',
     data: data,
     success: success,
@@ -58,7 +58,11 @@ function showError(pageid, message){
 }
 
 function displayNetworkError(pageid) {
-  showError(pageid,'网络好像断开了o(>_<)o');
+  $("<div data-role='popup' id='popupDelay' data-theme='b'>"+
+    "<p>网络没信号了o(>_<)o</p>"+
+    "</div>").appendTo(pageid);
+  $('#popupDelay').css({opacity:0.8}).popup({transition:"pop"}).popup('open');
+  setTimeout(function(){$('#popupDelay').popup('close')},3000);
 }
 
 function loginAction() {

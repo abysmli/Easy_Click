@@ -127,6 +127,7 @@
                 mSkip=15;
                 getExchange();
             }, function(jqXHR, textStatus, errorThrown){
+                mIscroll.iscrollview.refresh();
                 displayNetworkError('#news_page');
             });
         }
@@ -148,6 +149,7 @@
                         this.scrollToElement(lastItemSelector, 400); 
                     }, iscrollview) ); 
                 },function(jqXHR, textStatus, errorThrown){
+                    mIscroll.iscrollview.refresh();
                     displayNetworkError('#news_page');
                 });
             }
