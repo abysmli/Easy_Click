@@ -1286,7 +1286,13 @@ function jqmIscrollviewRemoveLayerXYProps(e) {
       // Fake fullscreen or webview by using custom user agent and removing "Safari" from string
       (IsMobileSafari && !IsIPad ? 60 : 0) +  // Add 60px for space recovered from Mobile Safari address bar
       this.options.wrapperAdd;                // User-supplied fudge-factor if needed
-
+    
+    /*added by liyuan*/
+    alert(device.platform);
+    if(device.platform=="iOS") {
+      newWrapperHeight-=20;
+    };
+    
     this.$wrapper.css("height", newWrapperHeight);
     this._expandScrollerToFillWrapper();
 

@@ -9,13 +9,14 @@
     <link rel="stylesheet" href="resource/stylesheets/jquery.mobile.iscrollview.css" />
     <link rel="stylesheet" href="resource/stylesheets/jquery.mobile.iscrollview-pull.css" />
     <link rel="stylesheet" href="resource/stylesheets/main.css" />
+    <script src="phonegap.js"></script>
     <script src="resource/javascripts/jquery-2.0.3.min.js"></script>
     <script src="resource/javascripts/jquery_mobile/jquery.mobile-1.4.0.min.js"></script>
     <script src="resource/javascripts/jquery.excoloSlider.js"></script>
     <script src="resource/javascripts/iscroll.js"></script>
     <script src="resource/javascripts/jquery.mobile.iscrollview.js"></script>
     <script src="resource/javascripts/main.js"></script>
-    <script src="phonegap.js"></script>
+    
 </head>
 <body>
     <div data-role="page" id="information_catagory_page" class="page_body">
@@ -34,8 +35,7 @@
             </a>
             <h3>资讯</h3>
         </div>
-        <div class="nav_bar_holder" data-iscroll-fixed=""></div>
-        <div class="search_block" data-iscroll-fixed="" >
+        <div class="search_block">
             <form>
                 <div class="ui-field-contain">
                     <select id="key_selector" data-mini="true">
@@ -50,7 +50,7 @@
                 </div>
             </form>
         </div>
-
+        <div style="height:5.3em; display:block;" data-iscroll-fixed=""></div>
         <div data-iscroll="" data-role="content">
             <div class="iscroll-pulldown">
                 <span class="iscroll-pull-icon"></span>
