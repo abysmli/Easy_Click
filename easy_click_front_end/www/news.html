@@ -18,7 +18,7 @@
     <script src="resource/javascripts/main.js"></script>
 </head>
 <body>
-    <div data-role="page" id="news_page" class="page_body">
+    <div data-role="page" id="news_page" class="page_body" data-dom-cache="true">
         <div class="nav_bar">
             <a data-rel="back">
                 <img alt="" src="resource/img/icon_img/icon_back.png"></img>
@@ -76,12 +76,12 @@
 		});
 
         function onDeviceReady_news() {
-            //$("#news_page .iscroll-scroller").css("padding-top","2.8em");
             if(localStorage.NewsIDBuffer) {
                 mIDBuffer=JSON.parse(localStorage.NewsIDBuffer);
             }
             $('#news_list_group').on('click', 'li a', function(){
                 sessionStorage.newsuid = $(this).children('p').attr('id');
+                $(this).children('h2').css("color","#545454");
                 if(mIDBuffer.indexOf(sessionStorage.newsuid)==-1) {
                     mIDBuffer.push(sessionStorage.newsuid);
                     localStorage.NewsIDBuffer = JSON.stringify(mIDBuffer);

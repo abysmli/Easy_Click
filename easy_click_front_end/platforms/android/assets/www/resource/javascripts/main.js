@@ -59,7 +59,7 @@ function showError(pageid, message){
 
 function displayNetworkError(pageid) {
   $("<div data-role='popup' id='popupDelay' data-theme='b'>"+
-    "<p>网络好像断开了o(>_<)o</p>"+
+    "<p>网络没信号了o(>_<)o</p>"+
     "</div>").appendTo(pageid);
   $('#popupDelay').css({opacity:0.8}).popup({transition:"pop"}).popup('open');
   setTimeout(function(){$('#popupDelay').popup('close')},3000);

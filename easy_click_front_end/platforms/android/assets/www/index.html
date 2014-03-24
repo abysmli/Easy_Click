@@ -49,14 +49,14 @@
                 </div>
                 <div class="ui-block-b">
                     <div class="main_nav_icon">
-                        <a href="userpostview.html" data-transition="slide">
+                        <a id="toUserPostView" href="userpostview.html" data-transition="slide">
                             <img alt="" src="resource/img/menu_icon/menu_icon_02.png"></img>
                         </a>
                     </div>
                 </div>
                 <div class="ui-block-a">
                     <div class="main_nav_icon">
-                        <a href="news.html" data-transition="slide">
+                        <a id="toNews" href="news.html" data-transition="slide">
                             <img alt="" src="resource/img/menu_icon/menu_icon_03.png"></img>
                         </a>
                     </div>
@@ -72,6 +72,12 @@
         </div>
         <script>
         $(document).one("pageinit","#main_page", function( event ) {
+            $('#toNews').click(function(){
+                $('#news_page').remove();
+            });
+            $('#toUserPostView').click(function(){
+                $('#user_post_view_page').remove();
+            });
             loginAction();
             $('.main_nav_icon, #main_logo').on('vmousedown','a',function(){
                 $(this).children('img').css({opacity:0.5}).animate({opacity:1},200);

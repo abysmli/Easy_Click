@@ -20,7 +20,7 @@
 <body>
     <div data-role="page" id="news_details_page" class="page_body">
         <div class="nav_bar">
-            <a id="test_back">
+            <a data-rel="back">
                 <img alt="" src="resource/img/icon_img/icon_back.png"></img>
             </a>
             <a data-transition="flip" href="index.html">
@@ -47,20 +47,11 @@
 
             $(document).one("pageinit","#news_details_page", function( event ) {
                 onDeviceReady_news_details();
-                $('#test_back').click(backButton);
             });
-
-            function backButton() {
-                //history.go(-1);
-                navigator.app.backHistory();
-            }
 
             function onDeviceReady_news_details() {
                 $('#news_details_content').hide();
                 checkLocalContent();
-                /*$('#news_details_content').on('click', '#refresh_news_details', function() {
-                    updateContent();
-                });*/
             }
 
             function updateContent() {
