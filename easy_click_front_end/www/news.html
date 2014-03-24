@@ -9,13 +9,13 @@
     <link rel="stylesheet" href="resource/stylesheets/jquery.mobile.iscrollview.css" />
     <link rel="stylesheet" href="resource/stylesheets/jquery.mobile.iscrollview-pull.css" />
     <link rel="stylesheet" href="resource/stylesheets/main.css" />
+    <script src="phonegap.js"></script>
     <script src="resource/javascripts/jquery-2.0.3.min.js"></script>
     <script src="resource/javascripts/jquery_mobile/jquery.mobile-1.4.0.min.js"></script>
     <script src="resource/javascripts/jquery.excoloSlider.js"></script>
     <script src="resource/javascripts/iscroll.js"></script>
     <script src="resource/javascripts/jquery.mobile.iscrollview.js"></script>
     <script src="resource/javascripts/main.js"></script>
-    <script src="phonegap.js"></script>
 </head>
 <body>
     <div data-role="page" id="news_page" class="page_body">
@@ -34,7 +34,6 @@
             </a>
             <h3>时事</h3>
         </div>
-        <div class="nav_bar_holder" data-iscroll-fixed=""></div>
     	<div data-iscroll="" data-role="content">
             <div class="iscroll-pulldown">
                 <span class="iscroll-pull-icon"></span>
@@ -48,6 +47,7 @@
                 <span class="iscroll-pull-label" data-iscroll-loading-text="载入中" data-iscroll-pulled-text="松开立即加载">上拉加载更多</span>
             </div>
 		</div>
+        <div style="height:2.8em; display:block;" data-iscroll-fixed=""></div>
         <div id="floatingCirclesG" class="news_floatingBarsG">
             <div class="f_circleG" id="frotateG_01"></div>
             <div class="f_circleG" id="frotateG_02"></div>
