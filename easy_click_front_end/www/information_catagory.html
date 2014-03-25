@@ -40,12 +40,19 @@
                 <div class="ui-field-contain">
                     <select id="key_selector" data-mini="true">
                         <option value="" selected="selected">分类查找</option>
-                        <option value="">全部分类</option>
-                        <option value="A">数码 电器 手机 电脑 网络</option>
-                        <option value="B">生活 交通 家具 日用 百货</option>
-                        <option value="C">服装 鞋包 配饰 手表 小物 </option>
-                        <option value="D">母婴 护理 彩妆 运动 户外</option>
-                        <option value="E">美食 特产 文化 书籍 娱乐</option>
+                        <option value='A'>料理店 居酒屋 饮食类</option>
+                        <option value='B'>整体 足裹 オイル 美容美发</option>
+                        <option value='C'>清店 アロマ エステ 其它</option>
+                        <option value='D'>スナック クラブ パブ 其它</option>
+                        <option value='E'>清扫 工厂 工地 工事类</option>
+                        <option value='F'>会社商贸 经营业务 事务办公</option>
+                        <option value='G'>计算机 网络 电子技术类</option>
+                        <option value='H'>驾驶 运送 搬运 投递 户外</option>
+                        <option value='I'>生活 服务 家政 介护 福祉</option>
+                        <option value='J'>只做周末 周两三天 短期工作</option>
+                        <option value='K'>可就职 可办签证</option>
+                        <option value='L'>招学员 培训</option>
+                        <option value='Z'>综合 其它</option>
                     </select>
                 </div>
             </form>
@@ -292,6 +299,7 @@
                         }, iscrollview) ); 
                         pullUpflag=false;
                     },function(jqXHR, textStatus, errorThrown){
+                        pullUpflag=false;
                         mIscroll.iscrollview.refresh();
                         displayNetworkError('#information_catagory_page');
                     });

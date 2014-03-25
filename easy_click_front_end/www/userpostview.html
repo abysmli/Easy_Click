@@ -39,7 +39,6 @@
                 <div class="ui-field-contain">
                     <select id="key_selector" data-mini="true">
                         <option value="" selected="selected">分类查找</option>
-                        <option value="">全部分类</option>
                         <option value="A">数码 手机 电器 电脑 网络</option>
                         <option value="B">生活 交通 家具 日用 百货</option>
                         <option value="C">服装 鞋包 配饰 手表 小物 </option>
@@ -213,6 +212,7 @@
                         }, iscrollview) ); 
                         pullUpflag=false;
                     },function(jqXHR, textStatus, errorThrown){
+                        pullUpflag=false;
                         mIscroll.iscrollview.refresh();
                         displayNetworkError('#user_post_view_page');
                     });
