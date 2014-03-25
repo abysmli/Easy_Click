@@ -169,7 +169,7 @@
                 $('#exchange_block').text(exchange.content);
                 localStorage.Exchange = exchange.content;
             },function(jqXHR, textStatus, errorThrown){
-                displayNetworkError('#news_page');
+                $('.news_floatingBarsG').hide();
             });
         }
 
