@@ -9,16 +9,16 @@
     <link rel="stylesheet" href="resource/stylesheets/jquery.mobile.iscrollview.css" />
     <link rel="stylesheet" href="resource/stylesheets/jquery.mobile.iscrollview-pull.css" />
     <link rel="stylesheet" href="resource/stylesheets/main.css" />
+    <script src="phonegap.js"></script>
     <script src="resource/javascripts/jquery-2.0.3.min.js"></script>
     <script src="resource/javascripts/jquery_mobile/jquery.mobile-1.4.0.min.js"></script>
     <script src="resource/javascripts/jquery.excoloSlider.js"></script>
     <script src="resource/javascripts/iscroll.js"></script>
     <script src="resource/javascripts/jquery.mobile.iscrollview.js"></script>
     <script src="resource/javascripts/main.js"></script>
-    <script src="phonegap.js"></script>
 </head>
 <body>
-    <div data-role="page" id="news_page" class="page_body">
+    <div data-role="page" id="news_page" class="page_body" data-dom-cache="true">
         <div class="nav_bar">
             <a data-rel="back">
                 <img alt="" src="resource/img/icon_img/icon_back.png"></img>
@@ -34,7 +34,7 @@
             </a>
             <h3>时事</h3>
         </div>
-        <div class="nav_bar_holder" data-iscroll-fixed=""></div>
+        <div style="height:2.8em; display:block;" data-iscroll-fixed=""></div>
     	<div data-iscroll="" data-role="content">
             <div class="iscroll-pulldown">
                 <span class="iscroll-pull-icon"></span>
@@ -76,12 +76,12 @@
 		});
 
         function onDeviceReady_news() {
-            //$("#news_page .iscroll-scroller").css("padding-top","2.8em");
             if(localStorage.NewsIDBuffer) {
                 mIDBuffer=JSON.parse(localStorage.NewsIDBuffer);
             }
             $('#news_list_group').on('click', 'li a', function(){
                 sessionStorage.newsuid = $(this).children('p').attr('id');
+                $(this).children('h2').css("color","#545454");
                 if(mIDBuffer.indexOf(sessionStorage.newsuid)==-1) {
                     mIDBuffer.push(sessionStorage.newsuid);
                     localStorage.NewsIDBuffer = JSON.stringify(mIDBuffer);
@@ -127,6 +127,7 @@
                 mSkip=15;
                 getExchange();
             }, function(jqXHR, textStatus, errorThrown){
+                mIscroll.iscrollview.refresh();
                 displayNetworkError('#news_page');
             });
         }
@@ -148,6 +149,7 @@
                         this.scrollToElement(lastItemSelector, 400); 
                     }, iscrollview) ); 
                 },function(jqXHR, textStatus, errorThrown){
+                    mIscroll.iscrollview.refresh();
                     displayNetworkError('#news_page');
                 });
             }

@@ -89,6 +89,7 @@
             });
 
             function onDeviceReady_information_catagory(){
+                //$("#information_catagory_page .iscroll-page").css("padding-top","5.1em");
                 $('.nav_bar h3').text(sessionStorage.title);
                 $('#information_catagory').on('vmousedown','a',function(){
                     $(this).parent('div.information_list').css({opacity:0.5}).animate({opacity:1},200);
@@ -266,7 +267,6 @@
                     mIscroll.iscrollview.refresh();
                     mSkip=15;
                 }, function(jqXHR, textStatus, errorThrown){
-                    mIscroll.iscrollview.refresh();
                     displayNetworkError('#information_catagory_page');
                 });
             }
@@ -292,7 +292,6 @@
                         }, iscrollview) ); 
                         pullUpflag=false;
                     },function(jqXHR, textStatus, errorThrown){
-                        mIscroll.iscrollview.refresh();
                         displayNetworkError('#information_catagory_page');
                     });
                 }

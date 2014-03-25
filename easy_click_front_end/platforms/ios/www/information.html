@@ -9,13 +9,14 @@
     <link rel="stylesheet" href="resource/stylesheets/jquery.mobile.iscrollview.css" />
     <link rel="stylesheet" href="resource/stylesheets/jquery.mobile.iscrollview-pull.css" />
     <link rel="stylesheet" href="resource/stylesheets/main.css" />
+    <script src="phonegap.js"></script>
     <script src="resource/javascripts/jquery-2.0.3.min.js"></script>
     <script src="resource/javascripts/jquery_mobile/jquery.mobile-1.4.0.min.js"></script>
     <script src="resource/javascripts/jquery.excoloSlider.js"></script>
     <script src="resource/javascripts/iscroll.js"></script>
     <script src="resource/javascripts/jquery.mobile.iscrollview.js"></script>
     <script src="resource/javascripts/main.js"></script>
-    <script src="phonegap.js"></script>
+    
 </head>
 <body>
     <div data-role="page" id="information_page" class="page_body">
@@ -96,29 +97,29 @@
                 e.preventDefault();
             });
             $('#find_job').click(function(){
-                sessionStorage.index = "find_job";
-                sessionStorage.title = "工作";
+                getinCatagory("find_job", "工作");
             });
             $('#find_house').click(function(){
-                sessionStorage.index = "find_house";
-                sessionStorage.title = "找房";
+                getinCatagory("find_house", "找房");
             });
             $('#move_house').click(function(){
-                sessionStorage.index = "move_house";
-                sessionStorage.title = "搬家";
+                getinCatagory("move_house", "搬家");
             });
             $('#business').click(function(){
-                sessionStorage.index = "business";
-                sessionStorage.title = "商业";
+                getinCatagory("business", "商业");
             });
             $('#ticket').click(function(){
-                sessionStorage.index = "ticket";
-                sessionStorage.title = "机票";
+                getinCatagory("ticket", "机票");
             });
             $('#law').click(function(){
-                sessionStorage.index = "law";
-                sessionStorage.title = "法务";
+                getinCatagory("law", "法务");
             });
+        }
+
+        function getinCatagory(index, title) {
+            sessionStorage.index = index;
+            sessionStorage.title = title;
+            $('#information_catagory_page').remove();
         }
         </script>
     </div>
