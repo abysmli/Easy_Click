@@ -2,9 +2,9 @@ $(document).on("pageinit", ".page_body", function(event) {
   $(document).bind("contextmenu",function(e){   
     return false;   
   });
-  //localStorage.mURL="www.digital-messages.net";
+  localStorage.mURL="www.digital-messages.net";
   //localStorage.mURL="192.168.1.108";
-  localStorage.mURL="37.187.71.48";
+  //localStorage.mURL="37.187.71.48";
   $('.nav_bar').on('vmousedown','a',function(){
     $(this).children('img').css({opacity:0.5}).animate({opacity:1},200);
   });
@@ -18,7 +18,7 @@ function sendAjax(url, data, success, error) {
   $.ajax({
     url: 'http://'+localStorage.mURL+url,
     type:'POST',
-    timeout: 30000,
+    timeout: 20000,
     dataType:'json',
     data: data,
     success: success,
@@ -58,7 +58,11 @@ function showError(pageid, message){
 }
 
 function displayNetworkError(pageid) {
-  showError(pageid,'网络好像断开了o(>_<)o');
+  $("<div data-role='popup' id='popupDelay' data-theme='b'>"+
+    "<p>网络没信号了o(>_<)o</p>"+
+    "</div>").appendTo(pageid);
+  $('#popupDelay').css({opacity:0.8}).popup({transition:"pop"}).popup('open');
+  setTimeout(function(){$('#popupDelay').popup('close')},3000);
 }
 
 function loginAction() {
