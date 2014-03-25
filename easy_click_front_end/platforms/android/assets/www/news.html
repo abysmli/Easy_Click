@@ -127,6 +127,7 @@
                 mSkip=15;
                 getExchange();
             }, function(jqXHR, textStatus, errorThrown){
+                mIscroll.iscrollview.refresh();
                 displayNetworkError('#news_page');
             });
         }
@@ -181,7 +182,7 @@
                     getRemoteContent(newst_date);
                 }
             },function(jqXHR, textStatus, errorThrown){
-                $('.userpostview_floatingBarsG').fadeOut('fast');
+                $('.userpostview_floatingBarsG').hide();
                 displayNetworkError('#news_page');
             });            
         }

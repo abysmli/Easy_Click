@@ -274,6 +274,7 @@
                     mIscroll.iscrollview.refresh();
                     mSkip=15;
                 }, function(jqXHR, textStatus, errorThrown){
+                    mIscroll.iscrollview.refresh();
                     displayNetworkError('#information_catagory_page');
                 });
             }
@@ -324,6 +325,7 @@
                         getRemoteContent(newst_date);
                     }
                 },function(jqXHR, textStatus, errorThrown){
+                    $('.information_catagory_floatingBarsG').hide();
                     displayNetworkError('#information_catagory_page');
                 });
             }

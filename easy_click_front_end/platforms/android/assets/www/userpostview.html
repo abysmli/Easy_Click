@@ -187,6 +187,7 @@
                     mIscroll.iscrollview.refresh();
                     mSkip=15;
                 }, function(jqXHR, textStatus, errorThrown){
+                    mIscroll.iscrollview.refresh();
                     displayNetworkError('#user_post_view_page');
                 });
             }
@@ -233,6 +234,7 @@
                         getRemoteContent(newst_date);
                     }
                 },function(jqXHR, textStatus, errorThrown){
+                    $('.userpostview_floatingBarsG').hide();
                     displayNetworkError('#user_post_view_page');
                 });
             }
