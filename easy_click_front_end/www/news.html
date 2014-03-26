@@ -67,13 +67,14 @@
             mKey=$('#search_input').val(),
             mIDBuffer=[];
 
-		$(document).one("pageinit","#news_page", function( event ) {
+        $(document).one("pageinit","#news_page", function( event ) {
             $(".iscroll-wrapper", this).bind({
                 iscroll_onpulldown : onPullDown,
                 iscroll_onpullup   : onPullUp
             });
-            onDeviceReady_news();
-		});
+        });
+
+        document.addEventListener("deviceready", onDeviceReady_news, false);
 
         function onDeviceReady_news() {
             if(localStorage.NewsIDBuffer) {
@@ -211,7 +212,7 @@
             var News = JSON.parse(localStorage.NewsCatagory);
             $('.news_floatingBarsG').hide();
             $.each(News, insertNewsCatagory);
-            $('#news_list_group').listview('refresh');
+            //$('#news_list_group').listview('refresh');
         }
 		</script>
 	</div>

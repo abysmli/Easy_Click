@@ -47,12 +47,17 @@
             </div>
         </div>
         <script>
-        $(document).one("pageinit","#about_page", function( event ) {
+
+        document.addEventListener("deviceready", onDeviceReady_about, false);
+
+        function onDeviceReady_about() {
             $('#clear_buffer').click(function(){
                 clearbufferAction();
                 showSuccess("#about_page","已清空所有缓存!");
             });
-        });
+        }
+        // $(document).one("pageinit","#about_page", function( event ) {
+        // });
         </script>
     </div>
 </div>

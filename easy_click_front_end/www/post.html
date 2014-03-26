@@ -77,9 +77,11 @@
         var uploadImag=[];
         var image_counter=0;
 
-        $(document).one("pageinit","#post_page", function( event ) {
-            onDeviceReady_post();
-        });
+        document.addEventListener("deviceready", onDeviceReady_post, false);
+
+        // $(document).one("pageinit","#post_page", function( event ) {
+        //     onDeviceReady_post();
+        // });
 
         function onDeviceReady_post() {
             $('.post_floatingBarsG').hide();

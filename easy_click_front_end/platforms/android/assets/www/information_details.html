@@ -57,9 +57,11 @@
         <script>
             var mInformationDetails = new Array();
             
-            $(document).one("pageinit","#information_details_page", function( event ) {
-                onDeviceReady_information_details();
-            });
+            document.addEventListener("deviceready", onDeviceReady_information_details, false);
+            
+            // $(document).one("pageinit","#information_details_page", function( event ) {
+            //     onDeviceReady_information_details();
+            // });
 
             function onDeviceReady_information_details(){
                 $('.nav_bar h3').text(sessionStorage.title);

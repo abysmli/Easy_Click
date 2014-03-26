@@ -66,9 +66,11 @@
             </ul>
         </div>
         <script>
-        $(document).one("pageinit","#post_selector_page", function( event ) {
-            onDeviceReady_post_selector();
-        });
+        document.addEventListener("deviceready", onDeviceReady_post_selector, false);
+        
+        // $(document).one("pageinit","#post_selector_page", function( event ) {
+        //     onDeviceReady_post_selector();
+        // });
 
         $(document).one("pageshow","#post_selector_page", function( event ) {
             if(sessionStorage.LoginSuccess) {

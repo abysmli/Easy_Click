@@ -39,9 +39,11 @@
             </ul>
 		</div>
 		<script>
-    		$(document).one("pageinit","#learning_catagory_page", function( event ) {
-                onDeviceReady_learning_catagory();
-    		});
+            document.addEventListener("deviceready", onDeviceReady_learning_catagory, false);
+
+    		// $(document).one("pageinit","#learning_catagory_page", function( event ) {
+      //           onDeviceReady_learning_catagory();
+    		// });
 
             function onDeviceReady_learning_catagory() {
                 $('.nav_bar h3').text(sessionStorage.learningtitle);
@@ -103,7 +105,7 @@
                 var learnings = JSON.parse(localcontent);
                 $('.learning_catagory_floatingBarsG').hide();
                 $.each(learnings, insertLearningList);
-                $('#learning_list').listview('refresh');
+                // $('#learning_list').listview('refresh');
             }
 
             function insertLearningList(key, learn) {

@@ -49,14 +49,14 @@
                 </div>
                 <div class="ui-block-b">
                     <div class="main_nav_icon">
-                        <a id="toUserPostView" href="userpostview.html" data-transition="slide">
+                        <a id="toUserPostView" data-transition="slide">
                             <img alt="" src="resource/img/menu_icon/menu_icon_02.png"></img>
                         </a>
                     </div>
                 </div>
                 <div class="ui-block-a">
                     <div class="main_nav_icon">
-                        <a id="toNews" href="news.html" data-transition="slide">
+                        <a id="toNews" data-transition="slide">
                             <img alt="" src="resource/img/menu_icon/menu_icon_03.png"></img>
                         </a>
                     </div>
@@ -71,20 +71,22 @@
             </div>
         </div>
         <script>
-        $(document).one("pageinit","#main_page", function( event ) {
+        document.addEventListener("deviceready", onDeviceReady_index, false);
+        // $(document).one("pageinit","#main_page", function( event ) {
+        // });
+        function onDeviceReady_index(){
+            loginAction();
             $('#toNews').click(function(){
                 $('#news_page').remove();
+                $.mobile.changePage( "news.html", { transition: "slide" });
             });
             $('#toUserPostView').click(function(){
                 $('#user_post_view_page').remove();
+                $.mobile.changePage( "userpostview.html", { transition: "slide" });
             });
-            loginAction();
             $('.main_nav_icon, #main_logo').on('vmousedown','a',function(){
                 $(this).children('img').css({opacity:0.5}).animate({opacity:1},200);
             });
-            document.addEventListener("deviceready", onDeviceReady_index, false);
-        });
-        function onDeviceReady_index(){
             var string = device.platform;
             if (string == "Android") {
             } else if (string == "iOS") {

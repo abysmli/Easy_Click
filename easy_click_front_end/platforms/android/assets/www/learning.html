@@ -95,9 +95,11 @@
 			interval: 15000,
 		});
 
-		$(document).one("pageinit","#learning_page", function( event ) {
-			onDeviceReady_learning();
-		});
+		document.addEventListener("deviceready", onDeviceReady_learning, false);
+		
+		// $(document).one("pageinit","#learning_page", function( event ) {
+		// 	onDeviceReady_learning();
+		// });
 
 		function onDeviceReady_learning() {
 			$('.learning_nav').on('vmousedown','a',function(){

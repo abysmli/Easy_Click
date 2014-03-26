@@ -56,9 +56,11 @@
         <script>
             var mUserPostDetails=new Array();
 
-            $(document).one("pageinit","#userpostview_details_page", function( event ) {
-                onDeviceReady_userpostview_details();
-            });
+            document.addEventListener("deviceready", onDeviceReady_userpostview_details, false);
+
+            // $(document).one("pageinit","#userpostview_details_page", function( event ) {
+            //     onDeviceReady_userpostview_details();
+            // });
 
             function onDeviceReady_userpostview_details() {
                 $('#userpostview_details_content').hide();

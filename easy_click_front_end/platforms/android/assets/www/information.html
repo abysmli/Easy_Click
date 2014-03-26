@@ -84,17 +84,13 @@
             </div>
         </div>
         <script>
-        $(document).one("pageinit","#information_page", function( event ) {
-            onDeviceReady_information();
-        });
+        document.addEventListener("deviceready", onDeviceReady_information, false);
+        // $(document).one("pageinit","#information_page", function( event ) {
+        //     onDeviceReady_information();
+        // });
         function onDeviceReady_information() {
-            $(window).unbind('scroll');
             $('.main_nav_icon').on('vmousedown','a',function(){
                 $(this).children('img').css({opacity:0.5}).animate({opacity:1},200);
-            });
-            $('#search_bar').submit(function(e){
-                return false;
-                e.preventDefault();
             });
             $('#find_job').click(function(){
                 getinCatagory("find_job", "工作");

@@ -54,9 +54,12 @@
             </div>
         </div>
         <script>
-        $(document).one("pageinit","#login_page", function( event ) {
-            onDeviceReady_login();
-        });
+        document.addEventListener("deviceready", onDeviceReady_login, false);
+
+        // $(document).one("pageinit","#login_page", function( event ) {
+        //     onDeviceReady_login();
+        // });
+
         function onDeviceReady_login() {
             $('#Error_Message_Block_Login').hide();
             $('#login_form').submit(function(e){

@@ -38,8 +38,8 @@
         <div class="search_block">
             <form>
                 <div class="ui-field-contain">
-                    <select id="key_selector" data-mini="true">
-                        <option value="" selected="selected">分类查找</option>
+                    <select id="key_selector" onchange="changeSelector()" data-mini="true">
+                        <option value="" selected="selected">全部分类</option>
                         <option value='A'>料理店 居酒屋 饮食类</option>
                         <option value='B'>整体 足裹 オイル 美容美发</option>
                         <option value='C'>清店 アロマ エステ 其它</option>
@@ -92,8 +92,9 @@
                     iscroll_onpulldown : onPullDown,
                     iscroll_onpullup   : onPullUp
                 });
-                onDeviceReady_information_catagory();
             });
+
+            document.addEventListener("deviceready", onDeviceReady_information_catagory, false);
 
             function onDeviceReady_information_catagory(){
                 //$("#information_catagory_page .iscroll-page").css("padding-top","5.1em");
@@ -103,9 +104,6 @@
                 });
                 $('#information_catagory').on('click', '.information_list a', function(){
                     sessionStorage.uid = $(this).parent('div.information_list').attr('id');
-                });
-                $('#key_selector').change(function(){
-                    changeSelector();
                 });
                 checkIndex();
             }

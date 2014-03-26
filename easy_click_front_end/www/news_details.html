@@ -45,9 +45,11 @@
         <script>
             var mNewsDetails = new Array();
 
-            $(document).one("pageinit","#news_details_page", function( event ) {
-                onDeviceReady_news_details();
-            });
+            document.addEventListener("deviceready", onDeviceReady_news_details, false);
+
+            // $(document).one("pageinit","#news_details_page", function( event ) {
+            //     onDeviceReady_news_details();
+            // });
 
             function onDeviceReady_news_details() {
                 $('#news_details_content').hide();
