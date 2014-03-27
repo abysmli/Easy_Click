@@ -181,7 +181,7 @@
                 $('#information_block_back').html("");
                 if(post.location.length!=0){
                     $('#information_block_back').append(
-                        "<div data-role='fieldcontain'>"+
+                        "<div>"+
                             "<div class='content_block'>"+
                                 "<div>"+
                                     "<img src='resource/img/icon_img/icon_content_address.png'></img>"+
@@ -201,7 +201,7 @@
                         finnumber+="<pre><a href='tel:"+number.replace(/[^\d.]/g,'')+"'>"+number+"</a></pre>";
                     });
                     $('#information_block_back').append(
-                        "<div data-role='fieldcontain'>"+
+                        "<div>"+
                             "<div class='content_block'>"+
                                 "<div>"+
                                     "<img src='resource/img/icon_img/icon_content_telephone.png'></img>"+
@@ -216,7 +216,7 @@
                 }
                 if(post.price.length!=0){
                     $('#information_block_back').append(
-                        "<div data-role='fieldcontain'>"+
+                        "<div>"+
                             "<div class='content_block'>"+
                                 "<div>"+
                                     "<img src='resource/img/icon_img/icon_content_price.png'></img>"+

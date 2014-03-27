@@ -136,6 +136,7 @@
             }
 
             function insertInformationDetails(shop){
+                alert(JSON.stringify(shop));
                 if (shop.img.length != 0) {
                     if (Object.prototype.toString.call(shop.img) === '[object Array]') { 
                         $('#information_details_slider').html("");
@@ -184,7 +185,7 @@
                 $('#information_block_back').html("");
                 if(shop.name.length!=0){
                     $('#information_block_back').append(
-                        "<div data-role='fieldcontain'>"+
+                        "<div>"+
                         "<div class='content_block'>"+
                         "<div>"+
                         "<img src='resource/img/icon_img/icon_content_name.png'></img>"+
@@ -199,7 +200,7 @@
                 }
                 if(shop.brief.length!=0){
                     $('#information_block_back').append(
-                        "<div data-role='fieldcontain'>"+
+                        "<div>"+
                         "<div class='content_block'>"+
                         "<div>"+
                         "<img src='resource/img/icon_img/icon_content_brief.png'></img>"+
@@ -214,7 +215,7 @@
                 }
                 if(shop.comment.length!=0){
                     $('#information_block_back').append(
-                        "<div data-role='fieldcontain'>"+
+                        "<div>"+
                         "<div class='content_block'>"+
                         "<div>"+
                         "<img src='resource/img/icon_img/icon_content_comment.png'></img>"+
@@ -234,7 +235,7 @@
                         finnumber+="<pre><a href='tel:"+number.replace(/[^\d.]/g,'')+"'>"+number+"</a></pre>";
                     });
                     $('#information_block_back').append(
-                        "<div data-role='fieldcontain'>"+
+                        "<div>"+
                         "<div class='content_block'>"+
                         "<div>"+
                         "<img src='resource/img/icon_img/icon_content_telephone.png'></img>"+
@@ -249,7 +250,7 @@
                 }
                 if(shop.email.length!=0){
                     $('#information_block_back').append(
-                        "<div data-role='fieldcontain'>"+
+                        "<div>"+
                         "<div class='content_block'>"+
                         "<div>"+
                         "<img src='resource/img/icon_img/icon_content_email.png'></img>"+
@@ -264,7 +265,7 @@
                 }
                 if(shop.url.length!=0){
                     $('#information_block_back').append(
-                        "<div data-role='fieldcontain'>"+
+                        "<div>"+
                         "<div class='content_block'>"+
                         "<div>"+
                         "<img src='resource/img/icon_img/icon_content_url.png'></img>"+
@@ -280,7 +281,7 @@
                 }     
                 if(shop.address.length!=0){
                     $('#information_block_back').append(
-                        "<div data-role='fieldcontain'>"+
+                        "<div>"+
                         "<div class='content_block'>"+
                         "<div>"+
                         "<img src='resource/img/icon_img/icon_content_address.png'></img>"+
@@ -295,7 +296,7 @@
                 }
                 if(shop.path.length!=0){
                     $('#information_block_back').append(
-                        "<div data-role='fieldcontain'>"+
+                        "<div>"+
                         "<div class='content_block'>"+
                         "<div>"+
                         "<img src='resource/img/icon_img/icon_content_path.png'></img>"+
