@@ -1,4 +1,3 @@
-var mongodb = require('./db');
 module.exports = Learn;
 
 function Learn(index, title, content, img, date, uid) {

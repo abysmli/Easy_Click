@@ -1,4 +1,3 @@
-var mongodb = require('./db');
 module.exports = Message;
 
 function Message(username, sender, message, date, readed, uid) {

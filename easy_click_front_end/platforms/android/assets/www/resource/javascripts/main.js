@@ -87,6 +87,12 @@ function logoutAction() {
   sendAjax('/app_logout',"");
 }
 
+function removeCache() {
+  $('#information_catagory_page').remove();
+  $('#news_page').remove();
+  $('#user_post_view_page').remove();
+}
+
 function clearbufferAction() {
   localStorage.removeItem('informationFindJobCatagory');
   localStorage.removeItem('informationFindHouseCatagory');

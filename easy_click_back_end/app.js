@@ -7,7 +7,6 @@ var settings = require('./settings');
 var MongoStore = require('connect-mongo')(express);
 var partials = require('express-partials');
 var flash = require('connect-flash');
-var mongodb = require('./models/db');
 var fs = require('fs');
 var accessLogfile = fs.createWriteStream('./logs/access.log',{flags: 'a'});
 var app = express();
@@ -17,9 +16,9 @@ app.configure(function() {
   app.set('views', __dirname + '/views');
   app.set('view engine', 'ejs');
   app.use(partials());
-  //app.use(express.json({limit: '50mb'}));
-  //app.use(express.urlencoded({limit: '50mb'}));
-  app.use(express.bodyParser({limit: '50mb'}));
+  app.use(express.json({limit: '50mb'}));
+  app.use(express.urlencoded({limit: '50mb'}));
+  app.use(express.multipart({limit: '50mb'}));
   app.use(express.methodOverride());
   app.use(express.cookieParser());
   app.use(express.logger({stream: accessLogfile}));
@@ -57,20 +56,6 @@ app.configure(function() {
     else res.locals.success = null;
     next();
   });
-});
-
-var mDatabase;
-mongodb.openDatabase(function(err, db){
-  if(err){
-    console.log(err);
-    process.exit(1);
-  }
-  mDatabase = db;
-});
-
-app.all('*', function(req, res, next) {
-  req.database = mDatabase;
-  next();
 });
 
 routes(app);

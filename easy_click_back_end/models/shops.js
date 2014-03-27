@@ -1,6 +1,4 @@
-var mongodb = require('./db');
 var utils = require('../utils/utils.js');
-var assert = require('assert');
 module.exports = Shops;
 
 function Shops(username, index, title, instruction, name, brief, comment, telephone, email, url, address, path, expire, tags, prevtext, prevtext2, previmg, img, date, uid) {

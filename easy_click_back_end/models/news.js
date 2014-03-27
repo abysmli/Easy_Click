@@ -1,4 +1,3 @@
-var mongodb = require('./db');
 module.exports = News;
 
 function News(index, title, sub_title, source, sourceurl, newsdate, content, previmg, img, date, uid) {

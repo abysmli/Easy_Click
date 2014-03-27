@@ -1,4 +1,3 @@
-var mongodb = require('./db');
 module.exports = Modules;
 
 function Modules(id, content, date) {

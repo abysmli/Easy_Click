@@ -1,4 +1,3 @@
-var mongodb = require('./db');
 module.exports = Shops_buffer;
 
 function Shops_buffer(title, content, img, user, date, handled) {

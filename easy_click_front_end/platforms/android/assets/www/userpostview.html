@@ -104,9 +104,6 @@
                 $('#post_list').on('vmousedown','a',function(){
                     $(this).parent('div.userpost_list').css({opacity:0.5}).animate({opacity:1},200);
                 });
-                $('#key_selector').change(function(){
-                    changeSelector();
-                });
                 if(localStorage.UserPostCatagory) {
                     getLocalContent();
                 }

@@ -11,6 +11,7 @@ var Modules = require('../models/modules.js');
 var util = require('util');
 var async = require('async');
 var utils = require('../utils/utils.js');
+var mongodb = require('../models/db');
 
 module.exports = function(app) {
   app.get('/', function(req, res) {
@@ -28,7 +29,7 @@ module.exports = function(app) {
   });
 
   app.get('/information/:catagory', function(req, res) {
-    Shops.getList_expire(req.database, req.params.catagory, "", 0, 15, function(err, shops) {
+    Shops.getList_expire(mongodb, req.params.catagory, "", 0, 15, function(err, shops) {
       if (err) {
         shops = [];
       }
@@ -79,7 +80,7 @@ module.exports = function(app) {
       {
         res.render('./information/information_blocks', {layout: false});
       } else {
-        Shops.getList_expire(req.database, mIndex, req.body.key, req.body.skip, req.body.limit, function(err, shops) {
+        Shops.getList_expire(mongodb, mIndex, req.body.key, req.body.skip, req.body.limit, function(err, shops) {
           if (err) {
             shops = [];
           }
@@ -105,7 +106,7 @@ module.exports = function(app) {
       } else if (req.body.index == "法务"){
         mIndex = 'law';
       }
-      Shops.getList_expire(req.database, mIndex, req.body.key, req.body.skip, req.body.limit, function(err, shops) {
+      Shops.getList_expire(mongodb, mIndex, req.body.key, req.body.skip, req.body.limit, function(err, shops) {
         if (err) {
           shops = [];
         }
@@ -119,7 +120,7 @@ module.exports = function(app) {
   });
 
   app.get('/information/:catagory/:details', function(req, res) {
-    Shops.getbyUid(req.database, req.params.details, function(err, shop) {
+    Shops.getbyUid(mongodb, req.params.details, function(err, shop) {
       if (err) {
         req.flash('error', err);
         return res.redirect('/information');
@@ -134,7 +135,7 @@ module.exports = function(app) {
   });
 
   app.get('/remove_information', function(req, res) {
-    Shops.remove(req.database, function(err) {
+    Shops.remove(mongodb, function(err) {
       if (err) {
         req.flash('error', err);
         return res.redirect('/background/information');
@@ -146,7 +147,7 @@ module.exports = function(app) {
   });
 
   app.get('/remove_information_buffer', function(req, res) {
-    Shops_buffer.remove(req.database, function(err) {
+    Shops_buffer.remove(mongodb, function(err) {
       if (err) {
         req.flash('error', err);
         return res.redirect('/background/information');
@@ -157,7 +158,7 @@ module.exports = function(app) {
   });
 
   app.get('/remove_information/:uid', function(req, res) {
-    Shops.removebyUid(req.database, req.params.uid, function(err) {
+    Shops.removebyUid(mongodb, req.params.uid, function(err) {
       if (err) {
         req.flash('error', err);
         return res.redirect('/background/information_editor_list/');
@@ -168,7 +169,7 @@ module.exports = function(app) {
   });
 
   app.get('/remove_information_buffer/:uid', function(req, res) {
-    Shops_buffer.removebyUid(req.database, req.params.uid, function(err) {
+    Shops_buffer.removebyUid(mongodb, req.params.uid, function(err) {
       if (err) {
         req.flash('error', err);
         return res.redirect('/background/information');
@@ -187,7 +188,7 @@ module.exports = function(app) {
 
   app.post('/shop_post', function(req, res, next) {
     var shop = new Shops_buffer(req.body.title, req.body.content, utils.getImageString(req.files.image), req.session.user.name);
-    shop.save(req.database, function(err) {
+    shop.save(mongodb, function(err) {
       if (err) {
         req.flash('error', err);
         return res.redirect('/message-box');
@@ -198,7 +199,7 @@ module.exports = function(app) {
   });
 
   app.get('/user_post_view', function(req, res) {
-    Posts.getAll(req.database,'', 0, 15, function(err, posts) {
+    Posts.getAll(mongodb,'', 0, 15, function(err, posts) {
       if (err) {
         posts = [];
       }
@@ -211,7 +212,7 @@ module.exports = function(app) {
   });
 
   app.get('/user_post_view/:details', function(req, res) {
-    Posts.getbyUid(req.database, req.params.details, function(err, post) {
+    Posts.getbyUid(mongodb, req.params.details, function(err, post) {
       if (err) {
         req.flash('error', err);
         return res.redirect('/user_post_view');
@@ -225,7 +226,7 @@ module.exports = function(app) {
   });
 
   app.post('/user_post_view/post_list', function(req, res) {
-    Posts.getAll(req.database, req.body.key, req.body.skip, req.body.limit, function(err, posts) {
+    Posts.getAll(mongodb, req.body.key, req.body.skip, req.body.limit, function(err, posts) {
       if (err) {
         posts = [];
       }
@@ -244,7 +245,7 @@ module.exports = function(app) {
   });
 
   app.get('/remove_post', function(req, res) {
-    Posts.remove(req.database, function(err) {
+    Posts.remove(mongodb, function(err) {
       if (err) {
         req.flash('error', err);
         return res.redirect('/background/user_post');
@@ -256,7 +257,7 @@ module.exports = function(app) {
   });
 
   app.get('/remove_post/:uid', function(req, res) {
-    Posts.removebyUid(req.database, req.params.uid, function(err) {
+    Posts.removebyUid(mongodb, req.params.uid, function(err) {
       if (err) {
         req.flash('error', err);
         return res.redirect('/background/user_post_editor_list');
@@ -267,7 +268,7 @@ module.exports = function(app) {
   });
 
   app.get('/remove_post_buffer', function(req, res) {
-    Posts_buffer.remove(req.database, function(err) {
+    Posts_buffer.remove(mongodb, function(err) {
       if (err) {
         req.flash('error', err);
         return res.redirect('/background/user_post');
@@ -279,7 +280,7 @@ module.exports = function(app) {
   });
 
   app.get('/remove_post_buffer/:uid', function(req, res) {
-    Posts_buffer.removebyUid(req.database, req.params.uid, function(err) {
+    Posts_buffer.removebyUid(mongodb, req.params.uid, function(err) {
       if (err) {
         req.flash('error', err);
         return res.redirect('/background/user_post');
@@ -291,7 +292,7 @@ module.exports = function(app) {
 
   app.post('/post', function(req, res) {
     var post = new Posts_buffer(req.session.user.name, req.body.location, req.body.content, req.body.contact, req.body.price, false, utils.getImageString(req.files.image));
-    post.save(req.database, function(err) {
+    post.save(mongodb, function(err) {
       if (err) {
         req.flash('error', err);
         return res.redirect('/user_post_view');
@@ -302,7 +303,7 @@ module.exports = function(app) {
   });
 
   app.get('/news', function(req, res) {
-    News.getAll(req.database, 0, 15, function(err, news) {
+    News.getAll(mongodb, 0, 15, function(err, news) {
       if (err) {
         req.flash('error', err);
         return res.redirect('/news');
@@ -316,7 +317,7 @@ module.exports = function(app) {
   });
 
   app.post('/news/list', function(req, res) {
-    News.getAll(req.database, req.body.skip, req.body.limit, function(err, news) {
+    News.getAll(mongodb, req.body.skip, req.body.limit, function(err, news) {
       if (err) {
         news = [];
       }
@@ -328,7 +329,7 @@ module.exports = function(app) {
   });
 
   app.get('/news/:uid', function(req, res) {
-    News.getbyUid(req.database, req.params.uid, function(err, news) {
+    News.getbyUid(mongodb, req.params.uid, function(err, news) {
       if (err) {
         req.flash('error', err);
         return res.redirect('/news');
@@ -342,7 +343,7 @@ module.exports = function(app) {
   });
 
   app.get('/remove_news', function(req, res) {
-    News.remove(req.database, function(err) {
+    News.remove(mongodb, function(err) {
       if (err) {
         req.flash('error', err);
         return res.redirect('/background/news');
@@ -354,7 +355,7 @@ module.exports = function(app) {
   });
 
   app.get('/remove_news/:uid', function(req, res) {
-    News.removebyUid(req.database, req.params.uid, function(err) {
+    News.removebyUid(mongodb, req.params.uid, function(err) {
       if (err) {
         req.flash('error', err);
         return res.redirect('/background/news');
@@ -372,7 +373,7 @@ module.exports = function(app) {
   });
 
   app.get('/learning/:catagory/:uid', function(req, res) {
-    Learn.getbyUid(req.database, req.params.uid, function(err, learn) {
+    Learn.getbyUid(mongodb, req.params.uid, function(err, learn) {
       var mTitle;
       if (req.params.catagory == "vocabulary") {
           mTitle = '常用单词';
@@ -394,7 +395,7 @@ module.exports = function(app) {
   });
 
   app.get('/learning/:learning', function(req, res) {
-    Learn.getbyIndex(req.database, req.params.learning, function(err, learns) {
+    Learn.getbyIndex(mongodb, req.params.learning, function(err, learns) {
       if (err) {
         req.flash('error', err);
         return res.redirect('/learning');
@@ -434,7 +435,7 @@ module.exports = function(app) {
   });
 
   app.get('/remove_learnings', function(req, res) {
-    Learn.remove(req.database, function(err) {
+    Learn.remove(mongodb, function(err) {
       if (err) {
         req.flash('error', err);
         return res.redirect('/background/learning');
@@ -446,7 +447,7 @@ module.exports = function(app) {
   });
 
   app.get('/remove_learnings/:uid', function(req, res) {
-    Learn.removebyUid(req.database, req.params.uid, function(err) {
+    Learn.removebyUid(mongodb, req.params.uid, function(err) {
       if (err) {
         req.flash('error', err);
         return res.redirect('/background/learning');
@@ -507,7 +508,7 @@ module.exports = function(app) {
 
   app.get('/message-box', function(req, res) {
     if (req.session.user) {
-      Messages.getbyUsername(req.database, req.session.user.name, function(err, messages) {
+      Messages.getbyUsername(mongodb, req.session.user.name, function(err, messages) {
         if (err) {
           messages = [];
         }
@@ -526,7 +527,7 @@ module.exports = function(app) {
   });
 
   app.get('/remove_messages', function(req, res) {
-    Messages.remove(req.database, function(err) {
+    Messages.remove(mongodb, function(err) {
       if (err) {
         req.flash('error', err);
         return res.redirect('/');
@@ -538,7 +539,7 @@ module.exports = function(app) {
   });
 
   app.get('/remove_messages/:uid', function(req, res) {
-    Messages.removebyUid(req.database, req.params.uid, function(err) {
+    Messages.removebyUid(mongodb, req.params.uid, function(err) {
       if (err) {
         req.flash('error', err);
         return res.redirect('/message-box');
@@ -575,13 +576,13 @@ module.exports = function(app) {
       name: req.body.username,
       password: password,
     });
-    User.get(req.database, newUser.name, function(err, user) {
+    User.get(mongodb, newUser.name, function(err, user) {
       if (user) err = '用户已经存在';
       if (err) {
         req.flash('error', err);
         return res.redirect('/reg');
       }
-      newUser.save(req.database, function(err) {
+      newUser.save(mongodb, function(err) {
         if (err) {
           req.flash('error', err);
           return res.redirect('/reg');
@@ -607,7 +608,7 @@ module.exports = function(app) {
     req.body.username = req.body.username.toLowerCase();
     var md5 = crypto.createHash('md5');
     var password = md5.update(req.body.password).digest('base64');
-    User.get(req.database, req.body.username, function(err, user) {
+    User.get(mongodb, req.body.username, function(err, user) {
       if (!user) {
         req.flash('error', '用户不存在!');
         return res.redirect('/login');
@@ -632,7 +633,7 @@ module.exports = function(app) {
 
   app.get('/u/:username', function(req, res) {
     if(req.session.user.name===req.params.username) {
-      Posts.getbyUsername(req.database, req.session.user.name, function(err, posts) {
+      Posts.getbyUsername(mongodb, req.session.user.name, function(err, posts) {
         if (err) {
           posts = [];
         }
@@ -650,7 +651,7 @@ module.exports = function(app) {
   });
 
   app.get('/u/:username/:details', function(req, res) {
-    Posts.getbyUid(req.database, req.params.details, function(err, post) {
+    Posts.getbyUid(mongodb, req.params.details, function(err, post) {
       if (err) {
         req.flash('error', err);
         return res.redirect('/u/'+req.params.username);
@@ -663,7 +664,7 @@ module.exports = function(app) {
   });
 
   app.get('/u/:username/remove/:uid', function(req, res) {
-    Posts.removebyUid(req.database, req.params.uid, function(err) {
+    Posts.removebyUid(mongodb, req.params.uid, function(err) {
       if (err) {
         req.flash('error', err);
         return res.redirect('/');
@@ -681,7 +682,7 @@ module.exports = function(app) {
   });
 
   app.get('/background/news', function(req, res) {
-    News.getAll(req.database, 0, 0, function(err, news) {
+    News.getAll(mongodb, 0, 0, function(err, news) {
       res.render('./background/news', {
         layout: './background/background_layout',
         title: '后台管理系统-新闻',
@@ -692,7 +693,7 @@ module.exports = function(app) {
 
   app.post('/background/news', function(req, res) {
     var news = new News("", req.body.title, req.body.sub_title, req.body.source, req.body.sourceurl, req.body.newsdate, req.body.content, utils.getImageString(req.files.previmg), utils.getImageString(req.files.img));
-    news.save(req.database, function(err) {
+    news.save(mongodb, function(err) {
       if (err) {
         req.flash('error', err);
         return res.redirect('/background/news');
@@ -703,7 +704,7 @@ module.exports = function(app) {
   });
 
   app.get('/background/news/:uid', function(req, res) {
-    News.getbyUid(req.database, req.params.uid, function(err, news) {
+    News.getbyUid(mongodb, req.params.uid, function(err, news) {
       res.render('./background/news_editor', {
         layout: './background/background_layout',
         title: '后台管理系统-新闻',
@@ -714,7 +715,7 @@ module.exports = function(app) {
 
   app.post('/background/news/:uid', function(req, res) {
     var news = new News("", req.body.title, req.body.sub_title, req.body.source, req.body.sourceurl, req.body.newsdate, req.body.content, utils.getImageString(req.files.previmg), utils.getImageString(req.files.img));
-    news.modifybyUid(req.database, req.params.uid, function(err) {
+    news.modifybyUid(mongodb, req.params.uid, function(err) {
       if (err) {
         req.flash('error', err);
         return res.redirect('/background/news');
@@ -734,7 +735,7 @@ module.exports = function(app) {
   app.post('/background/users', function(req, res) {
     var message;
     message = new Messages(req.body.recv, "admin", req.body.content);
-    message.save(req.database, function(err) {
+    message.save(mongodb, function(err) {
       if (err) {
         req.flash('error', err);
         return res.redirect('/background/users');
@@ -745,7 +746,7 @@ module.exports = function(app) {
   });
 
   app.get('/background/information', function(req, res) {
-    Shops_buffer.getAll(req.database, function(err, shops) {
+    Shops_buffer.getAll(mongodb, function(err, shops) {
       if (err) {
         shops = [];
       }
@@ -780,12 +781,12 @@ module.exports = function(app) {
       sIndex = 'law';
     }
     var shop = new Shops(req.body.username, sIndex, req.body.title, req.body.instruction, req.body.name, req.body.brief, req.body.comment, req.body.telephone, req.body.email, req.body.url, req.body.address, req.body.path, req.body.expire, req.body.tags, req.body.prevtext, req.body.prevtext2, utils.getImageString(req.files.previmage), utils.getImageString(req.files.image));
-    shop.save(req.database, function(err) {
+    shop.save(mongodb, function(err) {
       if (err) {
         req.flash('error', err);
         return res.redirect('/background/information_editor_list');
       }
-      Shops_buffer.setHandled(req.database, req.params.uid, function(err) {
+      Shops_buffer.setHandled(mongodb, req.params.uid, function(err) {
         if (err) {
           req.flash('error', err);
           return res.redirect('/background/information_editor_list');
@@ -797,7 +798,7 @@ module.exports = function(app) {
   });
 
   app.get('/background/information/:uid', function(req, res) {
-    Shops_buffer.getbyUid(req.database, req.params.uid, function(err, shop) {
+    Shops_buffer.getbyUid(mongodb, req.params.uid, function(err, shop) {
       if (err) {
         req.flash('error', err);
         return res.redirect('/background/information');
@@ -826,12 +827,12 @@ module.exports = function(app) {
       sIndex = 'law';
     }
     var shop = new Shops(req.body.username, sIndex, req.body.title, req.body.instruction, req.body.name, req.body.brief, req.body.comment, req.body.telephone, req.body.email, req.body.url, req.body.address, req.body.path, req.body.expire, req.body.tags, req.body.prevtext, req.body.prevtext2, utils.getImageString(req.files.previmage), utils.getImageString(req.files.image));
-    shop.save(req.database, function(err) {
+    shop.save(mongodb, function(err) {
       if (err) {
         req.flash('error', err);
         return res.redirect('/background/information');
       }
-      Shops_buffer.setHandled(req.database, req.params.uid, function(err) {
+      Shops_buffer.setHandled(mongodb, req.params.uid, function(err) {
         if (err) {
           req.flash('error', err);
           return res.redirect('/background/information');
@@ -843,7 +844,7 @@ module.exports = function(app) {
   });
 
   app.get('/background/information_editor_list', function(req, res) {
-    Shops.getAll(req.database, function(err, shops) {
+    Shops.getAll(mongodb, function(err, shops) {
       if (err) {
         shops = [];
       }
@@ -856,7 +857,7 @@ module.exports = function(app) {
   });
 
   app.get('/background/information_editor/:uid', function(req, res) {
-    Shops.getbyUid(req.database, req.params.uid, function(err, shop) {
+    Shops.getbyUid(mongodb, req.params.uid, function(err, shop) {
       if (err) {
         req.flash('error', err);
         return res.redirect('/background/information_editor_list');
@@ -885,12 +886,12 @@ module.exports = function(app) {
       sIndex = 'law';
     }
     var shop = new Shops(req.body.username, sIndex, req.body.title, req.body.instruction, req.body.name, req.body.brief, req.body.comment, req.body.telephone, req.body.email, req.body.url, req.body.address, req.body.path, req.body.expire, req.body.tags, req.body.prevtext, req.body.prevtext2, utils.getImageString(req.files.previmage), utils.getImageString(req.files.image));
-    shop.modifybyUid(req.database, req.params.uid, function(err) {
+    shop.modifybyUid(mongodb, req.params.uid, function(err) {
       if (err) {
         req.flash('error', err);
         return res.redirect('/background/information_editor_list');
       }
-      Shops_buffer.setHandled(req.database, req.params.uid, function(err) {
+      Shops_buffer.setHandled(mongodb, req.params.uid, function(err) {
         if (err) {
           req.flash('error', err);
           return res.redirect('/background/information_editor_list');
@@ -902,7 +903,7 @@ module.exports = function(app) {
   });
 
   app.get('/background/information_editor_list_searcher', function(req, res, next) {
-    Shops.getbyTele(req.database, req.query.search_key, function(err, shop) {
+    Shops.getbyTele(mongodb, req.query.search_key, function(err, shop) {
       if (err) {
         req.flash('error', err);
         return res.redirect('/background/information_editor_list/');
@@ -916,7 +917,7 @@ module.exports = function(app) {
   });
 
   app.get('/background/user_post', function(req, res) {
-    Posts_buffer.getAll(req.database, function(err, posts) {
+    Posts_buffer.getAll(mongodb, function(err, posts) {
       if (err) {
         posts = [];
       }
@@ -937,12 +938,12 @@ module.exports = function(app) {
 
   app.post('/background/user_post_post', function(req, res, next) {
     var post = new Posts(req.body.username, req.body.title, req.body.content, req.body.location, req.body.contact, req.body.price, req.body.tags, req.body.prevtext, req.body.prevtext2, utils.getImageString(req.files.previmage), utils.getImageString(req.files.image));
-    post.save(req.database, function(err) {
+    post.save(mongodb, function(err) {
       if (err) {
         req.flash('error', err);
         return res.redirect('/background/user_post_editor_list');
       }
-      Posts_buffer.setHandled(req.database, req.params.uid, function(err) {
+      Posts_buffer.setHandled(mongodb, req.params.uid, function(err) {
         if (err) {
           req.flash('error', err);
           return res.redirect('/background/user_post_editor_list');
@@ -954,7 +955,7 @@ module.exports = function(app) {
   });
 
   app.get('/background/user_post/:uid', function(req, res) {
-    Posts_buffer.getbyUid(req.database, req.params.uid, function(err, post) {
+    Posts_buffer.getbyUid(mongodb, req.params.uid, function(err, post) {
       if (err) {
         req.flash('error', err);
         return res.redirect('/background/user_post');
@@ -969,12 +970,12 @@ module.exports = function(app) {
 
   app.post('/background/user_post/:uid', function(req, res, next) {
     var post = new Posts(req.body.username, req.body.title, req.body.content, req.body.location, req.body.contact, req.body.price, req.body.tags, req.body.prevtext, req.body.prevtext2, utils.getImageString(req.files.previmage), utils.getImageString(req.files.image));
-    post.save(req.database, function(err) {
+    post.save(mongodb, function(err) {
       if (err) {
         req.flash('error', err);
         return res.redirect('/background/user_post');
       }
-      Posts_buffer.setHandled(req.database, req.params.uid, function(err) {
+      Posts_buffer.setHandled(mongodb, req.params.uid, function(err) {
         if (err) {
           req.flash('error', err);
           return res.redirect('/background/user_post');
@@ -986,7 +987,7 @@ module.exports = function(app) {
   });
 
   app.get('/background/user_post_editor_list', function(req, res) {
-    Posts.getAll(req.database,'', 0, 0, function(err, posts) {
+    Posts.getAll(mongodb,'', 0, 0, function(err, posts) {
       if (err) {
         posts = [];
       }
@@ -999,7 +1000,7 @@ module.exports = function(app) {
   });
 
   app.get('/background/user_post_editor/:uid', function(req, res) {
-    Posts.getbyUid(req.database, req.params.uid, function(err, post) {
+    Posts.getbyUid(mongodb, req.params.uid, function(err, post) {
       if (err) {
         req.flash('error', err);
         return res.redirect('/background/user_post_editor_list');
@@ -1014,7 +1015,7 @@ module.exports = function(app) {
 
   app.post('/background/user_post_editor/:uid', function(req, res, next) {
     var post = new Posts(req.body.username, req.body.title, req.body.content, req.body.location, req.body.contact, req.body.price, req.body.tags, req.body.prevtext, req.body.prevtext2, utils.getImageString(req.files.previmage), utils.getImageString(req.files.image));
-    post.modifybyUid(req.database, req.params.uid, function(err) {
+    post.modifybyUid(mongodb, req.params.uid, function(err) {
       if (err) {
         req.flash('error', err);
         return res.redirect('/background/user_post');
@@ -1025,7 +1026,7 @@ module.exports = function(app) {
   });
 
   app.get('/background/user_post_editor_list_searcher', function(req, res, next) {
-    Posts.getbyTele(req.database, req.query.search_key, function(err, post) {
+    Posts.getbyTele(mongodb, req.query.search_key, function(err, post) {
       if (err) {
         req.flash('error', err);
         return res.redirect('/background/user_post_editor_list/');
@@ -1039,7 +1040,7 @@ module.exports = function(app) {
   });
 
   app.get('/background/learning', function(req, res) {
-    Learn.getAll(req.database, function(err, learns) {
+    Learn.getAll(mongodb, function(err, learns) {
       if (err) {
         req.flash('error', err);
         return res.redirect('/background/learning');
@@ -1053,7 +1054,7 @@ module.exports = function(app) {
   });
 
   app.get('/background/learning/:uid', function(req, res) {
-    Learn.getbyUid(req.database, req.params.uid, function(err, learn) {
+    Learn.getbyUid(mongodb, req.params.uid, function(err, learn) {
       if (err) {
         req.flash('error', err);
         return res.redirect('/background/learning');
@@ -1068,7 +1069,7 @@ module.exports = function(app) {
 
   app.post('/background/learning/:uid', function(req, res, next) {
     var learn = new Learn(req.body.index, req.body.title, req.body.content, utils.getImageString(req.files.image));
-    learn.modifybyUid(req.database, req.params.uid, function(err) {
+    learn.modifybyUid(mongodb, req.params.uid, function(err) {
       if (err) {
         req.flash('error', err);
         return res.redirect('/background/learning');
@@ -1080,7 +1081,7 @@ module.exports = function(app) {
 
   app.post('/background/learning', function(req, res) {
     var learn = new Learn(req.body.index, req.body.title, req.body.content, utils.getImageString(req.files.image));
-    learn.save(req.database, function(err) {
+    learn.save(mongodb, function(err) {
       if (err) {
         req.flash('error', err);
         return res.redirect('/background/learning');
@@ -1099,7 +1100,7 @@ module.exports = function(app) {
 
   app.post('/background/modules', function(req, res) {
     var modules = new Modules(1,req.body.exchange);
-    modules.save(req.database, function(err){
+    modules.save(mongodb, function(err){
       if (err) {
         req.flash('error', err);
         return res.redirect('/background/modules');
@@ -1119,35 +1120,35 @@ module.exports = function(app) {
   //################################################# background routing############################################
   var counter=0;
   app.post('/app_information_catagory', function(req, res){
-    Shops.getList_expire(req.database, req.body.index, req.body.tags, req.body.skip, req.body.limit, function(err, shops) {
+    Shops.getList_expire(mongodb, req.body.index, req.body.tags, req.body.skip, req.body.limit, function(err, shops) {
       console.log("app_information_catagory: "+utils.sizeOf(shops)/1000+" kByte Time: "+(new Date()).toLocaleTimeString());
       res.json(shops);
     });
   });
 
   app.post('/app_information_details', function(req, res){
-    Shops.getbyUid(req.database, req.body.uid, function(err, shop) {
+    Shops.getbyUid(mongodb, req.body.uid, function(err, shop) {
       console.log("app_information_details: "+utils.sizeOf(shop)/1000+" kByte Time: "+(new Date()).toLocaleTimeString());
       res.json(shop);
     });
   });
 
   app.post('/app_information_newst_date', function(req, res) {
-    Shops.getNewstDate(req.database, req.body.index, req.body.uid, function(err, date){
+    Shops.getNewstDate(mongodb, req.body.index, req.body.uid, function(err, date){
       console.log("app_information_newst_date: "+utils.sizeOf(date)/1000+" kByte Time: "+(new Date()).toLocaleTimeString());
       res.json(date);
     });
   });
 
   app.post('/app_user_post_view', function(req, res) {
-    Posts.getAll(req.database, req.body.tags, req.body.skip, req.body.limit, function(err, posts) {
+    Posts.getAll(mongodb, req.body.tags, req.body.skip, req.body.limit, function(err, posts) {
       console.log("app_user_post_view: "+utils.sizeOf(posts)/1000+" kByte Time: "+(new Date()).toLocaleTimeString());
       res.json(posts);
     });   
   });
   
   app.post('/app_user_post_newst_date', function(req, res) {
-    Posts.getNewstDate(req.database, req.body.uid,function(err, date){
+    Posts.getNewstDate(mongodb, req.body.uid,function(err, date){
       console.log("app_user_post_newst_date: "+utils.sizeOf(date)/1000+" kByte Time: "+(new Date()).toLocaleTimeString());
       res.json(date);
     });
@@ -1155,14 +1156,14 @@ module.exports = function(app) {
 
   app.post('/app_user_post_post', utils.appcheckLogin);
   app.post('/app_user_post_post', function(req, res) {
-    Posts.getbyUsername(req.database, req.session.user.name, function(err, posts) {
+    Posts.getbyUsername(mongodb, req.session.user.name, function(err, posts) {
       console.log("app_user_post_post: "+utils.sizeOf(posts)/1000+" kByte Time: "+(new Date()).toLocaleTimeString());
       res.json(posts);
     });
   });
 
   app.post('/app_user_post_details', function(req, res) {
-    Posts.getbyUid(req.database, req.body.uid, function(err, post) {
+    Posts.getbyUid(mongodb, req.body.uid, function(err, post) {
       console.log("app_user_post_details: "+utils.sizeOf(post)/1000+" kByte Time: "+(new Date()).toLocaleTimeString());
       res.json(post);
     });
@@ -1170,7 +1171,7 @@ module.exports = function(app) {
 
   app.post('/app_user_remove_post', utils.appcheckLogin);
   app.post('/app_user_remove_post', function(req, res) {
-    Posts.removebyUid(req.database, req.body.uid, function(err) {
+    Posts.removebyUid(mongodb, req.body.uid, function(err) {
       if (err) {
         var data = {
           result: "error",
@@ -1188,49 +1189,49 @@ module.exports = function(app) {
   });
 
   app.post('/app_news',function(req, res){
-    News.getAll(req.database, req.body.skip, req.body.limit, function(err, news) {
+    News.getAll(mongodb, req.body.skip, req.body.limit, function(err, news) {
       console.log("app_news: "+utils.sizeOf(news)/1000+" kByte Time: "+(new Date()).toLocaleTimeString());
       res.json(news);
     });
   });
 
   app.post('/app_exchange',function(req, res){
-    Modules.getbyId(req.database, 1, function(err, modules) {
+    Modules.getbyId(mongodb, 1, function(err, modules) {
       console.log("app_exchange: "+utils.sizeOf(modules)/1000+" kByte Time: "+(new Date()).toLocaleTimeString());
       res.json(modules);
     });
   });
 
   app.post('/app_news_details', function(req, res){
-    News.getbyUid(req.database, req.body.uid, function(err, news) {
+    News.getbyUid(mongodb, req.body.uid, function(err, news) {
       console.log("app_news_details: "+utils.sizeOf(news)/1000+" kByte Time: "+(new Date()).toLocaleTimeString());
       res.json(news);
     });
   });
 
   app.post('/app_news_newst_date', function(req, res) {
-    News.getNewstDate(req.database, req.body.uid,function(err, date){
+    News.getNewstDate(mongodb, req.body.uid,function(err, date){
       console.log("app_news_newst_date: "+utils.sizeOf(date)/1000+" kByte Time: "+(new Date()).toLocaleTimeString());
       res.json(date);
     });
   });
 
   app.post('/app_learning', function(req, res){
-    Learn.getbyIndex(req.database, req.body.index, function(err, learns) {
+    Learn.getbyIndex(mongodb, req.body.index, function(err, learns) {
       console.log("app_learning: "+utils.sizeOf(learns)/1000+" kByte Time: "+(new Date()).toLocaleTimeString());
       res.json(learns);
     });
   });
 
   app.post('/app_learning_details', function(req, res){
-    Learn.getbyUid(req.database, req.body.uid, function(err, learn) {
+    Learn.getbyUid(mongodb, req.body.uid, function(err, learn) {
       console.log("app_learning_details: "+utils.sizeOf(learn)/1000+" kByte Time: "+(new Date()).toLocaleTimeString());
       res.json(learn);
     });
   });
 
   app.post('/app_learning_newst_date', function(req, res) {
-    Learn.getNewstDate(req.database, req.body.index, req.body.uid,function(err, date){
+    Learn.getNewstDate(mongodb, req.body.index, req.body.uid,function(err, date){
       console.log("app_learning_newst_date: "+utils.sizeOf(date)/1000+" kByte Time: "+(new Date()).toLocaleTimeString());
       res.json(date);
     });
@@ -1239,7 +1240,7 @@ module.exports = function(app) {
   app.post('/app_post', utils.appcheckLogin);
   app.post('/app_post', function(req, res) {
     var post = new Posts_buffer(req.session.user.name, req.body.location, req.body.content, req.body.contact, req.body.price, false, req.body.image);
-    post.save(req.database, function(err) {
+    post.save(mongodb, function(err) {
       if (err) {
         var data = {
           result: "error",
@@ -1262,7 +1263,7 @@ module.exports = function(app) {
     req.body.username = req.body.username.toLowerCase();
     var md5 = crypto.createHash('md5');
     var password = md5.update(req.body.password).digest('base64');
-    User.get(req.database, req.body.username, function(err, user) {
+    User.get(mongodb, req.body.username, function(err, user) {
       if (!user) {
         data = {
           result: "error",
@@ -1301,7 +1302,7 @@ module.exports = function(app) {
       name: req.body.username,
       password: password,
     });
-    User.get(req.database, newUser.name, function(err, user) {
+    User.get(mongodb, newUser.name, function(err, user) {
       if (user) {
         err = '用户已经存在'
       };
@@ -1314,7 +1315,7 @@ module.exports = function(app) {
         };
         res.json(data);
       } else {
-        newUser.save(req.database, function(err) {
+        newUser.save(mongodb, function(err) {
           if (err) {
             data = {
               result: "error",

@@ -1,4 +1,3 @@
-var mongodb = require('./db');
 module.exports = Post_buffer;
 
 function Post_buffer(username, location, content, contact, price, handled, img, date) {

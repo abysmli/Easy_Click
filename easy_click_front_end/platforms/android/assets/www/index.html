@@ -77,11 +77,11 @@
         function onDeviceReady_index(){
             loginAction();
             $('#toNews').click(function(){
-                $('#news_page').remove();
+                removeCache();
                 $.mobile.changePage( "news.html", { transition: "slide" });
             });
             $('#toUserPostView').click(function(){
-                $('#user_post_view_page').remove();
+                removeCache();
                 $.mobile.changePage( "userpostview.html", { transition: "slide" });
             });
             $('.main_nav_icon, #main_logo').on('vmousedown','a',function(){
