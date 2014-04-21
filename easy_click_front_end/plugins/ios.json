@@ -1,1 +1,96 @@
-{"prepare_queue":{"installed":[],"uninstalled":[]},"config_munge":{"framework":{"ImageIO.framework":{"true":1},"CoreLocation.framework":{"false":1},"CoreGraphics.framework":{"false":2},"AssetsLibrary.framework":{"false":1},"MobileCoreServices.framework":{"false":1}},"config.xml":{"/*":{"<feature name=\"Camera\"><param name=\"ios-package\" value=\"CDVCamera\" /></feature>":1,"<feature name=\"Device\"><param name=\"ios-package\" value=\"CDVDevice\" /></feature>":1,"<feature name=\"InAppBrowser\"><param name=\"ios-package\" value=\"CDVInAppBrowser\" /></feature>":1,"<feature name=\"LocalNotification\"><param name=\"ios-package\" value=\"APPLocalNotification\" /></feature>":1,"<feature name=\"StatusBar\"><param name=\"ios-package\" onload=\"true\" value=\"CDVStatusBar\" /></feature>":1,"<preference name=\"StatusBarOverlaysWebView\" value=\"true\" />":1,"<preference name=\"StatusBarBackgroundColor\" value=\"#000000\" />":1}}},"installed_plugins":{"org.apache.cordova.camera":{"PACKAGE_NAME":"com.jdyd1688.easyclick"},"org.apache.cordova.device":{"PACKAGE_NAME":"com.jdyd1688.easyclick"},"org.apache.cordova.inappbrowser":{"PACKAGE_NAME":"com.jdyd1688.easyclick"},"de.appplant.cordova.plugin.local-notification":{"PACKAGE_NAME":"com.jdyd1688.easyclick"},"com.phonegap.plugin.statusbar":{"PACKAGE_NAME":"com.jdyd1688.easyclick"}},"dependent_plugins":{}}
+{
+    "prepare_queue": {
+        "installed": [],
+        "uninstalled": []
+    },
+    "config_munge": {
+        "files": {
+            "framework": {
+                "parents": {
+                    "ImageIO.framework": [
+                        {
+                            "xml": "true",
+                            "count": 1
+                        }
+                    ],
+                    "CoreLocation.framework": [
+                        {
+                            "xml": "false",
+                            "count": 1
+                        }
+                    ],
+                    "CoreGraphics.framework": [
+                        {
+                            "xml": "false",
+                            "count": 4
+                        }
+                    ],
+                    "AssetsLibrary.framework": [
+                        {
+                            "xml": "false",
+                            "count": 1
+                        }
+                    ],
+                    "MobileCoreServices.framework": [
+                        {
+                            "xml": "false",
+                            "count": 1
+                        }
+                    ]
+                }
+            },
+            "config.xml": {
+                "parents": {
+                    "/*": [
+                        {
+                            "xml": "<feature name=\"Camera\"><param name=\"ios-package\" value=\"CDVCamera\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"Device\"><param name=\"ios-package\" value=\"CDVDevice\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"InAppBrowser\"><param name=\"ios-package\" value=\"CDVInAppBrowser\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"LocalNotification\"><param name=\"ios-package\" value=\"APPLocalNotification\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"StatusBar\"><param name=\"ios-package\" onload=\"true\" value=\"CDVStatusBar\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<preference name=\"StatusBarOverlaysWebView\" value=\"true\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<preference name=\"StatusBarBackgroundColor\" value=\"#000000\" />",
+                            "count": 1
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    "installed_plugins": {
+        "org.apache.cordova.camera": {
+            "PACKAGE_NAME": "com.jdyd1688.easyclick"
+        },
+        "org.apache.cordova.device": {
+            "PACKAGE_NAME": "com.jdyd1688.easyclick"
+        },
+        "org.apache.cordova.inappbrowser": {
+            "PACKAGE_NAME": "com.jdyd1688.easyclick"
+        },
+        "de.appplant.cordova.plugin.local-notification": {
+            "PACKAGE_NAME": "com.jdyd1688.easyclick"
+        },
+        "com.phonegap.plugin.statusbar": {
+            "PACKAGE_NAME": "com.jdyd1688.easyclick"
+        }
+    },
+    "dependent_plugins": {}
+}

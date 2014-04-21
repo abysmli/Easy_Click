@@ -3,7 +3,7 @@ $(document).on("pageinit", ".page_body", function(event) {
     return false;   
   });
   localStorage.mURL="www.digital-messages.net";
-  //localStorage.mURL="192.168.1.108";
+  //localStorage.mURL="192.168.1.120";
   //localStorage.mURL="37.187.71.48";
   $('.nav_bar').on('vmousedown','a',function(){
     $(this).children('img').css({opacity:0.5}).animate({opacity:1},200);
@@ -12,8 +12,13 @@ $(document).on("pageinit", ".page_body", function(event) {
   titleHeight=$('.nav_bar h3').height();
   var marginTop = (navbarHeight/2-titleHeight/2)+'px';
   $('.nav_bar h3').css("margin-top",marginTop);
+  $("body").on( "swiperight", function(event) {
+    history.go(-1);
+  });
+  $("body").on( "swipeleft", function(event) {
+    history.go(1);
+  });
 });
-
 function sendAjax(url, data, success, error) {
   $.ajax({
     url: 'http://'+localStorage.mURL+url,

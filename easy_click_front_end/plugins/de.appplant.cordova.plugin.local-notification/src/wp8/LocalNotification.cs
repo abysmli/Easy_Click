@@ -39,9 +39,19 @@ namespace Cordova.Extension.Commands
     public class LocalNotification : BaseCommand
     {
         /// <summary>
+        /// Informs if the device is ready and the deviceready event has been fired
+        /// </summary>
+        private bool DeviceReady = false;
+
+        /// <summary>
+        /// Informs either the app is running in background or foreground
+        /// </summary>
+        private bool RunsInBackground = false;
+
+        /// <summary>
         /// Sets application live tile
         /// </summary>
-        public void add(string jsonArgs)
+        public void add (string jsonArgs)
         {
             string[] args   = JsonHelper.Deserialize<string[]>(jsonArgs);
             Options options = JsonHelper.Deserialize<Options>(args[0]);
@@ -54,15 +64,10 @@ namespace Cordova.Extension.Commands
                 // Empty strings for the text values and URIs will result in the property being cleared.
                 FlipTileData TileData = CreateTileData(options);
 
-                // Update the Application Tile
                 AppTile.Update(TileData);
 
-                if (!string.IsNullOrEmpty(options.Foreground))
-                {
-                    string arguments = String.Format("{0}({1})", options.Foreground, options.ID);
-
-                    DispatchCommandResult(new PluginResult(PluginResult.Status.OK, arguments));
-                }
+                FireEvent("trigger", options.ID, options.JSON);
+                FireEvent("add", options.ID, options.JSON);
             }
 
             DispatchCommandResult();
@@ -71,15 +76,20 @@ namespace Cordova.Extension.Commands
         /// <summary>
         /// Clears the application live tile
         /// </summary>
-        public void cancel(string jsonArgs)
+        public void cancel (string jsonArgs)
         {
+            string[] args         = JsonHelper.Deserialize<string[]>(jsonArgs);
+            string notificationID = args[0];
+
             cancelAll(jsonArgs);
+
+            FireEvent("cancel", notificationID, "");
         }
 
         /// <summary>
         /// Clears the application live tile
         /// </summary>
-        public void cancelAll(string jsonArgs)
+        public void cancelAll (string jsonArgs)
         {
             // Application Tile is always the first Tile, even if it is not pinned to Start.
             ShellTile AppTile = ShellTile.ActiveTiles.First();
@@ -90,6 +100,7 @@ namespace Cordova.Extension.Commands
                 // Empty strings for the text values and URIs will result in the property being cleared.
                 FlipTileData TileData = new FlipTileData
                 {
+                    Count                = 0,
                     BackTitle            = "",
                     BackContent          = "",
                     WideBackContent      = "",
@@ -106,9 +117,33 @@ namespace Cordova.Extension.Commands
         }
 
         /// <summary>
+        /// Checks wether a notification with an ID is scheduled
+        /// </summary>
+        public void isScheduled (string jsonArgs)
+        {
+            DispatchCommandResult();
+        }
+
+        /// <summary>
+        /// Retrieves a list with all currently pending notifications
+        /// </summary>
+        public void getScheduledIds (string jsonArgs)
+        {
+            DispatchCommandResult();
+        }
+
+        /// <summary>
+        /// Informs that the device is ready and the deviceready event has been fired
+        /// </summary>
+        public void deviceready (string jsonArgs)
+        {
+            DeviceReady = true;
+        }
+
+        /// <summary>
         /// Creates tile data
         /// </summary>
-        private FlipTileData CreateTileData(Options options)
+        private FlipTileData CreateTileData (Options options)
         {
             FlipTileData tile = new FlipTileData();
 
@@ -138,6 +173,48 @@ namespace Cordova.Extension.Commands
             }
 
             return tile;
+        }
+
+        /// <summary>
+        /// Fires the given event.
+        /// </summary>
+        private void FireEvent (string Event, string Id, string JSON = "")
+        {
+            string state = ApplicationState();
+            string args  = String.Format("\'{0}\',\'{1}\',\'{2}\'", Id, state, JSON);
+            string js    = String.Format("window.plugin.notification.local.on{0}({1})", Event, args);
+
+            PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, js);
+
+            pluginResult.KeepCallback = true;
+
+            DispatchCommandResult(pluginResult);
+        }
+
+        /// <summary>
+        /// Retrieves the application state
+        /// Either "background" or "foreground"
+        /// </summary>
+        private String ApplicationState ()
+        {
+            return RunsInBackground ? "background" : "foreground";
+        }
+
+        /// <summary>
+        /// Occurs when the application is being deactivated.
+        /// </summary>
+        public override void OnPause (object sender, DeactivatedEventArgs e)
+        {
+            RunsInBackground = true;
+        }
+
+        /// <summary>
+        /// Occurs when the application is being made active after previously being put
+        /// into a dormant state or tombstoned.
+        /// </summary>
+        public override void OnResume (object sender, Microsoft.Phone.Shell.ActivatedEventArgs e)
+        {
+            RunsInBackground = false;
         }
     }
 }

@@ -55,3 +55,19 @@
 * add ubuntu platform
 * 1. User Agent detection now detects AmazonWebView. 2. Change to use amazon-fireos as the platform if user agent string contains 'cordova-amazon-fireos'
 * Added amazon-fireos platform.
+
+### 0.2.6 (Jan 02, 2014)
+* CB-5658 Add doc/index.md for Camera plugin
+* CB-2442 CB-2419 Use Windows.Storage.ApplicationData.current.localFolder, instead of writing to app package.
+* [BlackBerry10] Adding platform level permissions
+* CB-5599 Android: Catch and ignore OutOfMemoryError in getRotatedBitmap()
+
+### 0.2.7 (Feb 05, 2014)
+* CB-4919 firefox os quirks added and supported platforms list is updated
+* getPicture via web activities
+* Documented quirk for CB-5335 + CB-5206 for WP7+8
+* reference the correct firefoxos implementation
+* [BlackBerry10] Add permission to access_shared
+
+### 0.2.8 (Feb 26, 2014)
+* CB-1826 Catch OOM on gallery image resize

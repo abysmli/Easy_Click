@@ -1,4 +1,4 @@
-cordova.define("de.appplant.cordova.plugin.local-notification.LocalNotification", function(require, exports, module) {/*
+cordova.define("de.appplant.cordova.plugin.local-notification.LocalNotification", function(require, exports, module) { /*
     Copyright 2013-2014 appPlant UG
 
     Licensed to the Apache Software Foundation (ASF) under one
@@ -20,11 +20,10 @@ cordova.define("de.appplant.cordova.plugin.local-notification.LocalNotification"
 */
 
 var LocalNotification = function () {
-    this._deafults = {
+    this._defaults = {
         message:    '',
         title:      '',
         autoCancel: false,
-        ongoing:    false,
         badge:      0,
         id:         '0',
         json:       '',
@@ -34,16 +33,16 @@ var LocalNotification = function () {
 
 LocalNotification.prototype = {
     /**
-     * Gibt alle Standardeinstellungen an.
+     * Returns the default settings
      *
      * @return {Object}
      */
     getDefaults: function () {
-        return this._deafults;
+        return this._defaults;
     },
 
     /**
-     * Überschreibt die Standardeinstellungen.
+     * Overwrite default settings
      *
      * @param {Object} defaults
      */
@@ -59,7 +58,7 @@ LocalNotification.prototype = {
 
     /**
      * @private
-     * Merged die Eigenschaften mit den Standardwerten.
+     * Merge settings with default values
      *
      * @param {Object} options
      * @retrun {Object}
@@ -80,15 +79,16 @@ LocalNotification.prototype = {
      * @private
      */
     applyPlatformSpecificOptions: function () {
-        var defaults = this._deafults;
+        var defaults = this._defaults;
 
         switch (device.platform) {
         case 'Android':
-            defaults.icon      = 'icon';
-            defaults.smallIcon = null;
-            defaults.sound     = 'TYPE_NOTIFICATION'; break;
+            defaults.icon       = 'icon';
+            defaults.smallIcon  = null;
+            defaults.ongoing    = false;
+            defaults.sound      = 'TYPE_NOTIFICATION'; break;
         case 'iOS':
-            defaults.sound = ''; break;
+            defaults.sound      = ''; break;
         case 'WinCE': case 'Win32NT':
             defaults.smallImage = null;
             defaults.image      = null;
@@ -97,13 +97,14 @@ LocalNotification.prototype = {
     },
 
     /**
-     * Fügt einen neuen Eintrag zur Registry hinzu.
+     * Add a new entry to the registry
      *
      * @param {Object} options
-     * @return {Number} Die ID der Notification
+     * @return {Number} The notification's ID
      */
     add: function (options) {
-        var options = this.mergeWithDefaults(options);
+        var options    = this.mergeWithDefaults(options),
+            callbackFn = null;
 
         if (options.id) {
             options.id = options.id.toString();
@@ -117,25 +118,54 @@ LocalNotification.prototype = {
             options.date = Math.round(options.date.getTime()/1000);
         }
 
-        cordova.exec(null, null, 'LocalNotification', 'add', [options]);
+        if (['WinCE', 'Win32NT'].indexOf(device.platform)) {
+            callbackFn = function (cmd) {
+                eval(cmd);
+            };
+        }
+
+        cordova.exec(callbackFn, null, 'LocalNotification', 'add', [options]);
 
         return options.id;
     },
 
     /**
-     * Entfernt die angegebene Notification.
+     * Cancels the specified notification
      *
-     * @param {String} id
+     * @param {String} id of the notification
      */
     cancel: function (id) {
         cordova.exec(null, null, 'LocalNotification', 'cancel', [id.toString()]);
     },
 
     /**
-     * Entfernt alle registrierten Notifications.
+     * Removes all previously registered notifications
      */
     cancelAll: function () {
         cordova.exec(null, null, 'LocalNotification', 'cancelAll', []);
+    },
+
+    /**
+     * @async
+     *
+     * Retrieves a list with all currently pending notifications.
+     *
+     * @param {Function} callback
+     */
+    getScheduledIds: function (callback) {
+        cordova.exec(callback, null, 'LocalNotification', 'getScheduledIds', []);
+    },
+
+    /**
+     * @async
+     *
+     * Checks wether a notification with an ID is scheduled.
+     *
+     * @param {String}   id
+     * @param {Function} callback
+     */
+    isScheduled: function (id, callback) {
+        cordova.exec(callback, null, 'LocalNotification', 'isScheduled', [id.toString()]);
     },
 
     /**
@@ -175,11 +205,31 @@ LocalNotification.prototype = {
     oncancel: function (id, state, json) {}
 };
 
-var plugin = new LocalNotification();
+var plugin  = new LocalNotification(),
+    channel = require('cordova/channel');
 
-document.addEventListener('deviceready', function () {
-    plugin.applyPlatformSpecificOptions();
-}, false);
+channel.deviceready.subscribe( function () {
+    cordova.exec(null, null, 'LocalNotification', 'deviceready', []);
+});
+
+channel.onCordovaReady.subscribe( function () {
+    channel.onCordovaInfoReady.subscribe( function () {
+        if (device.platform == 'Android') {
+            channel.onPause.subscribe( function () {
+                cordova.exec(null, null, 'LocalNotification', 'pause', []);
+            });
+
+            channel.onResume.subscribe( function () {
+                cordova.exec(null, null, 'LocalNotification', 'resume', []);
+            });
+
+            cordova.exec(null, null, 'LocalNotification', 'resume', []);
+        }
+
+        plugin.applyPlatformSpecificOptions();
+    });
+});
 
 module.exports = plugin;
+
 });

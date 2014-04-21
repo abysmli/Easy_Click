@@ -29,11 +29,11 @@ import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaInterface;
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CordovaWebView;
+import org.apache.cordova.PluginResult;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.ActivityManager;
 import android.app.AlarmManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -50,12 +50,13 @@ import android.content.SharedPreferences.Editor;
  */
 public class LocalNotification extends CordovaPlugin {
 
-    protected final static String PLUGIN_NAME      = "LocalNotification";
+    protected final static String PLUGIN_NAME = "LocalNotification";
 
-    private   static CordovaWebView webView        = null;
-    protected static Context context               = null;
-
-    private   static ArrayList<String> callbackQueue = new ArrayList<String>();
+    private   static CordovaWebView webView = null;
+    private   static Boolean deviceready = false;
+    protected static Context context = null;
+    protected static Boolean isInBackground = true;
+    private   static ArrayList<String> eventQueue = new ArrayList<String>();
 
     @Override
     public void initialize (CordovaInterface cordova, CordovaWebView webView) {
@@ -63,21 +64,18 @@ public class LocalNotification extends CordovaPlugin {
 
         LocalNotification.webView = super.webView;
         LocalNotification.context = super.cordova.getActivity().getApplicationContext();
-
-        execPendingCallbacks();
     }
 
     @Override
-    public boolean execute (String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
+    public boolean execute (String action, final JSONArray args, CallbackContext callbackContext) throws JSONException {
         if (action.equalsIgnoreCase("add")) {
-            JSONObject arguments  = args.optJSONObject(0);
-            final Options options = new Options(context).parse(arguments);
-
-            persist(options.getId(), args);
-
             cordova.getThreadPool().execute( new Runnable() {
                 public void run() {
-                    add(options);
+                    JSONObject arguments = args.optJSONObject(0);
+                    Options options      = new Options(context).parse(arguments);
+
+                    persist(options.getId(), args);
+                    add(options, true);
                 }
             });
 
@@ -85,17 +83,61 @@ public class LocalNotification extends CordovaPlugin {
         }
 
         if (action.equalsIgnoreCase("cancel")) {
-            String id = args.optString(0);
+            cordova.getThreadPool().execute( new Runnable() {
+                public void run() {
+                    String id = args.optString(0);
 
-            cancel(id);
-            unpersist(id);
+                    cancel(id);
+                    unpersist(id);
+                }
+            });
 
             return true;
         }
 
         if (action.equalsIgnoreCase("cancelAll")) {
-            cancelAll();
-            unpersistAll();
+            cordova.getThreadPool().execute( new Runnable() {
+                public void run() {
+                    cancelAll();
+                    unpersistAll();
+                }
+            });
+
+            return true;
+        }
+
+        if (action.equalsIgnoreCase("isScheduled")) {
+            String id = args.optString(0);
+
+            isScheduled(id, callbackContext);
+
+            return true;
+        }
+
+        if (action.equalsIgnoreCase("getScheduledIds")) {
+            getScheduledIds(callbackContext);
+
+            return true;
+        }
+
+        if (action.equalsIgnoreCase("deviceready")) {
+            cordova.getThreadPool().execute( new Runnable() {
+                public void run() {
+                    deviceready();
+                }
+            });
+
+            return true;
+        }
+
+        if (action.equalsIgnoreCase("pause")) {
+            isInBackground = true;
+
+            return true;
+        }
+
+        if (action.equalsIgnoreCase("resume")) {
+            isInBackground = false;
 
             return true;
         }
@@ -105,12 +147,27 @@ public class LocalNotification extends CordovaPlugin {
     }
 
     /**
+     * Calls all pending callbacks after the deviceready event has been fired.
+     */
+    private static void deviceready () {
+        deviceready = true;
+
+        for (String js : eventQueue) {
+            webView.sendJavascript(js);
+        }
+
+        eventQueue.clear();
+    }
+
+    /**
      * Set an alarm.
      *
      * @param options
      *            The options that can be specified per alarm.
+     * @param doFireEvent
+     *            If the onadd callback shall be called.
      */
-    public static void add (Options options) {
+    public static void add (Options options, boolean doFireEvent) {
         long triggerTime = options.getDate();
 
         Intent intent = new Intent(context, Receiver.class)
@@ -120,7 +177,9 @@ public class LocalNotification extends CordovaPlugin {
         AlarmManager am  = getAlarmManager();
         PendingIntent pi = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
-        fireEvent("add", options.getId(), options.getJSON());
+        if (doFireEvent) {
+            fireEvent("add", options.getId(), options.getJSON());
+        }
 
         am.set(AlarmManager.RTC_WAKEUP, triggerTime, pi);
     }
@@ -177,6 +236,36 @@ public class LocalNotification extends CordovaPlugin {
     }
 
     /**
+     * Checks wether a notification with an ID is scheduled.
+     *
+     * @param id
+     *          The notification ID to be check.
+     * @param callbackContext
+     */
+    public static void isScheduled (String id, CallbackContext callbackContext) {
+        SharedPreferences settings = getSharedPreferences();
+        Map<String, ?> alarms      = settings.getAll();
+        boolean isScheduled        = alarms.containsKey(id);
+        PluginResult result        = new PluginResult(PluginResult.Status.OK, isScheduled);
+
+        callbackContext.sendPluginResult(result);
+    }
+
+    /**
+     * Retrieves a list with all currently pending notifications.
+     *
+     * @param callbackContext
+     */
+    public static void getScheduledIds (CallbackContext callbackContext) {
+        SharedPreferences settings = getSharedPreferences();
+        Map<String, ?> alarms      = settings.getAll();
+        Set<String> alarmIds       = alarms.keySet();
+        JSONArray pendingIds       = new JSONArray(alarmIds);
+
+        callbackContext.success(pendingIds);
+    }
+
+    /**
      * Persist the information of this alarm to the Android Shared Preferences.
      * This will allow the application to restore the alarm upon device reboot.
      * Also this is used by the cancelAll method.
@@ -191,7 +280,7 @@ public class LocalNotification extends CordovaPlugin {
 
         if (alarmId != null) {
             editor.putString(alarmId, args.toString());
-            editor.commit();
+            editor.apply();
         }
     }
 
@@ -206,7 +295,7 @@ public class LocalNotification extends CordovaPlugin {
 
         if (alarmId != null) {
             editor.remove(alarmId);
-            editor.commit();
+            editor.apply();
         }
     }
 
@@ -217,7 +306,7 @@ public class LocalNotification extends CordovaPlugin {
         Editor editor = getSharedPreferences().edit();
 
         editor.clear();
-        editor.commit();
+        editor.apply();
     }
 
     /**
@@ -228,17 +317,27 @@ public class LocalNotification extends CordovaPlugin {
      * @param {String} json  A custom (JSON) string
      */
     public static void fireEvent (String event, String id, String json) {
-        String state  = isInBackground() ? "background" : "foreground";
+        String state  = getApplicationState();
         String params = "\"" + id + "\",\"" + state + "\",\\'" + JSONObject.quote(json) + "\\'.replace(/(^\"|\"$)/g, \\'\\')";
         String js     = "setTimeout('plugin.notification.local.on" + event + "(" + params + ")',0)";
 
-        // after reboot, LocalNotification.webView is always be null
-        // call background callback later
-        if (webView == null) {
-            callbackQueue.add(js);
+        // webview may available, but callbacks needs to be executed
+        // after deviceready
+        if (deviceready == false) {
+            eventQueue.add(js);
         } else {
             webView.sendJavascript(js);
         }
+    }
+
+    /**
+     * Retrieves the application state
+     *
+     * @return {String}
+     *      Either "background" or "foreground"
+     */
+    protected static String getApplicationState () {
+        return isInBackground ? "background" : "foreground";
     }
 
     /**
@@ -269,23 +368,5 @@ public class LocalNotification extends CordovaPlugin {
      */
     protected static NotificationManager getNotificationManager () {
         return (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-    }
-
-    /**
-     * Gibt an, ob die App im Hintergrund läuft.
-     */
-    private static boolean isInBackground () {
-        return !context.getPackageName().equalsIgnoreCase(((ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE)).getRunningTasks(1).get(0).topActivity.getPackageName());
-    }
-
-    /**
-     * Calls all pending callbacks after the webview was created.
-     */
-    private void execPendingCallbacks () {
-        for (String js : callbackQueue) {
-            webView.sendJavascript(js);
-        }
-
-        callbackQueue.clear();
     }
 }

@@ -1,1 +1,14 @@
-{"lib":{"www":{"id":"phonegap","version":"3.3.0","uri":"https://github.com/phonegap/phonegap-app-hello-world/archive/3.3.0.tar.gz"}},"id":"com.jdyd1688.easy_click","name":"EasyClick","phonegap":{"id":709475}}
+{
+    "lib": {
+        "www": {
+            "id": "phonegap",
+            "version": "3.4.0",
+            "uri": "https://github.com/phonegap/phonegap-app-hello-world/archive/3.4.0.tar.gz"
+        }
+    },
+    "id": "com.jdyd1688.easyclick",
+    "name": "简单一点",
+    "phonegap": {
+        "id": 709475
+    }
+}

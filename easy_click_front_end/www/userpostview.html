@@ -257,6 +257,11 @@
             }
             function getLocalContent() {
                 var posts = JSON.parse(localStorage.UserPostCatagory);
+                // var temp=[];
+                // $.each(posts,function(key, post){
+                //     temp.push({uid: post.uid, date: post.date})
+                // });
+                // alert(JSON.stringify(temp));
                 $('.userpostview_floatingBarsG').hide();
                 $.each(posts, insertUserPostCatagory);
                 $(".iscroll-wrapper").iscrollview("refresh");

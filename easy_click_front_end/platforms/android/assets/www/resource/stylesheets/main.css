@@ -112,6 +112,10 @@ body  * {
 	padding-left: 0.3em;
 }
 
+.ui-select .ui-btn {
+	background-color: #E0ECF8;
+}
+
 /*---------- news_ul_li ------------*/
 #news_page .ui-content {
     padding: 0 !important;
@@ -336,7 +340,7 @@ body  * {
 	font-size: 0.8em;
 	color: #b5b5b5;
 }
-
+/*
 .about_contain a {
 	text-decoration: underline;
 	text-align: right;
@@ -346,7 +350,7 @@ body  * {
 	margin-right: 1em;
 	margin-bottom: 1em;
 	letter-spacing: 0.05em;
-}
+}*/
 
 .about_contain i {
 	text-align: center;

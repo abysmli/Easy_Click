@@ -1,0 +1,391 @@
+[36m[phonegap][39m compiling Android...
+Buildfile: /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/build.xml
+
+-set-mode-check:
+
+-set-debug-files:
+
+-check-env:
+ [checkenv] Android SDK Tools Revision 22.6.2
+ [checkenv] Installed at /opt/adt/sdk
+
+-setup:
+     [echo] Project Name: Easy_Click
+  [gettype] Project Type: Application
+
+-set-debug-mode:
+
+-debug-obfuscation-check:
+
+-pre-build:
+
+-build-setup:
+[getbuildtools] Using latest Build Tools: 19.0.3
+     [echo] Resolving Build Target for Easy_Click...
+[gettarget] Project Target:   Android 4.4.2
+[gettarget] API level:        19
+     [echo] ----------
+     [echo] Creating output directories if needed...
+     [echo] ----------
+     [echo] Resolving Dependencies for Easy_Click...
+[dependency] Library dependencies:
+[dependency] 
+[dependency] ------------------
+[dependency] Ordered libraries:
+[dependency] 
+[dependency] ------------------
+     [echo] ----------
+     [echo] Building Libraries with 'debug'...
+
+nodeps:
+
+-set-mode-check:
+
+-set-debug-files:
+
+-check-env:
+ [checkenv] Android SDK Tools Revision 22.6.2
+ [checkenv] Installed at /opt/adt/sdk
+
+-setup:
+     [echo] Project Name: CordovaLib
+  [gettype] Project Type: Android Library
+
+-set-debug-mode:
+
+-debug-obfuscation-check:
+
+-pre-build:
+
+-build-setup:
+[getbuildtools] Using latest Build Tools: 19.0.3
+     [echo] Resolving Build Target for CordovaLib...
+[gettarget] Project Target:   Android 4.4.2
+[gettarget] API level:        19
+     [echo] ----------
+     [echo] Creating output directories if needed...
+     [echo] ----------
+     [echo] Resolving Dependencies for CordovaLib...
+[dependency] Library dependencies:
+[dependency] No Libraries
+[dependency] 
+[dependency] ------------------
+
+-code-gen:
+[mergemanifest] Found Deleted Target File
+[mergemanifest] Merging AndroidManifest files into one.
+[mergemanifest] Manifest merger disabled. Using project manifest only.
+     [echo] Handling aidl files...
+     [aidl] No AIDL files to compile.
+     [echo] ----------
+     [echo] Handling RenderScript files...
+     [echo] ----------
+     [echo] Handling Resources...
+     [aapt] Found modified input file
+     [aapt] Generating resource IDs...
+     [echo] ----------
+     [echo] Handling BuildConfig class...
+[buildconfig] No need to generate new BuildConfig.
+
+-pre-compile:
+
+-compile:
+     [echo] Creating library output jar file...
+
+-post-compile:
+
+-obfuscate:
+
+-dex:
+     [echo] Library project: do not convert bytecode...
+
+-crunch:
+   [crunch] Crunching PNG Files in source dir: /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/CordovaLib/res
+   [crunch] To destination dir: /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/CordovaLib/ant-build/res
+   [crunch] Crunched 0 PNG files to update cache
+
+-package-resources:
+     [echo] Library project: do not package resources...
+
+-package:
+     [echo] Library project: do not package apk...
+
+-post-package:
+
+-do-debug:
+     [echo] Library project: do not create apk...
+[propertyfile] Updating property file: /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/CordovaLib/ant-build/build.prop
+[propertyfile] Updating property file: /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/CordovaLib/ant-build/build.prop
+[propertyfile] Updating property file: /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/CordovaLib/ant-build/build.prop
+[propertyfile] Updating property file: /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/CordovaLib/ant-build/build.prop
+
+-post-build:
+
+debug:
+
+-code-gen:
+[mergemanifest] Found Deleted Target File
+[mergemanifest] Merging AndroidManifest files into one.
+[mergemanifest] Manifest merger disabled. Using project manifest only.
+     [echo] Handling aidl files...
+     [aidl] No AIDL files to compile.
+     [echo] ----------
+     [echo] Handling RenderScript files...
+     [echo] ----------
+     [echo] Handling Resources...
+     [aapt] Found modified input file
+     [aapt] Generating resource IDs...
+     [echo] ----------
+     [echo] Handling BuildConfig class...
+[buildconfig] No need to generate new BuildConfig.
+
+-pre-compile:
+     [echo] Set jars path to: /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/CordovaLib/ant-build/classes.jar
+
+-compile:
+    [javac] Compiling 1 source file to /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/ant-build/classes
+
+-post-compile:
+
+-obfuscate:
+
+-dex:
+      [dex] input: /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/ant-build/classes
+      [dex] input: /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/CordovaLib/ant-build/classes.jar
+      [dex] Using Pre-Dexed classes-9fbd03102743fd33083d555d0bce0597.jar <- /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/CordovaLib/ant-build/classes.jar
+      [dex] Found modified input file
+      [dex] Converting compiled files and external libraries into /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/ant-build/classes.dex...
+       [dx] Merged dex A (34 defs/60.1KiB) with dex B (205 defs/312.6KiB). Result is 239 defs/451.1KiB. Took 0.8s
+
+-crunch:
+   [crunch] Crunching PNG Files in source dir: /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/res
+   [crunch] To destination dir: /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/ant-build/res
+   [crunch] Crunched 0 PNG files to update cache
+
+-package-resources:
+     [aapt] Found modified input file
+     [aapt] Creating full resource package...
+     [aapt]     (skipping dir '_assets' due to ANDROID_AAPT_IGNORE pattern '_*')
+     [aapt]     (skipping dir '_search' due to ANDROID_AAPT_IGNORE pattern '_*')
+
+-package:
+[apkbuilder] Found modified input file
+[apkbuilder] Creating Easy_Click-debug-unaligned.apk and signing it with a debug key...
+
+-post-package:
+
+-do-debug:
+ [zipalign] Running zip align on final apk...
+     [echo] Debug Package: /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/ant-build/Easy_Click-debug.apk
+[propertyfile] Updating property file: /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/ant-build/build.prop
+[propertyfile] Updating property file: /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/ant-build/build.prop
+[propertyfile] Updating property file: /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/ant-build/build.prop
+[propertyfile] Updating property file: /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/ant-build/build.prop
+
+-post-build:
+     [move] Moving 1 file to /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/ant-build
+     [move] Moving 1 file to /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/CordovaLib/ant-build
+
+debug:
+
+BUILD SUCCESSFUL
+Total time: 8 seconds
+[36m[phonegap][39m successfully compiled Android app
+[36m[phonegap][39m trying to install app onto device
+Buildfile: /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/build.xml
+
+-set-mode-check:
+
+-set-debug-files:
+
+-check-env:
+ [checkenv] Android SDK Tools Revision 22.6.2
+ [checkenv] Installed at /opt/adt/sdk
+
+-setup:
+     [echo] Project Name: Easy_Click
+  [gettype] Project Type: Application
+
+-set-debug-mode:
+
+-debug-obfuscation-check:
+
+-pre-build:
+
+-build-setup:
+[getbuildtools] Using latest Build Tools: 19.0.3
+     [echo] Resolving Build Target for Easy_Click...
+[gettarget] Project Target:   Android 4.4.2
+[gettarget] API level:        19
+     [echo] ----------
+     [echo] Creating output directories if needed...
+     [echo] ----------
+     [echo] Resolving Dependencies for Easy_Click...
+[dependency] Library dependencies:
+[dependency] 
+[dependency] ------------------
+[dependency] Ordered libraries:
+[dependency] 
+[dependency] ------------------
+     [echo] ----------
+     [echo] Building Libraries with 'debug'...
+
+nodeps:
+
+-set-mode-check:
+
+-set-debug-files:
+
+-check-env:
+ [checkenv] Android SDK Tools Revision 22.6.2
+ [checkenv] Installed at /opt/adt/sdk
+
+-setup:
+     [echo] Project Name: CordovaLib
+  [gettype] Project Type: Android Library
+
+-set-debug-mode:
+
+-debug-obfuscation-check:
+
+-pre-build:
+
+-build-setup:
+[getbuildtools] Using latest Build Tools: 19.0.3
+     [echo] Resolving Build Target for CordovaLib...
+[gettarget] Project Target:   Android 4.4.2
+[gettarget] API level:        19
+     [echo] ----------
+     [echo] Creating output directories if needed...
+     [echo] ----------
+     [echo] Resolving Dependencies for CordovaLib...
+[dependency] Library dependencies:
+[dependency] No Libraries
+[dependency] 
+[dependency] ------------------
+
+-code-gen:
+[mergemanifest] Found Deleted Target File
+[mergemanifest] Merging AndroidManifest files into one.
+[mergemanifest] Manifest merger disabled. Using project manifest only.
+     [echo] Handling aidl files...
+     [aidl] No AIDL files to compile.
+     [echo] ----------
+     [echo] Handling RenderScript files...
+     [echo] ----------
+     [echo] Handling Resources...
+     [aapt] Found modified input file
+     [aapt] Generating resource IDs...
+     [echo] ----------
+     [echo] Handling BuildConfig class...
+[buildconfig] No need to generate new BuildConfig.
+
+-pre-compile:
+
+-compile:
+     [echo] Creating library output jar file...
+
+-post-compile:
+
+-obfuscate:
+
+-dex:
+     [echo] Library project: do not convert bytecode...
+
+-crunch:
+   [crunch] Crunching PNG Files in source dir: /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/CordovaLib/res
+   [crunch] To destination dir: /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/CordovaLib/ant-build/res
+   [crunch] Crunched 0 PNG files to update cache
+
+-package-resources:
+     [echo] Library project: do not package resources...
+
+-package:
+     [echo] Library project: do not package apk...
+
+-post-package:
+
+-do-debug:
+     [echo] Library project: do not create apk...
+[propertyfile] Updating property file: /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/CordovaLib/ant-build/build.prop
+[propertyfile] Updating property file: /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/CordovaLib/ant-build/build.prop
+[propertyfile] Updating property file: /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/CordovaLib/ant-build/build.prop
+[propertyfile] Updating property file: /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/CordovaLib/ant-build/build.prop
+
+-post-build:
+
+debug:
+
+-code-gen:
+[mergemanifest] Found Deleted Target File
+[mergemanifest] Merging AndroidManifest files into one.
+[mergemanifest] Manifest merger disabled. Using project manifest only.
+     [echo] Handling aidl files...
+     [aidl] No AIDL files to compile.
+     [echo] ----------
+     [echo] Handling RenderScript files...
+     [echo] ----------
+     [echo] Handling Resources...
+     [aapt] Found modified input file
+     [aapt] Generating resource IDs...
+     [echo] ----------
+     [echo] Handling BuildConfig class...
+[buildconfig] No need to generate new BuildConfig.
+
+-pre-compile:
+     [echo] Set jars path to: /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/CordovaLib/ant-build/classes.jar
+
+-compile:
+    [javac] Compiling 1 source file to /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/ant-build/classes
+
+-post-compile:
+
+-obfuscate:
+
+-dex:
+      [dex] input: /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/ant-build/classes
+      [dex] input: /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/CordovaLib/ant-build/classes.jar
+      [dex] Using Pre-Dexed classes-9fbd03102743fd33083d555d0bce0597.jar <- /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/CordovaLib/ant-build/classes.jar
+      [dex] Found modified input file
+      [dex] Converting compiled files and external libraries into /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/ant-build/classes.dex...
+       [dx] Merged dex A (34 defs/60.1KiB) with dex B (205 defs/312.6KiB). Result is 239 defs/451.1KiB. Took 0.6s
+
+-crunch:
+   [crunch] Crunching PNG Files in source dir: /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/res
+   [crunch] To destination dir: /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/ant-build/res
+   [crunch] Crunched 0 PNG files to update cache
+
+-package-resources:
+     [aapt] Found modified input file
+     [aapt] Creating full resource package...
+     [aapt]     (skipping dir '_assets' due to ANDROID_AAPT_IGNORE pattern '_*')
+     [aapt]     (skipping dir '_search' due to ANDROID_AAPT_IGNORE pattern '_*')
+
+-package:
+[apkbuilder] Found modified input file
+[apkbuilder] Creating Easy_Click-debug-unaligned.apk and signing it with a debug key...
+
+-post-package:
+
+-do-debug:
+ [zipalign] Running zip align on final apk...
+     [echo] Debug Package: /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/ant-build/Easy_Click-debug.apk
+[propertyfile] Updating property file: /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/ant-build/build.prop
+[propertyfile] Updating property file: /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/ant-build/build.prop
+[propertyfile] Updating property file: /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/ant-build/build.prop
+[propertyfile] Updating property file: /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/ant-build/build.prop
+
+-post-build:
+     [move] Moving 1 file to /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/ant-build
+     [move] Moving 1 file to /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/CordovaLib/ant-build
+
+debug:
+
+BUILD SUCCESSFUL
+Total time: 7 seconds
+WARNING : No target specified, deploying to device '01e03cdf204bb9b6'.
+Using apk: /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/ant-build/Easy_Click-debug-unaligned.apk
+Installing app on device...
+Launching application...
+LAUNCH SUCCESS
+[36m[phonegap][39m successfully installed onto device
