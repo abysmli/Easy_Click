@@ -39,7 +39,7 @@
             <form>
                 <div class="ui-field-contain">
                     <select id="key_selector" onchange="changeSelector()" data-mini="true">
-                        <option value="" selected="selected">全部分类</option>
+                        <option value="" selected="selected">查看全部分类</option>
                         <option value='A'>料理店 居酒屋 饮食类</option>
                         <option value='B'>整体 足裹 オイル 美容美发</option>
                         <option value='C'>清店 アロマ エステ 其它</option>
@@ -137,7 +137,7 @@
             function checkIndex() {
                 if(sessionStorage.index=="find_job"){
                     $('#key_selector').html('').append(
-                       "<option id='key_selector_all' value='' selected='selected'>全部分类</option>"+
+                       "<option id='key_selector_all' value='' selected='selected'>查看全部分类</option>"+
                        "<option value='A'>料理店 居酒屋 饮食类</option>"+
                        "<option value='B'>整体 足裹 オイル 美容美发</option>"+
                        "<option value='C'>清店 アロマ エステ 其它</option>"+
@@ -157,19 +157,18 @@
                     }
                 } else if(sessionStorage.index=="find_house") {
                     $('#key_selector').html('').append(
-                        "<option value='' selected='selected'>全部分类</option>"+
-                        "<option value='A'>寮</option>"+
-                        "<option value='B'>アパート</option>"+
-                        "<option value='C'>マンション</option>"+
-                        "<option value='D'>売却物件</option>"+
-                        "<option value=‘Z’>其它物件</option>"
+                        "<option value='' selected='selected'>查看全部分类</option>"+
+                        "<option value='A'>各种精品寮、公寓</option>"+
+                        "<option value='B'>商用房源</option>"+
+                        "<option value=‘C’>売却物件</option>"+
+                        "<option value=‘D’>不动产会社</option>"
                     );
                     if(localStorage.informationFindHouseCatagory) {
                         getLocalContent(localStorage.informationFindHouseCatagory);
                     }
                 } else if(sessionStorage.index=="move_house") {
                     $('#key_selector').html('').append(
-                        "<option value='' selected='selected'>全部分类</option>"+
+                        "<option value='' selected='selected'>查看全部分类</option>"+
                         "<option value='A'>大小搬家</option>"+
                         "<option value='B'>用车 包车 货运</option>"+
                         "<option value='C'>深夜用车 24小时用车</option>"+
@@ -182,26 +181,25 @@
                     }                   
                 } else if(sessionStorage.index=="business") {
                     $('#key_selector').html('').append(
-                        "<option value='' selected='selected'>全部分类</option>"+
-                        "<option value='A'>餐饮 KTV 美容美发 生活服务</option>"+
+                        "<option value='' selected='selected'>查看全部分类</option>"+
+                        "<option value='A'>餐饮 KTV 美容美发 物产生活</option>"+
                         "<option value='B'>各种店铺转让</option>"+
                         "<option value='C'>店铺用品相关</option>"+
                         "<option value='D'>广告印刷 看板网页 菜单制作</option>"+
                         "<option value='E'>各种内外工事</option>"+
                         "<option value='F'>电脑网络 手机点卡 电子器材</option>"+
-                        "<option value='J'>不动产会社</option>"+
                         "<option value='H'>保证人</option>"+
                         "<option value='I'>婚介交友</option>"+
                         "<option value='J'>学校驾校 文化团体 公益组织</option>"+
                         "<option value='K'>医疗 保健 风水 开运 教会</option>"+
-                        "<option value='L'>综合商务 综合贸易 综合业务</option>"
+                        "<option value='L'>综合服务 综合商贸 综合业务</option>"
                     );
                     if(localStorage.informationBusinessCatagory) {
                         getLocalContent(localStorage.informationBusinessCatagory);
                     }                    
                 } else if(sessionStorage.index=="ticket") {
                     $('#key_selector').html('').append(
-                        "<option value='' selected='selected'>全部分类</option>"+
+                        "<option value='' selected='selected'>查看全部分类</option>"+
                         "<option value='A'>各地机票</option>"+
                         "<option value='B'>紧急出票 24小时出票</option>"+
                         "<option value='C'>旅行社业务 地接业务</option>"+
@@ -212,7 +210,7 @@
                     }                    
                 } else {
                     $('#key_selector').html('').append(
-                        "<option value='' selected='selected'>全部分类</option>"+
+                        "<option value='' selected='selected'>查看全部分类</option>"+
                         "<option value='A'>法律业务</option>"+
                         "<option value='B'>会计业务</option>"+
                         "<option value='C'>其它业务</option"
