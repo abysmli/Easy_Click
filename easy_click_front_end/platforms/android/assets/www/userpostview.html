@@ -227,6 +227,13 @@
                 var data = {
                     uid: ""
                 };
+                sendAjax('/app_user_post_newst_list', "", function(list){
+                    
+                },function(jqXHR, textStatus, errorThrown){
+                    $('.userpostview_floatingBarsG').hide();
+                    displayNetworkError('#user_post_view_page');
+                });
+
                 sendAjax('/app_user_post_newst_date', data, function(newst_date){
                     if(newst_date != localStorage.UserPostCatagoryCheckDate) {
                         getRemoteContent(newst_date);
@@ -257,11 +264,19 @@
             }
             function getLocalContent() {
                 var posts = JSON.parse(localStorage.UserPostCatagory);
-                // var temp=[];
-                // $.each(posts,function(key, post){
-                //     temp.push({uid: post.uid, date: post.date})
-                // });
-                // alert(JSON.stringify(temp));
+                var temp=[];
+                $.each(posts,function(key, post){
+                    temp.push({uid: post.uid, date: post.date})
+                });
+                var test=[];
+                for(var i=1;i<11;i++) {
+                    test.push(i);
+                }
+                alert(JSON.stringify(test));
+                $.each(test,function(key,_test){
+                    alert(key+" : "+test);
+                });
+                //setTimeout(function(){alert(JSON.stringify(temp));},5000);
                 $('.userpostview_floatingBarsG').hide();
                 $.each(posts, insertUserPostCatagory);
                 $(".iscroll-wrapper").iscrollview("refresh");

@@ -1,3 +1,5 @@
+var db = require('./db');
+
 var mongodb = require('./db');
 
 function User(user) {
@@ -6,7 +8,7 @@ function User(user) {
 };
 module.exports = User;
 
-User.prototype.save = function save(db, callback) {
+User.prototype.save = function save(callback) {
   var user = {
     name: this.name,
     password: this.password,
@@ -26,7 +28,7 @@ User.prototype.save = function save(db, callback) {
   });
 };
 
-User.get = function get(db, username, callback) {
+User.get = function get(username, callback) {
   db.collection('users', function(err, collection) {
     if (err) {
       return callback(err);

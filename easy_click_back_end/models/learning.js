@@ -1,3 +1,5 @@
+var db = require('./db');
+
 module.exports = Learn;
 
 function Learn(index, title, content, img, date, uid) {
@@ -23,7 +25,7 @@ function Learnlist(index, title, uid) {
   this.uid = uid;
 };
 
-Learn.prototype.save = function save(db, callback) {
+Learn.prototype.save = function save(callback) {
   var learn = {
     index: this.index,
     title: this.title,
@@ -44,7 +46,7 @@ Learn.prototype.save = function save(db, callback) {
 };
 
 
-Learn.prototype.modifybyUid = function modifybyUid(db, uid, callback) {
+Learn.prototype.modifybyUid = function modifybyUid(uid, callback) {
   var learn = {
     index: this.index,
     title: this.title,
@@ -67,7 +69,7 @@ Learn.prototype.modifybyUid = function modifybyUid(db, uid, callback) {
   });
 };
 
-Learn.getAll = function getAll(db, callback) {
+Learn.getAll = function getAll(callback) {
   db.collection('learning', function(err, collection) {
     if (err) {
       return callback(err);
@@ -92,7 +94,7 @@ Learn.getAll = function getAll(db, callback) {
   });
 };
 
-Learn.getbyIndex = function getbyIndex(db, index, callback) {
+Learn.getbyIndex = function getbyIndex(index, callback) {
   db.collection('learning', function(err, collection) {
     if (err) {
       return callback(err);
@@ -121,7 +123,7 @@ Learn.getbyIndex = function getbyIndex(db, index, callback) {
   });
 };
 
-Learn.getbyUid = function getbyUid(db, uid, callback) {
+Learn.getbyUid = function getbyUid(uid, callback) {
   db.collection('learning', function(err, collection) {
     if (err) {
       return callback(err);
@@ -143,7 +145,7 @@ Learn.getbyUid = function getbyUid(db, uid, callback) {
   });
 };
 
-Learn.getNewstDate = function getNewstDate(db, index, uid, callback) {
+Learn.getNewstDate = function getNewstDate(index, uid, callback) {
   db.collection('learning', function(err, collection){
     if (err) {
       return callback(err);
@@ -169,7 +171,7 @@ Learn.getNewstDate = function getNewstDate(db, index, uid, callback) {
   });
 }
 
-Learn.remove = function remove(db, callback) {
+Learn.remove = function remove(callback) {
   db.collection('learning', function(err, collection) {
     if (err) {
       return callback(err);
@@ -180,7 +182,7 @@ Learn.remove = function remove(db, callback) {
 };
 
 
-Learn.removebyUid = function removebyUid(db, uid, callback) {
+Learn.removebyUid = function removebyUid(uid, callback) {
   db.collection('learning', function(err, collection) {
     if (err) {
       return callback(err);

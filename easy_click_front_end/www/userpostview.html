@@ -224,6 +224,31 @@
                 gotPullUpData(event, data); 
             }
             function checkUpdate() {
+                /*
+                sendAjax('/app_user_post_newst_list', "", function(remotelist){
+                    var locallist=getLocalList();
+
+                var array1=[1,2,3,4,7,9,10,13,15,16];
+                var array2=[5,6,1,2,3,4,9,10,13,15];
+                for(var i=array2.length-1;i>=0;--i)
+                {
+                    if(remotelist.indexOf(array2[i])<0) {
+                        array1.unshift(array2[i]);
+                    }
+                }
+                alert(array1);
+                $.each(locallist, function(key, _locallist){
+                    if(array2.indexOf(_array1)<0) {
+                        array1.splice(key,1);
+                    }
+                });
+                alert(array1);
+
+                },function(jqXHR, textStatus, errorThrown){
+                    $('.userpostview_floatingBarsG').hide();
+                    displayNetworkError('#user_post_view_page');
+                });*/
+
                 var data = {
                     uid: ""
                 };
@@ -256,15 +281,17 @@
                 });
             }
             function getLocalContent() {
-                var posts = JSON.parse(localStorage.UserPostCatagory);
-                // var temp=[];
-                // $.each(posts,function(key, post){
-                //     temp.push({uid: post.uid, date: post.date})
-                // });
-                // alert(JSON.stringify(temp));
                 $('.userpostview_floatingBarsG').hide();
                 $.each(posts, insertUserPostCatagory);
                 $(".iscroll-wrapper").iscrollview("refresh");
+            }
+            function getLocalList() {
+                var posts = JSON.parse(localStorage.UserPostCatagory);
+                var postlist=[];
+                $.each(posts,function(key, post){
+                    postlist.push({uid: post.uid, date: post.date})
+                });
+                return postlist;
             }
         </script>
     </div>

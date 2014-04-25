@@ -1,3 +1,5 @@
+var db = require('./db');
+
 module.exports = News;
 
 function News(index, title, sub_title, source, sourceurl, newsdate, content, previmg, img, date, uid) {
@@ -31,7 +33,7 @@ function newsview(title, sub_title, newsdate, previmg, date, uid) {
   this.uid = uid;
 };
 
-News.prototype.save = function save(db, callback) {
+News.prototype.save = function save(callback) {
   var news = {
     index: this.index,
     title: this.title,
@@ -59,7 +61,7 @@ News.prototype.save = function save(db, callback) {
   });
 };
 
-News.getAll = function getAll(db, mSkip, mLimit, callback) {
+News.getAll = function getAll(mSkip, mLimit, callback) {
   db.collection('news', function(err, collection) {
     if (err) {
       return callback(err);
@@ -84,7 +86,7 @@ News.getAll = function getAll(db, mSkip, mLimit, callback) {
   });
 };
 
-News.getbyUid = function getbyUid(db, uid, callback) {
+News.getbyUid = function getbyUid(uid, callback) {
   db.collection('news', function(err, collection) {
     if (err) {
       return callback(err);
@@ -106,7 +108,7 @@ News.getbyUid = function getbyUid(db, uid, callback) {
   });
 };
 
-News.getNewstDate = function getNewstDate(db, uid, callback) {
+News.getNewstDate = function getNewstDate(uid, callback) {
   db.collection('news', function(err, collection){
     if (err) {
       return callback(err);
@@ -132,7 +134,7 @@ News.getNewstDate = function getNewstDate(db, uid, callback) {
   });
 }
 
-News.prototype.modifybyUid = function modifybyUid(db, uid, callback) {
+News.prototype.modifybyUid = function modifybyUid(uid, callback) {
   var news = {
     index: this.index,
     title: this.title,
@@ -160,7 +162,7 @@ News.prototype.modifybyUid = function modifybyUid(db, uid, callback) {
   });
 };
 
-News.remove = function remove(db, callback) {
+News.remove = function remove(callback) {
   db.collection('news', function(err, collection) {
     if (err) {
       return callback(err);
@@ -170,7 +172,7 @@ News.remove = function remove(db, callback) {
   });
 };
 
-News.removebyUid = function removebyUid(db, uid, callback) {
+News.removebyUid = function removebyUid(uid, callback) {
   db.collection('news', function(err, collection) {
     if (err) {
       return callback(err);

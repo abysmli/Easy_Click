@@ -1,3 +1,5 @@
+var db = require('./db');
+
 module.exports = Shops_buffer;
 
 function Shops_buffer(title, content, img, user, date, handled) {
@@ -25,7 +27,7 @@ function shopview(title, user, date, handled, uid) {
   this.uid = uid;
 };
 
-Shops_buffer.prototype.save = function save(db, callback) {
+Shops_buffer.prototype.save = function save(callback) {
   var shop = {
     title: this.title,
     content: this.content,
@@ -49,7 +51,7 @@ Shops_buffer.prototype.save = function save(db, callback) {
   });
 };
 
-Shops_buffer.getAll = function getAll(db, callback) {
+Shops_buffer.getAll = function getAll(callback) {
   db.collection('shops_buffer', function(err, collection) {
     if (err) {
       return callback(err);
@@ -72,7 +74,7 @@ Shops_buffer.getAll = function getAll(db, callback) {
   });
 };
 
-Shops_buffer.getbyUid = function getbyUid(db, uid, callback) {
+Shops_buffer.getbyUid = function getbyUid(uid, callback) {
   db.collection('shops_buffer', function(err, collection) {
     if (err) {
       return callback(err);
@@ -94,7 +96,7 @@ Shops_buffer.getbyUid = function getbyUid(db, uid, callback) {
   });
 };
 
-Shops_buffer.setHandled = function setHandled(db, uid, callback) {
+Shops_buffer.setHandled = function setHandled(uid, callback) {
   db.collection('shops_buffer', function(err, collection) {
     if (err) {
       return callback(err);
@@ -110,7 +112,7 @@ Shops_buffer.setHandled = function setHandled(db, uid, callback) {
   });
 };
 
-Shops_buffer.remove = function remove(db, callback) {
+Shops_buffer.remove = function remove(callback) {
   db.collection('shops_buffer', function(err, collection) {
     if (err) {
       return callback(err);
@@ -120,7 +122,7 @@ Shops_buffer.remove = function remove(db, callback) {
   });
 };
 
-Shops_buffer.removebyUid = function removebyUid(db, uid, callback) {
+Shops_buffer.removebyUid = function removebyUid(uid, callback) {
   db.collection('shops_buffer', function(err, collection) {
     if (err) {
       return callback(err);

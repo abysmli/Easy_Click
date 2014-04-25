@@ -1,3 +1,5 @@
+var db = require('./db');
+
 module.exports = Message;
 
 function Message(username, sender, message, date, readed, uid) {
@@ -18,7 +20,7 @@ function Message(username, sender, message, date, readed, uid) {
   }
 };
 
-Message.prototype.save = function save(db, callback) {
+Message.prototype.save = function save(callback) {
   var message = {
     username: this.username,
     sender: this.sender,
@@ -41,7 +43,7 @@ Message.prototype.save = function save(db, callback) {
   });
 };
 
-Message.getbyUsername = function getbyUsername(db, username, callback) {
+Message.getbyUsername = function getbyUsername(username, callback) {
   db.collection('messages', function(err, collection) {
     if (err) {
       return callback(err);
@@ -70,7 +72,7 @@ Message.getbyUsername = function getbyUsername(db, username, callback) {
   });
 };
 
-Message.remove = function remove(db, callback) {
+Message.remove = function remove(callback) {
   db.collection('messages', function(err, collection) {
     if (err) {
       return callback(err);
@@ -80,7 +82,7 @@ Message.remove = function remove(db, callback) {
   });
 };
 
-Message.removebyUsername = function removebyUsername(db, Username, callback) {
+Message.removebyUsername = function removebyUsername(Username, callback) {
   db.collection('messages', function(err, collection) {
     if (err) {
       return callback(err);
@@ -98,7 +100,7 @@ Message.removebyUsername = function removebyUsername(db, Username, callback) {
   });
 };
 
-Message.removebyUid = function removebyUid(db, uid, callback) {
+Message.removebyUid = function removebyUid(uid, callback) {
   db.collection('messages', function(err, collection) {
     if (err) {
       return callback(err);

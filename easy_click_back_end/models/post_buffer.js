@@ -1,3 +1,5 @@
+var db = require('./db');
+
 module.exports = Post_buffer;
 
 function Post_buffer(username, location, content, contact, price, handled, img, date) {
@@ -24,7 +26,7 @@ function postview(username, location, date, handled, img, uid) {
   this.uid = uid;
 };
 
-Post_buffer.prototype.save = function save(db, callback) {
+Post_buffer.prototype.save = function save(callback) {
   var post = {
     username: this.username,
     location: this.location,
@@ -47,7 +49,7 @@ Post_buffer.prototype.save = function save(db, callback) {
   });
 };
 
-Post_buffer.getAll = function getAll(db, callback) {
+Post_buffer.getAll = function getAll(callback) {
   db.collection('posts_buffer', function(err, collection) {
     if (err) {
       return callback(err);
@@ -72,7 +74,7 @@ Post_buffer.getAll = function getAll(db, callback) {
   });
 };
 
-Post_buffer.getbyUid = function getbyUid(db, uid, callback) {
+Post_buffer.getbyUid = function getbyUid(uid, callback) {
   db.collection('posts_buffer', function(err, collection) {
     if (err) {
       return callback(err);
@@ -94,7 +96,7 @@ Post_buffer.getbyUid = function getbyUid(db, uid, callback) {
   });
 };
 
-Post_buffer.setHandled = function setHandled(db, uid, callback) {
+Post_buffer.setHandled = function setHandled(uid, callback) {
   db.collection('posts_buffer', function(err, collection) {
     if (err) {
       return callback(err);
@@ -110,7 +112,7 @@ Post_buffer.setHandled = function setHandled(db, uid, callback) {
   });
 };
 
-Post_buffer.remove = function remove(db, callback) {
+Post_buffer.remove = function remove(callback) {
   db.collection('posts_buffer', function(err, collection) {
     if (err) {
       return callback(err);
@@ -120,7 +122,7 @@ Post_buffer.remove = function remove(db, callback) {
   });
 };
 
-Post_buffer.removebyUid = function removebyUid(db, uid, callback) {
+Post_buffer.removebyUid = function removebyUid(uid, callback) {
   db.collection('posts_buffer', function(err, collection) {
     if (err) {
       return callback(err);

@@ -1,4 +1,6 @@
+var db = require('./db');
 var utils = require('../utils/utils.js');
+
 module.exports = Shops;
 
 function Shops(username, index, title, instruction, name, brief, comment, telephone, email, url, address, path, expire, tags, prevtext, prevtext2, previmg, img, date, uid) {
@@ -43,7 +45,7 @@ function shopview(title, username, expire, date, prevtext, prevtext2, previmg, u
   this.uid = uid;
 };
 
-Shops.prototype.save = function save(db, callback) {
+Shops.prototype.save = function save(callback) {
   var shop = {
     username: this.username,
     index: this.index,
@@ -80,7 +82,7 @@ Shops.prototype.save = function save(db, callback) {
   });
 };
 
-Shops.getAll = function getAll(db, callback) {
+Shops.getAll = function getAll(callback) {
   db.collection('shops', function(err, collection) {
     if (err) {
       return callback(err);
@@ -105,7 +107,7 @@ Shops.getAll = function getAll(db, callback) {
   });
 };
 
-Shops.getbyIndex = function getbyIndex(db, index, callback) {
+Shops.getbyIndex = function getbyIndex(index, callback) {
   db.collection('shops', function(err, collection) {
     if (err) {
       return callback(err);
@@ -134,7 +136,7 @@ Shops.getbyIndex = function getbyIndex(db, index, callback) {
   });
 };
 
-Shops.getList_expire = function getList_expire(db, mIndex, mTags, mSkip, mLimit, callback) {
+Shops.getList_expire = function getList_expire(mIndex, mTags, mSkip, mLimit, callback) {
   db.collection('shops', function(err, collection) {
     if (err) {
       return callback(err);
@@ -181,7 +183,7 @@ Shops.getList_expire = function getList_expire(db, mIndex, mTags, mSkip, mLimit,
   });
 };
 
-Shops.getbyUid = function getbyUid(db, uid, callback) {
+Shops.getbyUid = function getbyUid(uid, callback) {
   db.collection('shops', function(err, collection) {
     if (err) {
       return callback(err);
@@ -203,7 +205,7 @@ Shops.getbyUid = function getbyUid(db, uid, callback) {
   });
 };
 
-Shops.getbyTele = function getbyTele(db, tel, callback) {
+Shops.getbyTele = function getbyTele(tel, callback) {
   db.collection('shops', function(err, collection) {
     if (err) {
       return callback(err);
@@ -224,7 +226,7 @@ Shops.getbyTele = function getbyTele(db, tel, callback) {
   });
 };
 
-Shops.getNewstDate = function getNewstDate(db, index, uid, callback) {
+Shops.getNewstDate = function getNewstDate(index, uid, callback) {
   db.collection('shops', function(err, collection){
     if (err) {
       return callback(err);
@@ -250,7 +252,7 @@ Shops.getNewstDate = function getNewstDate(db, index, uid, callback) {
   });
 }
 
-Shops.prototype.modifybyUid = function modifybyUid(db, uid, callback) {
+Shops.prototype.modifybyUid = function modifybyUid(uid, callback) {
   var shop = {
     username: this.username,
     index: this.index,
@@ -287,7 +289,7 @@ Shops.prototype.modifybyUid = function modifybyUid(db, uid, callback) {
   });
 };
 
-Shops.remove = function remove(db, callback) {
+Shops.remove = function remove(callback) {
   db.collection('shops', function(err, collection) {
     if (err) {
       return callback(err);
@@ -297,7 +299,7 @@ Shops.remove = function remove(db, callback) {
   });
 };
 
-Shops.removebyUid = function removebyUid(db, uid, callback) {
+Shops.removebyUid = function removebyUid(uid, callback) {
   db.collection('shops', function(err, collection) {
     if (err) {
       return callback(err);

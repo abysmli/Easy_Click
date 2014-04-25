@@ -1,3 +1,5 @@
+var db = require('./db');
+
 module.exports = Modules;
 
 function Modules(id, content, date) {
@@ -10,7 +12,7 @@ function Modules(id, content, date) {
   }
 };
 
-Modules.prototype.save = function save(db, callback) {
+Modules.prototype.save = function save(callback) {
   var modules = {
     id: this.id,
     content: this.content,
@@ -28,7 +30,7 @@ Modules.prototype.save = function save(db, callback) {
   });
 };
 
-Modules.getbyId = function getbyId(db, id, callback) {
+Modules.getbyId = function getbyId(id, callback) {
   db.collection('modules', function(err, collection) {
     if (err) {
       return callback(err);

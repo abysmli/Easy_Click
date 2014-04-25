@@ -1,3 +1,5 @@
+var db = require('./db');
+
 module.exports = Post;
 
 function Post(username, title, content, location, contact, price, tags, prevtext, prevtext2, previmg, img, date, uid) {
@@ -34,7 +36,7 @@ function postview(username, title, date, prevtext, prevtext2, previmg, uid) {
   this.uid = uid;
 };
 
-Post.prototype.save = function save(db, callback) {
+Post.prototype.save = function save(callback) {
   var post = {
     username: this.username,
     title: this.title,
@@ -61,7 +63,7 @@ Post.prototype.save = function save(db, callback) {
   });
 };
 
-Post.getAll = function getAll(db, mTags, mSkip, mLimit, callback) {
+Post.getAll = function getAll(mTags, mSkip, mLimit, callback) {
   db.collection('posts', function(err, collection) {
     if (err) {
       return callback(err);
@@ -97,7 +99,7 @@ Post.getAll = function getAll(db, mTags, mSkip, mLimit, callback) {
   });
 };
 
-Post.getbyUid = function getbyUid(db, uid, callback) {
+Post.getbyUid = function getbyUid(uid, callback) {
   db.collection('posts', function(err, collection) {
     if (err) {
       return callback(err);
@@ -119,7 +121,7 @@ Post.getbyUid = function getbyUid(db, uid, callback) {
   });
 };
 
-Post.getbyTele = function getbyTele(db, tel, callback) {
+Post.getbyTele = function getbyTele(tel, callback) {
   db.collection('posts', function(err, collection) {
     if (err) {
       return callback(err);
@@ -140,7 +142,7 @@ Post.getbyTele = function getbyTele(db, tel, callback) {
   });
 };
 
-Post.getbyUsername = function getbyUsername(db, username, callback) {
+Post.getbyUsername = function getbyUsername(username, callback) {
   db.collection('posts', function(err, collection) {
     if (err) {
       return callback(err);
@@ -165,10 +167,10 @@ Post.getbyUsername = function getbyUsername(db, username, callback) {
   });
 };
 
-Post.getNewstDate = function getNewstDate(db, uid, callback) {
+Post.getNewstDate = function getNewstDate(uid, callback) {
   db.collection('posts', function(err, collection){
     if (err) {
-      return callback(err);
+      return callback(err, null);
     }
     if(uid=="") {
       var query = {};
@@ -191,7 +193,29 @@ Post.getNewstDate = function getNewstDate(db, uid, callback) {
   });
 }
 
-Post.remove = function remove(db, callback) {
+Post.getNewstList = function getNewstList(limit, callback) {
+  db.collection('posts',function(err, collection){
+    if(err){
+      return callback(err);
+    }
+    collection.find().sort({date:-1}).limit(limit).toArray(function(err, docs){
+      if(err){
+        callback(err, null);
+      }
+      if (docs!=null) {
+        var posts = [];
+        docs.forEach(function(doc, index){
+          posts.push({uid: doc._id, date: doc.date});
+        });
+        callback(null, posts);
+      } else {
+        callback(null, "");
+      }
+    });
+  });
+}
+
+Post.remove = function remove(callback) {
   db.collection('posts', function(err, collection) {
     if (err) {
       return callback(err);
@@ -202,7 +226,7 @@ Post.remove = function remove(db, callback) {
 };
 
 
-Post.prototype.modifybyUid = function modifybyUid(db, uid, callback) {
+Post.prototype.modifybyUid = function modifybyUid(uid, callback) {
   var post = {
     username: this.username,
     title: this.title,
@@ -232,7 +256,7 @@ Post.prototype.modifybyUid = function modifybyUid(db, uid, callback) {
   });
 };
 
-Post.removebyUid = function removebyUid(db, uid, callback) {
+Post.removebyUid = function removebyUid(uid, callback) {
   db.collection('posts', function(err, collection) {
     if (err) {
       return callback(err);
