@@ -12,9 +12,10 @@ $(document).on("pageinit", ".page_body", function(event) {
   titleHeight=$('.nav_bar h3').height();
   var marginTop = (navbarHeight/2-titleHeight/2)+'px';
   $('.nav_bar h3').css("margin-top",marginTop);
+  /*
   $("body").on( "swiperight", function(event) {
     history.go(-1);
-  });
+  });*/
   /*
   $("body").on( "swipeleft", function(event) {
     history.go(1);
