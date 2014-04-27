@@ -62,7 +62,11 @@
 						<h4><%= shop.title %></h4>
 						<p>发件人: <%= shop.username %></p>
 						<p>投递日期: <%= shop.date.toISOString().replace(/T/, ' ').replace(/\..+/, '') %></p>
-						<p>过期日期: <%= shop.expire %></p>
+						<p>过期日期: <% if(shop.expire=="") {%>
+            			永不过期
+			            <% } else { %>
+			            <%= shop.expire %>
+			            <% } %></p>
 						</a>
 						<a id="button_<%=shop.uid%>"class="btn btn-danger" href="/remove_information/<%=shop.uid%>">删除</a>
 					</dvi>

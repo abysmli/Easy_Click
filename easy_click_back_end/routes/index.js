@@ -779,7 +779,7 @@ module.exports = function(app) {
     } else {
       sIndex = 'law';
     }
-    var shop = new Shops(req.body.username, sIndex, req.body.title, req.body.instruction, req.body.name, req.body.brief, req.body.comment, req.body.telephone, req.body.email, req.body.url, req.body.address, req.body.path, new Date(req.body.expire), req.body.tags, req.body.prevtext, req.body.prevtext2, utils.getImageString(req.files.previmage), utils.getImageString(req.files.image));
+    var shop = new Shops(req.body.username, sIndex, req.body.title, req.body.instruction, req.body.name, req.body.brief, req.body.comment, req.body.telephone, req.body.email, req.body.url, req.body.address, req.body.path, req.body.expire, req.body.tags, req.body.prevtext, req.body.prevtext2, utils.getImageString(req.files.previmage), utils.getImageString(req.files.image));
     shop.save(function(err) {
       if (err) {
         req.flash('error', err);
@@ -825,7 +825,7 @@ module.exports = function(app) {
     } else {
       sIndex = 'law';
     }
-    var shop = new Shops(req.body.username, sIndex, req.body.title, req.body.instruction, req.body.name, req.body.brief, req.body.comment, req.body.telephone, req.body.email, req.body.url, req.body.address, req.body.path, new Date(req.body.expire), req.body.tags, req.body.prevtext, req.body.prevtext2, utils.getImageString(req.files.previmage), utils.getImageString(req.files.image));
+    var shop = new Shops(req.body.username, sIndex, req.body.title, req.body.instruction, req.body.name, req.body.brief, req.body.comment, req.body.telephone, req.body.email, req.body.url, req.body.address, req.body.path, req.body.expire, req.body.tags, req.body.prevtext, req.body.prevtext2, utils.getImageString(req.files.previmage), utils.getImageString(req.files.image));
     shop.save(function(err) {
       if (err) {
         req.flash('error', err);
@@ -884,7 +884,7 @@ module.exports = function(app) {
     } else {
       sIndex = 'law';
     }
-    var shop = new Shops(req.body.username, sIndex, req.body.title, req.body.instruction, req.body.name, req.body.brief, req.body.comment, req.body.telephone, req.body.email, req.body.url, req.body.address, req.body.path, new Date(req.body.expire), req.body.tags, req.body.prevtext, req.body.prevtext2, utils.getImageString(req.files.previmage), utils.getImageString(req.files.image));
+    var shop = new Shops(req.body.username, sIndex, req.body.title, req.body.instruction, req.body.name, req.body.brief, req.body.comment, req.body.telephone, req.body.email, req.body.url, req.body.address, req.body.path, req.body.expire, req.body.tags, req.body.prevtext, req.body.prevtext2, utils.getImageString(req.files.previmage), utils.getImageString(req.files.image));
     shop.modifybyUid(req.params.uid, function(err) {
       if (err) {
         req.flash('error', err);

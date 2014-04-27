@@ -87,7 +87,11 @@
             <h4>发布日期:</h4>
             <p><%= shop.date.toISOString().replace(/T/, ' ').replace(/\..+/, '') %></p>
             <h4>过期日期:</h4>
+            <% if(shop.expire=="") {%>
+            <p>永不过期</p>
+            <% } else { %>
             <p><%= shop.expire %></p>
+            <% } %>
         </div>
 
         <div class="span8" style="border-left: 1px solid #D4D4D4; padding-left: 3em;">

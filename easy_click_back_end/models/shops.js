@@ -152,12 +152,12 @@ Shops.getList_expire = function getList_expire(mIndex, mTags, mSkip, mLimit, cal
     var query = {
       index: mIndex,
       tags: new RegExp(tagReg),
-      $or: [{expire: {$gte: new Date()}},{expire: {$lt: new Date("2000-01-01")}},{expire: ""}]
+      $or: [{expire: {$gte: new Date()}},{expire: ""}]
     };
     if(mIndex==="") {
       query = {
         tags: new RegExp(tagReg),
-        $or: [{expire: {$gte: new Date()}},{expire: {$lt: new Date("2000-01-01")}},{expire: ""}]
+        $or: [{expire: {$gte: new Date()}},{expire: ""}]
       };
     }
     collection.find(query, {
@@ -291,7 +291,7 @@ Shops.getNewstList = function getNewstList(index, limit, callback) {
     }
     var query = {
       index: index, 
-      $or: [{expire: {$gte: new Date()}},{expire: {$lt: new Date("2000-01-01")}},{expire: ""}]
+      $or: [{expire: {$gte: new Date()}},{expire: ""}]
     };
     collection.find(query).sort({date:-1}).limit(parseInt(limit)).toArray(function(err, docs){
       if(err){
