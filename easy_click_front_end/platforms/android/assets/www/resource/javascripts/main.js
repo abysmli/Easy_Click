@@ -15,8 +15,7 @@ $(document).on("pageinit", ".page_body", function(event) {
   /*
   $("body").on( "swiperight", function(event) {
     history.go(-1);
-  });*/
-  /*
+  });
   $("body").on( "swipeleft", function(event) {
     history.go(1);
   });*/
@@ -33,7 +32,7 @@ function removeDuplicateObject(arr) {
 }
 
 function sendAjax(url, data, success, error) {
-  var xhr = $.ajax({
+  $.ajax({
     url: 'http://'+localStorage.mURL+url,
     type:'POST',
     timeout: 20000,

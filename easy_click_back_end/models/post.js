@@ -93,7 +93,7 @@ Post.getAll = function getAll(mTags, mSkip, mLimit, callback) {
         });
         callback(null, posts);
       } else {
-        callback(null, "");
+        callback(null, []);
       }
     });
   });
@@ -125,7 +125,7 @@ Post.getbyList = function getbyList(mList, callback) {
         });
         callback(null, posts);
       } else {
-        callback(null, "");
+        callback(null, []);
       }
     });
   });
@@ -148,7 +148,7 @@ Post.getbyUid = function getbyUid(uid, callback) {
         var post = new Post(doc.username, doc.title, doc.content, doc.location, doc.contact, doc.price, doc.tags, doc.prevtext, doc.prevtext2, doc.previmg, doc.img, doc.date, doc._id);
         callback(null, post);
       } else {
-        callback(null, "");
+        callback(null, {});
       }
     });
   });
@@ -194,7 +194,7 @@ Post.getbyUsername = function getbyUsername(username, callback) {
         });
         callback(null, posts);
       } else {
-        callback(null, "");
+        callback(null, []);
       }
     });
   });
@@ -216,7 +216,7 @@ Post.getNewstList = function getNewstList(limit, callback) {
         });
         callback(null, posts);
       } else {
-        callback(null, "");
+        callback(null, []);
       }
     });
   });

@@ -68,7 +68,7 @@ Post_buffer.getAll = function getAll(callback) {
         });
         callback(null, posts);
       } else {
-        callback(null, "");
+        callback(null, []);
       }
     });
   });
@@ -90,7 +90,7 @@ Post_buffer.getbyUid = function getbyUid(uid, callback) {
         var post = new Post_buffer(doc.username, doc.location, doc.content, doc.contact, doc.price, doc.handled, doc.img, doc.date);
         callback(null, post);
       } else {
-        callback(null, "");
+        callback(null, {});
       }
     });
   });

@@ -65,7 +65,8 @@
             mSkip=15,
             mLimit=5,
             mKey=$('#search_input').val(),
-            mIDBuffer=[];
+            mIDBuffer=[],
+            local_news=[];
 
         $(document).one("pageinit","#news_page", function( event ) {
             $(".iscroll-wrapper", this).bind({
@@ -93,6 +94,7 @@
             }
             getExchange();
             if(localStorage.NewsCatagory) {
+                local_news = JSON.parse(localStorage.NewsCatagory);
                 getLocalContent();
             }
             checkUpdate();
@@ -174,34 +176,71 @@
             });
         }
 
-        function checkUpdate() {
-            var data = {
-                uid: ""
-            };
-            sendAjax('/app_news_newst_date', data, function(newst_date){
-                if(newst_date != localStorage.NewsCatagoryCheckDate) {
-                    getRemoteContent(newst_date);
+        function getRequireList(mLocalList, mRemoteList) {
+            var requireList = [];
+            $.each(mRemoteList,function(key, _mRemoteList){
+                if(($.grep(mLocalList, function(_mLocalList) { return _mLocalList.uid == _mRemoteList.uid; })==0) || ($.grep(mLocalList, function(_mLocalList) { return (_mLocalList.uid == _mRemoteList.uid)&&(_mLocalList.date != _mRemoteList.date); })!=0)) {
+                    requireList.push(_mRemoteList.uid);
                 }
-            },function(jqXHR, textStatus, errorThrown){
-                $('.news_floatingBarsG').hide();
-                displayNetworkError('#news_page');
-            });            
+            });
+            return requireList;
         }
 
-        function getRemoteContent(newst_date) {
-            $('.news_floatingBarsG').show();
+        function generateNewList(lists, mLocalList, mRemoteList) {
+            $.each(lists, function(key, _list){
+                local_news.push(_list);
+                mLocalList.push({uid: _list.uid, date: _list.date});
+            });
+            eliminateElement(mLocalList, mRemoteList);
+            local_news.sort(function(a,b){return Date.parse(b.date)-Date.parse(a.date)});
+            local_news=removeDuplicateObject(local_news);
+        }
+
+        function eliminateElement(mLocalList, mRemoteList) {
+            var shift=0, flag=false;                       
+            $.each(mLocalList, function(key, _mLocalList){
+                if($.grep(mRemoteList, function(_mRemoteList) { return _mLocalList.uid == _mRemoteList.uid; })==0) {
+                    local_news.splice(key-(shift++),1);
+                    flag=true;
+                }
+            });
+            return flag;
+        }
+
+        function checkUpdate() {
             var data = {
-                skip: 0,
                 limit: 15
             };
-            sendAjax('/app_news', data, function(News){
-                $(listSelector).html("<li id='exchange_block' data-role='list-divider'></li>");
-                $('.news_floatingBarsG').hide();
-                $.each(News, insertNewsCatagory);
-                localStorage.NewsCatagory = JSON.stringify(News);
-                localStorage.NewsCatagoryCheckDate = newst_date;
-                $('#news_list_group').listview('refresh');
-                getExchange();
+            sendAjax('/app_news_newst_list', data, function(mRemoteList){
+                var mLocalList=getLocalList();
+                var requireList = getRequireList(mLocalList, mRemoteList);
+                if(requireList.length!=0) {
+                    $('.news_floatingBarsG').show();
+                    var data = {
+                        list: requireList
+                    };                       
+                    sendAjax('/app_news_require_list', data, function(lists){
+                        generateNewList(lists, mLocalList, mRemoteList);
+                        $(listSelector).html("<li id='exchange_block' data-role='list-divider'></li>");
+                        $('.news_floatingBarsG').hide();
+                        $.each(local_news, insertNewsCatagory);
+                        localStorage.NewsCatagory = JSON.stringify(local_news);
+                        $('#news_list_group').listview('refresh');
+                        getExchange();
+                    },function(jqXHR, textStatus, errorThrown){
+                        $('.news_floatingBarsG').hide();
+                        displayNetworkError('#news_page');
+                    });
+                } else {
+                    if (eliminateElement(mLocalList, mRemoteList)) {
+                        $(listSelector).html("<li id='exchange_block' data-role='list-divider'></li>");
+                        $('.news_floatingBarsG').hide();
+                        $.each(local_news, insertNewsCatagory);
+                        localStorage.NewsCatagory = JSON.stringify(local_news);
+                        $('#news_list_group').listview('refresh');
+                        getExchange();
+                    }
+                }
             },function(jqXHR, textStatus, errorThrown){
                 $('.news_floatingBarsG').hide();
                 displayNetworkError('#news_page');
@@ -209,10 +248,16 @@
         }
 
         function getLocalContent(){
-            var News = JSON.parse(localStorage.NewsCatagory);
             $('.news_floatingBarsG').hide();
-            $.each(News, insertNewsCatagory);
-            //$('#news_list_group').listview('refresh');
+            $.each(local_news, insertNewsCatagory);
+        }
+
+        function getLocalList() {
+            var newslist=[];
+            $.each(local_news,function(key, news){
+                newslist.push({uid: news.uid, date: news.date})
+            });
+            return newslist;
         }
 		</script>
 	</div>

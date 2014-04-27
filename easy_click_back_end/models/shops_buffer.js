@@ -69,6 +69,8 @@ Shops_buffer.getAll = function getAll(callback) {
           shops_buffer.push(shop);
         });
         callback(null, shops_buffer);
+      } else {
+        callback(null, []);
       }
     });
   });
@@ -90,7 +92,7 @@ Shops_buffer.getbyUid = function getbyUid(uid, callback) {
         var shop = new Shops_buffer(doc.title, doc.content, doc.img, doc.user, doc.date, doc.handled);
         callback(null, shop);
       } else {
-        callback(null, "");
+        callback(null, {});
       }
     });
   });

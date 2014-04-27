@@ -67,7 +67,7 @@ News.getAll = function getAll(mSkip, mLimit, callback) {
       return callback(err);
     }
     collection.find({},{skip:mSkip,limit:mLimit}).sort({
-      newsdate: -1
+      date: -1
     }).toArray(function(err, docs) {
       if (err) {
         callback(err, null);
@@ -80,7 +80,7 @@ News.getAll = function getAll(mSkip, mLimit, callback) {
         });
         callback(null, news_buffer);
       } else {
-        callback(null, "");
+        callback(null, {});
       }
     });
   });
@@ -102,37 +102,65 @@ News.getbyUid = function getbyUid(uid, callback) {
         var news_buffer = new News(doc.index, doc.title, doc.sub_title, doc.source, doc.sourceurl, doc.newsdate, doc.content, doc.previmg, doc.img, doc.date, doc._id);
         callback(null, news_buffer);
       } else {
-        callback(null, "");
+        callback(null, {});
       }
     });
   });
 };
 
-News.getNewstDate = function getNewstDate(uid, callback) {
-  db.collection('news', function(err, collection){
-    if (err) {
+News.getNewstList = function getNewstList(limit, callback) {
+  db.collection('news',function(err, collection){
+    if(err){
       return callback(err);
     }
-    if(uid=="") {
-      var query = {};
-    } else {
-      var oid = new require('mongodb').ObjectID(uid);
-      var query = {
-        _id: oid
-      };
-    }
-    collection.find(query).sort({date:-1}).limit(1).toArray(function(err, doc){
-      if (err) {
+    collection.find().sort({date:-1}).limit(parseInt(limit)).toArray(function(err, docs){
+      if(err){
         callback(err, null);
       }
-      if (doc[0]!=null) {
-        callback(null, doc[0].date);
+      if (docs!=null) {
+        var news = [];
+        docs.forEach(function(doc, index){
+          news.push({uid: doc._id, date: doc.date});
+        });
+        callback(null, news);
       } else {
-        callback(null, "");
+        callback(null, []);
       }
     });
   });
 }
+
+News.getbyList = function getbyList(mList, callback) {
+  db.collection('news', function(err, collection) {
+    if (err) {
+      return callback(err);
+    }
+    mList.forEach(function(list, index){
+      var oid = new require('mongodb').ObjectID(list);
+      mList[index]=oid;
+    });
+    var query = {
+      _id: {$in: mList}
+    };
+    collection.find(query).sort({
+      date: -1
+    }).toArray(function(err, docs) {
+      if (err) {
+        callback(err, null);
+      }
+      if(docs!=null) {
+        var news = [];
+        docs.forEach(function(doc, index) {
+          var _news = new newsview(doc.title, doc.sub_title, doc.newsdate, doc.previmg, doc.date, doc._id);
+          news.push(_news);
+        });
+        callback(null, news);
+      } else {
+        callback(null, []);
+      }
+    });
+  });
+};
 
 News.prototype.modifybyUid = function modifybyUid(uid, callback) {
   var news = {

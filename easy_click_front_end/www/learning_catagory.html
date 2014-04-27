@@ -39,11 +39,9 @@
             </ul>
 		</div>
 		<script>
-            document.addEventListener("deviceready", onDeviceReady_learning_catagory, false);
+            var local_learnings=[];
 
-    		// $(document).one("pageinit","#learning_catagory_page", function( event ) {
-      //           onDeviceReady_learning_catagory();
-    		// });
+            document.addEventListener("deviceready", onDeviceReady_learning_catagory, false);
 
             function onDeviceReady_learning_catagory() {
                 $('.nav_bar h3').text(sessionStorage.learningtitle);
@@ -68,33 +66,69 @@
                 }
             }
 
-            function checkUpdate() {
-                var data = {
-                    index: sessionStorage.learningindex,
-                    uid: ""
-                };
-                sendAjax('/app_learning_newst_date', data, function(newst_date){
-                    if(newst_date != getLocalDate()) {
-                        getRemoteContent(newst_date);
+            function getRequireList(mLocalList, mRemoteList) {
+                var requireList = [];
+                $.each(mRemoteList,function(key, _mRemoteList){
+                    if(($.grep(mLocalList, function(_mLocalList) { return _mLocalList.uid == _mRemoteList.uid; })==0) || ($.grep(mLocalList, function(_mLocalList) { return (_mLocalList.uid == _mRemoteList.uid)&&(_mLocalList.date != _mRemoteList.date); })!=0)) {
+                        requireList.push(_mRemoteList.uid);
                     }
-                },function(jqXHR, textStatus, errorThrown){
-                    $('.learning_catagory_floatingBarsG').hide();
-                    displayNetworkError('#learning_catagory_page');
-                });            
+                });
+                return requireList;
             }
 
-            function getRemoteContent(newst_date) {
-                $('.learning_catagory_floatingBarsG').show();
+            function generateNewList(lists, mLocalList, mRemoteList) {
+                $.each(lists, function(key, _list){
+                    local_learnings.push(_list);
+                    mLocalList.push({uid: _list.uid, date: _list.date});
+                });
+                eliminateElement(mLocalList, mRemoteList);
+                local_learnings.sort(function(a,b){return Date.parse(b.date)-Date.parse(a.date)});
+                local_learnings=removeDuplicateObject(local_learnings);
+            }
+
+            function eliminateElement(mLocalList, mRemoteList) {
+                var shift=0, flag=false;                       
+                $.each(mLocalList, function(key, _mLocalList){
+                    if($.grep(mRemoteList, function(_mRemoteList) { return _mLocalList.uid == _mRemoteList.uid; })==0) {
+                        local_learnings.splice(key-(shift++),1);
+                        flag=true;
+                    }
+                });
+                return flag;
+            }
+
+            function checkUpdate() {
                 var data = {
-                    index: sessionStorage.learningindex,
+                    index: sessionStorage.learningindex
                 };
-                sendAjax('/app_learning', data, function(learnings){
-                    $('#learning_list').html("");
-                    $.each(learnings, insertLearningList);
-                    storeLocalContent(JSON.stringify(learnings));
-                    storeLocalDate(newst_date);
-                    $('.learning_catagory_floatingBarsG').hide();
-                    $('#learning_list').listview('refresh');
+                sendAjax('/app_learning_newst_list', data, function(mRemoteList){
+                    var mLocalList=getLocalList();
+                    var requireList = getRequireList(mLocalList, mRemoteList);
+                    if(requireList.length!=0) {
+                        $('.learning_catagory_floatingBarsG').show();
+                        var data = {
+                            list: requireList
+                        };                       
+                        sendAjax('/app_learning_require_list', data, function(lists){
+                            generateNewList(lists, mLocalList, mRemoteList);
+                            $('#learning_list').html("");
+                            $.each(local_learnings, insertLearningList);
+                            storeLocalContent(JSON.stringify(local_learnings));
+                            $('.learning_catagory_floatingBarsG').hide();
+                            $('#learning_list').listview('refresh');
+                        },function(jqXHR, textStatus, errorThrown){
+                            $('.learning_catagory_floatingBarsG').hide();
+                            displayNetworkError('#learning_catagory_page');
+                        });
+                    } else {
+                        if (eliminateElement(mLocalList, mRemoteList)) {
+                            $('#learning_list').html("");
+                            $.each(local_learnings, insertLearningList);
+                            storeLocalContent(JSON.stringify(local_learnings));
+                            $('.learning_catagory_floatingBarsG').hide();
+                            $('#learning_list').listview('refresh');
+                        }
+                    }
                 },function(jqXHR, textStatus, errorThrown){
                     $('.learning_catagory_floatingBarsG').hide();
                     displayNetworkError('#learning_catagory_page');
@@ -102,10 +136,9 @@
             }
 
             function getLocalContent(localcontent){
-                var learnings = JSON.parse(localcontent);
+                local_learnings = JSON.parse(localcontent);
+                $.each(local_learnings, insertLearningList);
                 $('.learning_catagory_floatingBarsG').hide();
-                $.each(learnings, insertLearningList);
-                // $('#learning_list').listview('refresh');
             }
 
             function insertLearningList(key, learn) {
@@ -116,32 +149,12 @@
                 );
             }
 
-            function getLocalDate() {
-                if (sessionStorage.learningindex == "beginner") {
-                    return localStorage.LearningBeginnerCheckDate;
-                } else if(sessionStorage.learningindex == "sentence") {
-                    return localStorage.LearningSentenceCheckDate;
-                } else if(sessionStorage.learningindex == "test") {
-                    return localStorage.LearningTestCheckDate;
-                } else if(sessionStorage.learningindex == "vocabulary") {
-                    return localStorage.LearningVocabularyCheckDate;
-                } else if(sessionStorage.learningindex == "article") {
-                    return localStorage.LearningArticleCheckDate;
-                }
-            }
-
-            function storeLocalDate(date) {
-                if (sessionStorage.learningindex == "beginner") {
-                    localStorage.LearningBeginnerCheckDate = date;
-                } else if(sessionStorage.learningindex == "sentence") {
-                    localStorage.LearningSentenceCheckDate = date;
-                } else if(sessionStorage.learningindex == "test") {
-                    localStorage.LearningTestCheckDate = date;
-                } else if(sessionStorage.learningindex == "vocabulary") {
-                    localStorage.LearningVocabularyCheckDate = date;
-                } else if(sessionStorage.learningindex == "article") {
-                    localStorage.LearningArticleCheckDate = date;
-                }
+            function getLocalList() {
+                var learninglist=[];
+                $.each(local_learnings,function(key, learning){
+                    learninglist.push({uid: learning.uid, date: learning.date})
+                });
+                return learninglist;
             }
 
             function storeLocalContent(data) {

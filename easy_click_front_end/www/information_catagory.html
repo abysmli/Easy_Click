@@ -98,7 +98,6 @@
             document.addEventListener("deviceready", onDeviceReady_information_catagory, false);
 
             function onDeviceReady_information_catagory(){
-                //$("#information_catagory_page .iscroll-page").css("padding-top","5.1em");
                 $('.nav_bar h3').text(sessionStorage.title);
                 $('#information_catagory').on('vmousedown','a',function(){
                     $(this).parent('div.information_list').css({opacity:0.5}).animate({opacity:1},200);
@@ -341,14 +340,20 @@
                     local_shops.push(_list);
                     mLocalList.push({uid: _list.uid, date: _list.date});
                 });
-                var shift=0;                       
+                eliminateElement(mLocalList, mRemoteList);
+                local_shops.sort(function(a,b){return Date.parse(b.date)-Date.parse(a.date)});
+                local_shops=removeDuplicateObject(local_shops);
+            }
+
+            function eliminateElement(mLocalList, mRemoteList) {
+                var shift=0, flag=false;                       
                 $.each(mLocalList, function(key, _mLocalList){
                     if($.grep(mRemoteList, function(_mRemoteList) { return _mLocalList.uid == _mRemoteList.uid; })==0) {
                         local_shops.splice(key-(shift++),1);
+                        flag=true;
                     }
                 });
-                local_shops.sort(function(a,b){return Date.parse(b.date)-Date.parse(a.date)});
-                local_shops=removeDuplicateObject(local_shops);
+                return flag;
             }
 
             function checkUpdate() {
@@ -375,6 +380,21 @@
                             $('.information_catagory_floatingBarsG').hide();
                             displayNetworkError('#information_catagory_page');
                         });
+                    } else {
+                        if (eliminateElement(mLocalList, mRemoteList)) {
+                            $('#information_catagory').html("");
+                            $('.information_catagory_floatingBarsG').hide();
+                            $.each(local_shops, insertInformationCatagory);
+                            if(local_shops.length==0) {
+                                $('#information_catagory').html("<p>该分类暂无内容</p>");
+                            }
+                            storeLocalContent(local_shops);
+                            $(".iscroll-wrapper").iscrollview("refresh");
+                        }
+                        if(local_shops.length==0) {
+                            $('#information_catagory').html("<p>该分类暂无内容</p>");
+                            $('.information_catagory_floatingBarsG').hide();
+                        }
                     }
                 },function(jqXHR, textStatus, errorThrown){
                     $('.information_catagory_floatingBarsG').hide();

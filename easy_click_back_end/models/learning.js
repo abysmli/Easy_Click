@@ -19,9 +19,10 @@ function Learn(index, title, content, img, date, uid) {
   }
 };
 
-function Learnlist(index, title, uid) {
+function Learnlist(index, title, date, uid) {
   this.index = index;
   this.title = title;
+  this.date = date;
   this.uid = uid;
 };
 
@@ -83,12 +84,12 @@ Learn.getAll = function getAll(callback) {
       if(docs!=null) {
         var learns = [];
         docs.forEach(function(doc, index) {
-          var learn = new Learnlist(doc.index, doc.title, doc._id);
+          var learn = new Learnlist(doc.index, doc.title, doc.date, doc._id);
           learns.push(learn);
         });
         callback(null, learns);
       } else {
-        callback(null, "");
+        callback(null, []);
       }
     });
   });
@@ -112,12 +113,12 @@ Learn.getbyIndex = function getbyIndex(index, callback) {
       if(docs!=null) {
         var learns = [];
         docs.forEach(function(doc, index) {
-          var learn = new Learnlist(doc.index, doc.title, doc._id);
+          var learn = new Learnlist(doc.index, doc.title, doc.date, doc._id);
           learns.push(learn);
         });
         callback(null, learns);
       } else {
-        callback(null, "");
+        callback(null, []);
       }
     });
   });
@@ -139,33 +140,61 @@ Learn.getbyUid = function getbyUid(uid, callback) {
         var learn = new Learn(doc.index, doc.title, doc.content, doc.img, doc.date, doc._id);
         callback(null, learn);
       } else {
-        callback(null, "");
+        callback(null, {});
       }
     });
   });
 };
 
-Learn.getNewstDate = function getNewstDate(index, uid, callback) {
-  db.collection('learning', function(err, collection){
+Learn.getbyList = function getbyList(mList, callback) {
+  db.collection('learning', function(err, collection) {
     if (err) {
       return callback(err);
     }
-    if(uid=="") {
-      var query = {index: index};
-    } else {
-      var oid = new require('mongodb').ObjectID(uid);
-      var query = {
-        _id: oid
-      };
-    }
-    collection.find(query).sort({date:-1}).limit(1).toArray(function(err, doc){
+    mList.forEach(function(list, index){
+      var oid = new require('mongodb').ObjectID(list);
+      mList[index]=oid;
+    });
+    var query = {
+      _id: {$in: mList}
+    };
+    collection.find(query).sort({
+      date: -1
+    }).toArray(function(err, docs) {
       if (err) {
         callback(err, null);
       }
-      if (doc[0]!=null) {
-        callback(null, doc[0].date);
+      if(docs!=null) {
+        var learning = [];
+        docs.forEach(function(doc, index) {
+          var learn = new Learnlist(doc.index, doc.title, doc.date, doc._id);
+          learning.push(learn);
+        });
+        callback(null, learning);
       } else {
-        callback(null, "");
+        callback(null, []);
+      }
+    });
+  });
+};
+
+Learn.getNewstList = function getNewstList(index, callback) {
+  db.collection('learning',function(err, collection){
+    if(err){
+      return callback(err);
+    }
+    collection.find({index: index}).sort({date:-1}).toArray(function(err, docs){
+      if(err){
+        callback(err, null);
+      }
+      if (docs!=null) {
+        var learning = [];
+        docs.forEach(function(doc, index){
+          learning.push({uid: doc._id, date: doc.date});
+        });
+        callback(null, learning);
+      } else {
+        callback(null, []);
       }
     });
   });

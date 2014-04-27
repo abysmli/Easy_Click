@@ -779,7 +779,7 @@ module.exports = function(app) {
     } else {
       sIndex = 'law';
     }
-    var shop = new Shops(req.body.username, sIndex, req.body.title, req.body.instruction, req.body.name, req.body.brief, req.body.comment, req.body.telephone, req.body.email, req.body.url, req.body.address, req.body.path, req.body.expire, req.body.tags, req.body.prevtext, req.body.prevtext2, utils.getImageString(req.files.previmage), utils.getImageString(req.files.image));
+    var shop = new Shops(req.body.username, sIndex, req.body.title, req.body.instruction, req.body.name, req.body.brief, req.body.comment, req.body.telephone, req.body.email, req.body.url, req.body.address, req.body.path, new Date(req.body.expire), req.body.tags, req.body.prevtext, req.body.prevtext2, utils.getImageString(req.files.previmage), utils.getImageString(req.files.image));
     shop.save(function(err) {
       if (err) {
         req.flash('error', err);
@@ -825,7 +825,7 @@ module.exports = function(app) {
     } else {
       sIndex = 'law';
     }
-    var shop = new Shops(req.body.username, sIndex, req.body.title, req.body.instruction, req.body.name, req.body.brief, req.body.comment, req.body.telephone, req.body.email, req.body.url, req.body.address, req.body.path, req.body.expire, req.body.tags, req.body.prevtext, req.body.prevtext2, utils.getImageString(req.files.previmage), utils.getImageString(req.files.image));
+    var shop = new Shops(req.body.username, sIndex, req.body.title, req.body.instruction, req.body.name, req.body.brief, req.body.comment, req.body.telephone, req.body.email, req.body.url, req.body.address, req.body.path, new Date(req.body.expire), req.body.tags, req.body.prevtext, req.body.prevtext2, utils.getImageString(req.files.previmage), utils.getImageString(req.files.image));
     shop.save(function(err) {
       if (err) {
         req.flash('error', err);
@@ -884,7 +884,7 @@ module.exports = function(app) {
     } else {
       sIndex = 'law';
     }
-    var shop = new Shops(req.body.username, sIndex, req.body.title, req.body.instruction, req.body.name, req.body.brief, req.body.comment, req.body.telephone, req.body.email, req.body.url, req.body.address, req.body.path, req.body.expire, req.body.tags, req.body.prevtext, req.body.prevtext2, utils.getImageString(req.files.previmage), utils.getImageString(req.files.image));
+    var shop = new Shops(req.body.username, sIndex, req.body.title, req.body.instruction, req.body.name, req.body.brief, req.body.comment, req.body.telephone, req.body.email, req.body.url, req.body.address, req.body.path, new Date(req.body.expire), req.body.tags, req.body.prevtext, req.body.prevtext2, utils.getImageString(req.files.previmage), utils.getImageString(req.files.image));
     shop.modifybyUid(req.params.uid, function(err) {
       if (err) {
         req.flash('error', err);
@@ -1136,15 +1136,6 @@ module.exports = function(app) {
     });
   });
 
-  app.post('/app_information_newst_date', function(req, res) {
-    Shops.getNewstDate(req.body.index, req.body.uid, function(err, date){
-      res.json(date);
-      if(app.settings.env=="development") {
-        console.log("app_information_newst_date: "+parseInt(res.get('Content-Length'))/1024+" kByte Time: "+(new Date()).toLocaleTimeString());  
-      }
-    });
-  });
-
   app.post('/app_information_newst_list', function(req, res) {
     Shops.getNewstList(req.body.index, req.body.limit, function(err, list){      
       res.json(list);
@@ -1255,11 +1246,20 @@ module.exports = function(app) {
     });
   });
 
-  app.post('/app_news_newst_date', function(req, res) {
-    News.getNewstDate(req.body.uid,function(err, date){      
-      res.json(date);
+  app.post('/app_news_newst_list', function(req, res) {
+    News.getNewstList(req.body.limit,function(err, list){      
+      res.json(list);
       if(app.settings.env=="development") {
-        console.log("app_news_newst_date: "+parseInt(res.get('Content-Length'))/1024+" kByte Time: "+(new Date()).toLocaleTimeString());  
+        console.log("app_news_newst_list: "+parseInt(res.get('Content-Length'))/1024+" kByte Time: "+(new Date()).toLocaleTimeString());  
+      }
+    });
+  });
+
+  app.post('/app_news_require_list', function(req, res) {
+    News.getbyList(req.body.list,function(err, lists){      
+      res.json(lists);
+      if(app.settings.env=="development") {
+        console.log("app_news_require_list: "+parseInt(res.get('Content-Length'))/1024+" kByte Time: "+(new Date()).toLocaleTimeString());  
       }
     });
   });
@@ -1282,11 +1282,20 @@ module.exports = function(app) {
     });
   });
 
-  app.post('/app_learning_newst_date', function(req, res) {
-    Learn.getNewstDate(req.body.index, req.body.uid,function(err, date){      
-      res.json(date);
+  app.post('/app_learning_newst_list', function(req, res) {
+    Learn.getNewstList(req.body.index, function(err, list){      
+      res.json(list);
       if(app.settings.env=="development") {
-        console.log("app_learning_newst_date: "+parseInt(res.get('Content-Length'))/1024+" kByte Time: "+(new Date()).toLocaleTimeString());  
+        console.log("app_learning_newst_list: "+parseInt(res.get('Content-Length'))/1024+" kByte Time: "+(new Date()).toLocaleTimeString());  
+      }
+    });
+  });
+
+  app.post('/app_learning_require_list', function(req, res) {
+    Learn.getbyList(req.body.list,function(err, lists){      
+      res.json(lists);
+      if(app.settings.env=="development") {
+        console.log("app_learning_require_list: "+parseInt(res.get('Content-Length'))/1024+" kByte Time: "+(new Date()).toLocaleTimeString());  
       }
     });
   });

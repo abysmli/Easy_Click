@@ -241,14 +241,20 @@
                     local_posts.push(_list);
                     mLocalList.push({uid: _list.uid, date: _list.date});
                 });
-                var shift=0;                       
+                eliminateElement(mLocalList, mRemoteList);
+                local_posts.sort(function(a,b){return Date.parse(b.date)-Date.parse(a.date)});
+                local_posts=removeDuplicateObject(local_posts);
+            }
+
+            function eliminateElement(mLocalList, mRemoteList) {
+                var shift=0, flag=false;                       
                 $.each(mLocalList, function(key, _mLocalList){
                     if($.grep(mRemoteList, function(_mRemoteList) { return _mLocalList.uid == _mRemoteList.uid; })==0) {
                         local_posts.splice(key-(shift++),1);
+                        flag=true;
                     }
                 });
-                local_posts.sort(function(a,b){return Date.parse(b.date)-Date.parse(a.date)});
-                local_posts=removeDuplicateObject(local_posts);
+                return flag;
             }
 
             function checkUpdate() {
@@ -274,6 +280,21 @@
                             $('.userpostview_floatingBarsG').hide();
                             displayNetworkError('#user_post_view_page');
                         });
+                    } else {
+                        if (eliminateElement(mLocalList, mRemoteList)) {
+                            $('#post_list').html("");
+                            $.each(local_posts, insertUserPostCatagory);
+                            if(local_posts.length==0) {
+                                $('#post_list').html("<p>暂无内容</p>");
+                            }
+                            $(".iscroll-wrapper").iscrollview("refresh");
+                            localStorage.UserPostCatagory = JSON.stringify(local_posts);
+                            $('.userpostview_floatingBarsG').hide();
+                        }
+                        if(local_posts.length==0) {
+                            $('#post_list').html("<p>暂无内容</p>");
+                            $('.userpostview_floatingBarsG').hide();
+                        }
                     }
                 },function(jqXHR, textStatus, errorThrown){
                     $('.userpostview_floatingBarsG').hide();

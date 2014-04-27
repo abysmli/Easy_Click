@@ -66,7 +66,7 @@ Message.getbyUsername = function getbyUsername(username, callback) {
         });
         callback(null, messages);
       } else {
-        callback(null, "");
+        callback(null, []);
       }
     });
   });

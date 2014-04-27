@@ -45,7 +45,7 @@ Modules.getbyId = function getbyId(id, callback) {
         var modules = new Modules(doc.id, doc.content, doc.date);
         callback(null, modules);
       } else {
-        callback(null, "");
+        callback(null, {});
       }
     });
   });

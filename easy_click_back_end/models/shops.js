@@ -130,7 +130,7 @@ Shops.getbyIndex = function getbyIndex(index, callback) {
         });
         callback(null, shops);
       } else {
-        callback(null, "");
+        callback(null, []);
       }
     });
   });
@@ -152,12 +152,12 @@ Shops.getList_expire = function getList_expire(mIndex, mTags, mSkip, mLimit, cal
     var query = {
       index: mIndex,
       tags: new RegExp(tagReg),
-      $or: [{expire: {$gte: new Date()}},{expire: ""}]
+      $or: [{expire: {$gte: new Date()}},{expire: {$lt: new Date("2000-01-01")}},{expire: ""}]
     };
     if(mIndex==="") {
       query = {
         tags: new RegExp(tagReg),
-        $or: [{expire: {$gte: new Date()}},{expire: ""}]
+        $or: [{expire: {$gte: new Date()}},{expire: {$lt: new Date("2000-01-01")}},{expire: ""}]
       };
     }
     collection.find(query, {
@@ -177,7 +177,7 @@ Shops.getList_expire = function getList_expire(mIndex, mTags, mSkip, mLimit, cal
         });
         callback(null, shops);
       } else {
-        callback(null, "");
+        callback(null, []);
       }
     });
   });
@@ -209,7 +209,7 @@ Shops.getbyList = function getbyList(mList, callback) {
         });
         callback(null, shops);
       } else {
-        callback(null, "");
+        callback(null, []);
       }
     });
   });
@@ -231,7 +231,7 @@ Shops.getbyUid = function getbyUid(uid, callback) {
         var shop = new Shops(doc.username, doc.index, doc.title, doc.instruction, doc.name, doc.brief, doc.comment, doc.telephone, doc.email, doc.url, doc.address, doc.path, doc.expire, doc.tags, doc.prevtext,  doc.prevtext2, doc.previmg, doc.img, doc.date, doc._id);
         callback(null, shop);
       } else {
-        callback(null, "");
+        callback(null, {});
       }
     });
   });
@@ -258,32 +258,6 @@ Shops.getbyTele = function getbyTele(tel, callback) {
   });
 };
 
-Shops.getNewstDate = function getNewstDate(index, uid, callback) {
-  db.collection('shops', function(err, collection){
-    if (err) {
-      return callback(err);
-    }
-    if(uid=="") {
-      var query = {index: index};
-    } else {
-      var oid = new require('mongodb').ObjectID(uid);
-      var query = {
-        _id: oid
-      };
-    }
-    collection.find(query).sort({date:-1}).limit(1).toArray(function(err, doc){
-      if (err) {
-        callback(err, null);
-      }
-      if (doc[0]!=null) {
-        callback(null, doc[0].date);
-      } else {
-        callback(null, "");
-      }
-    });
-  });
-}
-
 Shops.getNewstList = function getNewstList(index, limit, callback) {
   db.collection('shops',function(err, collection){
     if(err){
@@ -291,7 +265,7 @@ Shops.getNewstList = function getNewstList(index, limit, callback) {
     }
     var query = {
       index: index, 
-      $or: [{expire: {$gte: new Date()}},{expire: ""}]
+      $or: [{expire: {$gte: new Date()}},{expire: {$lt: new Date("2000-01-01")}},{expire: ""}]
     };
     collection.find(query).sort({date:-1}).limit(parseInt(limit)).toArray(function(err, docs){
       if(err){
@@ -304,7 +278,7 @@ Shops.getNewstList = function getNewstList(index, limit, callback) {
         });
         callback(null, shops);
       } else {
-        callback(null, "");
+        callback(null, []);
       }
     });
   });
