@@ -32,7 +32,7 @@
     </feature>
     <preference name="phonegap-version" value="3.4.0" />
     <preference name="permissions" value="none" />
-    <preference name="orientation" value="landscape" />
+    <preference name="orientation" value="portrait" />
     <preference name="target-device" value="universal" />
     <preference name="fullscreen" value="false" />
     <preference name="webviewbounce" value="true" />

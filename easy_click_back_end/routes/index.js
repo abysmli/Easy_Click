@@ -779,7 +779,7 @@ module.exports = function(app) {
     } else {
       sIndex = 'law';
     }
-    var shop = new Shops(req.body.username, sIndex, req.body.title, req.body.instruction, req.body.name, req.body.brief, req.body.comment, req.body.telephone, req.body.email, req.body.url, req.body.address, req.body.path, req.body.expire, req.body.tags, req.body.prevtext, req.body.prevtext2, utils.getImageString(req.files.previmage), utils.getImageString(req.files.image));
+    var shop = new Shops(req.body.username, sIndex, req.body.title, req.body.instruction, req.body.name, req.body.brief, req.body.comment, req.body.telephone, req.body.email, req.body.url, req.body.address, req.body.path, new Date(req.body.expire), req.body.tags, req.body.prevtext, req.body.prevtext2, utils.getImageString(req.files.previmage), utils.getImageString(req.files.image));
     shop.save(function(err) {
       if (err) {
         req.flash('error', err);
@@ -825,7 +825,7 @@ module.exports = function(app) {
     } else {
       sIndex = 'law';
     }
-    var shop = new Shops(req.body.username, sIndex, req.body.title, req.body.instruction, req.body.name, req.body.brief, req.body.comment, req.body.telephone, req.body.email, req.body.url, req.body.address, req.body.path, req.body.expire, req.body.tags, req.body.prevtext, req.body.prevtext2, utils.getImageString(req.files.previmage), utils.getImageString(req.files.image));
+    var shop = new Shops(req.body.username, sIndex, req.body.title, req.body.instruction, req.body.name, req.body.brief, req.body.comment, req.body.telephone, req.body.email, req.body.url, req.body.address, req.body.path, new Date(req.body.expire), req.body.tags, req.body.prevtext, req.body.prevtext2, utils.getImageString(req.files.previmage), utils.getImageString(req.files.image));
     shop.save(function(err) {
       if (err) {
         req.flash('error', err);
@@ -884,7 +884,7 @@ module.exports = function(app) {
     } else {
       sIndex = 'law';
     }
-    var shop = new Shops(req.body.username, sIndex, req.body.title, req.body.instruction, req.body.name, req.body.brief, req.body.comment, req.body.telephone, req.body.email, req.body.url, req.body.address, req.body.path, req.body.expire, req.body.tags, req.body.prevtext, req.body.prevtext2, utils.getImageString(req.files.previmage), utils.getImageString(req.files.image));
+    var shop = new Shops(req.body.username, sIndex, req.body.title, req.body.instruction, req.body.name, req.body.brief, req.body.comment, req.body.telephone, req.body.email, req.body.url, req.body.address, req.body.path, new Date(req.body.expire), req.body.tags, req.body.prevtext, req.body.prevtext2, utils.getImageString(req.files.previmage), utils.getImageString(req.files.image));
     shop.modifybyUid(req.params.uid, function(err) {
       if (err) {
         req.flash('error', err);
@@ -1120,65 +1120,92 @@ module.exports = function(app) {
   var counter=0;
   app.post('/app_information_catagory', function(req, res){
     Shops.getList_expire(req.body.index, req.body.tags, req.body.skip, req.body.limit, function(err, shops) {
-      console.log("app_information_catagory: "+utils.sizeOf(shops)/1000+" kByte Time: "+(new Date()).toLocaleTimeString());
       res.json(shops);
+      if(app.settings.env=="development") {
+        console.log("app_information_catagory: "+parseInt(res.get('Content-Length'))/1024+" kByte Time: "+(new Date()).toLocaleTimeString());  
+      }
     });
   });
 
   app.post('/app_information_details', function(req, res){
     Shops.getbyUid(req.body.uid, function(err, shop) {
-      console.log("app_information_details: "+utils.sizeOf(shop)/1000+" kByte Time: "+(new Date()).toLocaleTimeString());
       res.json(shop);
+      if(app.settings.env=="development") {
+        console.log("app_information_details: "+parseInt(res.get('Content-Length'))/1024+" kByte Time: "+(new Date()).toLocaleTimeString());  
+      }
     });
   });
 
   app.post('/app_information_newst_date', function(req, res) {
     Shops.getNewstDate(req.body.index, req.body.uid, function(err, date){
-      console.log("app_information_newst_date: "+utils.sizeOf(date)/1000+" kByte Time: "+(new Date()).toLocaleTimeString());
       res.json(date);
+      if(app.settings.env=="development") {
+        console.log("app_information_newst_date: "+parseInt(res.get('Content-Length'))/1024+" kByte Time: "+(new Date()).toLocaleTimeString());  
+      }
+    });
+  });
+
+  app.post('/app_information_newst_list', function(req, res) {
+    Shops.getNewstList(req.body.index, req.body.limit, function(err, list){      
+      res.json(list);
+      if(app.settings.env=="development") {
+        console.log("app_information_newst_list: "+parseInt(res.get('Content-Length'))/1024+" kByte Time: "+(new Date()).toLocaleTimeString());  
+      }
+    });
+  });
+
+  app.post('/app_information_require_list', function(req, res) {
+    Shops.getbyList(req.body.list,function(err, lists){      
+      res.json(lists);
+      if(app.settings.env=="development") {
+        console.log("app_information_require_list: "+parseInt(res.get('Content-Length'))/1024+" kByte Time: "+(new Date()).toLocaleTimeString());  
+      }
     });
   });
 
   app.post('/app_user_post_view', function(req, res) {
     Posts.getAll(req.body.tags, req.body.skip, req.body.limit, function(err, posts) {
-      console.log("app_user_post_view: "+utils.sizeOf(posts)/1000+" kByte Time: "+(new Date()).toLocaleTimeString());
       res.json(posts);
+      if(app.settings.env=="development") {
+        console.log("app_user_post_view: "+parseInt(res.get('Content-Length'))/1024+" kByte Time: "+(new Date()).toLocaleTimeString());  
+      }
     });   
   });
   
-  app.post('/app_user_post_newst_date', function(req, res) {
-    Posts.getNewstDate(req.body.uid,function(err, date){
-      console.log("app_user_post_newst_date: "+utils.sizeOf(date)/1000+" kByte Time: "+(new Date()).toLocaleTimeString());
-      res.json(date);
-    });
-  });
-
   app.post('/app_user_post_newst_list', function(req, res) {
-    Posts.getNewstList(15,function(err, list){
-      console.log("app_user_post_newst_list: "+utils.sizeOf(list)/1000+" kByte Time: "+(new Date()).toLocaleTimeString());
+    Posts.getNewstList(req.body.limit,function(err, list){      
       res.json(list);
+      if(app.settings.env=="development") {
+        console.log("app_user_post_newst_list: "+parseInt(res.get('Content-Length'))/1024+" kByte Time: "+(new Date()).toLocaleTimeString());  
+      }
     });
   });
 
   app.post('/app_user_post_require_list', function(req, res) {
-    Posts.getbyList(req.body.list,function(err, lists){
-      console.log("app_user_post_require_list: "+utils.sizeOf(lists)/1000+" kByte Time: "+(new Date()).toLocaleTimeString());
+    Posts.getbyList(req.body.list,function(err, lists){      
       res.json(lists);
+      if(app.settings.env=="development") {
+        console.log("app_user_post_require_list: "+parseInt(res.get('Content-Length'))/1024+" kByte Time: "+(new Date()).toLocaleTimeString());  
+      }
     });
   });
 
   app.post('/app_user_post_post', utils.appcheckLogin);
   app.post('/app_user_post_post', function(req, res) {
-    Posts.getbyUsername(req.session.user.name, function(err, posts) {
-      console.log("app_user_post_post: "+utils.sizeOf(posts)/1000+" kByte Time: "+(new Date()).toLocaleTimeString());
+    Posts.getbyUsername(req.session.user.name, function(err, posts) {      
       res.json(posts);
+      if(app.settings.env=="development") {
+        console.log("app_user_post_post: "+parseInt(res.get('Content-Length'))/1024+" kByte Time: "+(new Date()).toLocaleTimeString());  
+      }
     });
   });
 
   app.post('/app_user_post_details', function(req, res) {
-    Posts.getbyUid(req.body.uid, function(err, post) {
-      console.log("app_user_post_details: "+utils.sizeOf(post)/1000+" kByte Time: "+(new Date()).toLocaleTimeString());
+    Posts.getbyUid(req.body.uid, function(err, post) {      
       res.json(post);
+      if(app.settings.env=="development") {
+        console.log("app_user_post_details: "+parseInt(res.get('Content-Length'))/1024+" kByte Time: "+(new Date()).toLocaleTimeString());  
+      }
     });
   });
 
@@ -1202,51 +1229,65 @@ module.exports = function(app) {
   });
 
   app.post('/app_news',function(req, res){
-    News.getAll(req.body.skip, req.body.limit, function(err, news) {
-      console.log("app_news: "+utils.sizeOf(news)/1000+" kByte Time: "+(new Date()).toLocaleTimeString());
+    News.getAll(req.body.skip, req.body.limit, function(err, news) {      
       res.json(news);
+      if(app.settings.env=="development") {
+        console.log("app_news: "+parseInt(res.get('Content-Length'))/1024+" kByte Time: "+(new Date()).toLocaleTimeString());  
+      }
     });
   });
 
   app.post('/app_exchange',function(req, res){
-    Modules.getbyId(1, function(err, modules) {
-      console.log("app_exchange: "+utils.sizeOf(modules)/1000+" kByte Time: "+(new Date()).toLocaleTimeString());
+    Modules.getbyId(1, function(err, modules) {      
       res.json(modules);
+      if(app.settings.env=="development") {
+        console.log("app_exchange: "+parseInt(res.get('Content-Length'))/1024+" kByte Time: "+(new Date()).toLocaleTimeString());  
+      }
     });
   });
 
   app.post('/app_news_details', function(req, res){
-    News.getbyUid(req.body.uid, function(err, news) {
-      console.log("app_news_details: "+utils.sizeOf(news)/1000+" kByte Time: "+(new Date()).toLocaleTimeString());
+    News.getbyUid(req.body.uid, function(err, news) {      
       res.json(news);
+      if(app.settings.env=="development") {
+        console.log("app_news_details: "+parseInt(res.get('Content-Length'))/1024+" kByte Time: "+(new Date()).toLocaleTimeString());  
+      }
     });
   });
 
   app.post('/app_news_newst_date', function(req, res) {
-    News.getNewstDate(req.body.uid,function(err, date){
-      console.log("app_news_newst_date: "+utils.sizeOf(date)/1000+" kByte Time: "+(new Date()).toLocaleTimeString());
+    News.getNewstDate(req.body.uid,function(err, date){      
       res.json(date);
+      if(app.settings.env=="development") {
+        console.log("app_news_newst_date: "+parseInt(res.get('Content-Length'))/1024+" kByte Time: "+(new Date()).toLocaleTimeString());  
+      }
     });
   });
 
   app.post('/app_learning', function(req, res){
-    Learn.getbyIndex(req.body.index, function(err, learns) {
-      console.log("app_learning: "+utils.sizeOf(learns)/1000+" kByte Time: "+(new Date()).toLocaleTimeString());
+    Learn.getbyIndex(req.body.index, function(err, learns) {      
       res.json(learns);
+      if(app.settings.env=="development") {
+        console.log("app_learning: "+parseInt(res.get('Content-Length'))/1024+" kByte Time: "+(new Date()).toLocaleTimeString());  
+      }
     });
   });
 
   app.post('/app_learning_details', function(req, res){
-    Learn.getbyUid(req.body.uid, function(err, learn) {
-      console.log("app_learning_details: "+utils.sizeOf(learn)/1000+" kByte Time: "+(new Date()).toLocaleTimeString());
+    Learn.getbyUid(req.body.uid, function(err, learn) {      
       res.json(learn);
+      if(app.settings.env=="development") {
+        console.log("app_learning_details: "+parseInt(res.get('Content-Length'))/1024+" kByte Time: "+(new Date()).toLocaleTimeString());  
+      }
     });
   });
 
   app.post('/app_learning_newst_date', function(req, res) {
-    Learn.getNewstDate(req.body.index, req.body.uid,function(err, date){
-      console.log("app_learning_newst_date: "+utils.sizeOf(date)/1000+" kByte Time: "+(new Date()).toLocaleTimeString());
+    Learn.getNewstDate(req.body.index, req.body.uid,function(err, date){      
       res.json(date);
+      if(app.settings.env=="development") {
+        console.log("app_learning_newst_date: "+parseInt(res.get('Content-Length'))/1024+" kByte Time: "+(new Date()).toLocaleTimeString());  
+      }
     });
   });
 

@@ -85,7 +85,8 @@
                 pullUpflag=false,
                 mSkip=15,
                 mLimit=9,
-                mKey=$('#search_input').val();
+                mKey=$('#search_input').val(),
+                local_shops=[];
 
             $(document).one("pageinit","#information_catagory_page", function( event ) {
                 $(".iscroll-wrapper", this).bind({
@@ -153,7 +154,8 @@
                        "<option value='Z'>综合 其它</option>"
                        );
                     if(localStorage.informationFindJobCatagory) {
-                        getLocalContent(localStorage.informationFindJobCatagory);
+                        local_shops = JSON.parse(localStorage.informationFindJobCatagory);
+                        getLocalContent();
                     }
                 } else if(sessionStorage.index=="find_house") {
                     $('#key_selector').html('').append(
@@ -164,7 +166,8 @@
                         "<option value=‘D’>不动产会社</option>"
                     );
                     if(localStorage.informationFindHouseCatagory) {
-                        getLocalContent(localStorage.informationFindHouseCatagory);
+                        local_shops = JSON.parse(localStorage.informationFindHouseCatagory);
+                        getLocalContent();
                     }
                 } else if(sessionStorage.index=="move_house") {
                     $('#key_selector').html('').append(
@@ -177,7 +180,8 @@
                         "<option value='F'>工事 地陪导游 翻译 其它</option>"
                     );
                     if(localStorage.informationMoveHouseCatagory) {
-                        getLocalContent(localStorage.informationMoveHouseCatagory);
+                        local_shops = JSON.parse(localStorage.informationMoveHouseCatagory);
+                        getLocalContent();
                     }                   
                 } else if(sessionStorage.index=="business") {
                     $('#key_selector').html('').append(
@@ -195,7 +199,8 @@
                         "<option value='L'>综合服务 综合商贸 综合业务</option>"
                     );
                     if(localStorage.informationBusinessCatagory) {
-                        getLocalContent(localStorage.informationBusinessCatagory);
+                        local_shops = JSON.parse(localStorage.informationBusinessCatagory);
+                        getLocalContent();
                     }                    
                 } else if(sessionStorage.index=="ticket") {
                     $('#key_selector').html('').append(
@@ -206,7 +211,8 @@
                         "<option value='D'>代办各国签证</option>"
                     );
                     if(localStorage.informationTicketCatagory) {
-                        getLocalContent(localStorage.informationTicketCatagory);
+                        local_shops = JSON.parse(localStorage.informationTicketCatagory);
+                        getLocalContent();
                     }                    
                 } else {
                     $('#key_selector').html('').append(
@@ -216,7 +222,8 @@
                         "<option value='C'>其它业务</option"
                     );
                     if(localStorage.informationLawCatagory) {
-                        getLocalContent(localStorage.informationLawCatagory);
+                        local_shops = JSON.parse(localStorage.informationLawCatagory);
+                        getLocalContent();
                     }
                 }
                 checkUpdate();
@@ -311,14 +318,63 @@
                 gotPullUpData(event, data); 
             }
 
+            function getLocalList() {
+                var shoplist=[];
+                $.each(local_shops,function(key, shop){
+                    shoplist.push({uid: shop.uid, date: shop.date})
+                });
+                return shoplist;
+            }
+
+            function getRequireList(mLocalList, mRemoteList) {
+                var requireList = [];
+                $.each(mRemoteList,function(key, _mRemoteList){
+                    if(($.grep(mLocalList, function(_mLocalList) { return _mLocalList.uid == _mRemoteList.uid; })==0) || ($.grep(mLocalList, function(_mLocalList) { return (_mLocalList.uid == _mRemoteList.uid)&&(_mLocalList.date != _mRemoteList.date); })!=0)) {
+                        requireList.push(_mRemoteList.uid);
+                    }
+                });
+                return requireList;
+            }
+
+            function generateNewList(lists, mLocalList, mRemoteList) {
+                $.each(lists, function(key, _list){
+                    local_shops.push(_list);
+                    mLocalList.push({uid: _list.uid, date: _list.date});
+                });
+                var shift=0;                       
+                $.each(mLocalList, function(key, _mLocalList){
+                    if($.grep(mRemoteList, function(_mRemoteList) { return _mLocalList.uid == _mRemoteList.uid; })==0) {
+                        local_shops.splice(key-(shift++),1);
+                    }
+                });
+                local_shops.sort(function(a,b){return Date.parse(b.date)-Date.parse(a.date)});
+                local_shops=removeDuplicateObject(local_shops);
+            }
+
             function checkUpdate() {
                 var data = {
                     index: sessionStorage.index,
-                    uid: ""
+                    limit: 15
                 };
-                sendAjax('/app_information_newst_date', data, function(newst_date){
-                    if(newst_date != getLocalDate()) {
-                        getRemoteContent(newst_date);
+                sendAjax('/app_information_newst_list', data, function(mRemoteList){
+                    var mLocalList=getLocalList();
+                    var requireList = getRequireList(mLocalList, mRemoteList);
+                    if(requireList.length!=0) {
+                        $('.information_catagory_floatingBarsG').show();
+                        var data = {
+                            list: requireList
+                        };                       
+                        sendAjax('/app_information_require_list', data, function(lists){
+                            generateNewList(lists, mLocalList, mRemoteList);
+                            $('#information_catagory').html("");
+                            $('.information_catagory_floatingBarsG').hide();
+                            $.each(local_shops, insertInformationCatagory);
+                            storeLocalContent(local_shops);
+                            $(".iscroll-wrapper").iscrollview("refresh");
+                        },function(jqXHR, textStatus, errorThrown){
+                            $('.information_catagory_floatingBarsG').hide();
+                            displayNetworkError('#information_catagory_page');
+                        });
                     }
                 },function(jqXHR, textStatus, errorThrown){
                     $('.information_catagory_floatingBarsG').hide();
@@ -326,32 +382,10 @@
                 });
             }
 
-            function getLocalContent(localcontent) {
-                var shops = JSON.parse(localcontent);
+            function getLocalContent() {
                 $('.information_catagory_floatingBarsG').hide();
-                $.each(shops, insertInformationCatagory);
+                $.each(local_shops, insertInformationCatagory);
                 $(".iscroll-wrapper").iscrollview("refresh");
-            }
-
-            function getRemoteContent(newst_date) {
-                $('.information_catagory_floatingBarsG').show();
-                var data =  {
-                    index: sessionStorage.index,
-                    tags: "",
-                    skip: 0,
-                    limit: 15
-                };
-                sendAjax('/app_information_catagory', data, function(shops){
-                    $('#information_catagory').html("");
-                    $('.information_catagory_floatingBarsG').hide();
-                    $.each(shops, insertInformationCatagory);
-                    storeLocalContent(shops);
-                    $(".iscroll-wrapper").iscrollview("refresh");
-                    storeLocalDate(newst_date);
-                }, function(jqXHR, textStatus, errorThrown){
-                    $('.information_catagory_floatingBarsG').hide();
-                    displayNetworkError('#information_catagory_page');
-                });
             }
 
             function storeLocalContent(shops) {
@@ -369,39 +403,6 @@
                     localStorage.informationLawCatagory = JSON.stringify(shops);
                 }                
             }
-
-            function getLocalDate() {
-                if(sessionStorage.index=="find_job"){
-                    return localStorage.informationFindJobCatagoryCheckDate;
-                } else if(sessionStorage.index=="find_house") {
-                    return localStorage.informationFindHouseCatagoryCheckDate;
-                } else if(sessionStorage.index=="move_house") {
-                    return localStorage.informationMoveHouseCatagoryCheckDate;
-                } else if(sessionStorage.index=="business") {
-                    return localStorage.informationBusinessCatagoryCheckDate;
-                } else if(sessionStorage.index=="ticket") {
-                    return localStorage.informationTicketCatagoryCheckDate;
-                } else {
-                    return localStorage.informationLawCatagoryCheckDate;
-                }  
-            }
-
-            function storeLocalDate(date) {
-                if(sessionStorage.index=="find_job"){
-                    localStorage.informationFindJobCatagoryCheckDate = date;
-                } else if(sessionStorage.index=="find_house") {
-                    localStorage.informationFindHouseCatagoryCheckDate = date;
-                } else if(sessionStorage.index=="move_house") {
-                    localStorage.informationMoveHouseCatagoryCheckDate = date;
-                } else if(sessionStorage.index=="business") {
-                    localStorage.informationBusinessCatagoryCheckDate = date;
-                } else if(sessionStorage.index=="ticket") {
-                    localStorage.informationTicketCatagoryCheckDate = date;
-                } else {
-                    localStorage.informationLawCatagoryCheckDate = date;
-                }  
-            }
-
         </script>
     </div>
 </body>

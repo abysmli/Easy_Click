@@ -101,7 +101,7 @@ Shops.getAll = function getAll(callback) {
         });
         callback(null, shops_buffer);
       } else {
-        callback(null, "");
+        callback(null, []);
       }
     });
   });
@@ -151,11 +151,13 @@ Shops.getList_expire = function getList_expire(mIndex, mTags, mSkip, mLimit, cal
     });
     var query = {
       index: mIndex,
-      tags: new RegExp(tagReg)
+      tags: new RegExp(tagReg),
+      $or: [{expire: {$gte: new Date()}},{expire: {$lt: new Date("2000-01-01")}}]
     };
     if(mIndex==="") {
       query = {
-        tags: new RegExp(tagReg)
+        tags: new RegExp(tagReg),
+        $or: [{expire: {$gte: new Date()}},{expire: {$lt: new Date("2000-01-01")}}]
       };
     }
     collection.find(query, {
@@ -171,9 +173,39 @@ Shops.getList_expire = function getList_expire(mIndex, mTags, mSkip, mLimit, cal
         var shops = [];
         docs.forEach(function(doc, index) {
           var shop = new shopview(doc.title, doc.username, doc.expire, doc.date, doc.prevtext, doc.prevtext2, doc.previmg, doc._id);
-          if (utils.checkExpire(shop.expire)) {
-            shops.push(shop);
-          }
+          shops.push(shop);
+        });
+        callback(null, shops);
+      } else {
+        callback(null, "");
+      }
+    });
+  });
+};
+
+Shops.getbyList = function getbyList(mList, callback) {
+  db.collection('shops', function(err, collection) {
+    if (err) {
+      return callback(err);
+    }
+    mList.forEach(function(list, index){
+      var oid = new require('mongodb').ObjectID(list);
+      mList[index]=oid;
+    });
+    var query = {
+      _id: {$in: mList}
+    };
+    collection.find(query).sort({
+      date: -1
+    }).toArray(function(err, docs) {
+      if (err) {
+        callback(err, null);
+      }
+      if(docs!=null) {
+        var shops = [];
+        docs.forEach(function(doc, index) {
+          var shop = new shopview(doc.title, doc.username, doc.expire, doc.date, doc.prevtext, doc.prevtext2, doc.previmg, doc._id);
+          shops.push(shop);
         });
         callback(null, shops);
       } else {
@@ -245,6 +277,32 @@ Shops.getNewstDate = function getNewstDate(index, uid, callback) {
       }
       if (doc[0]!=null) {
         callback(null, doc[0].date);
+      } else {
+        callback(null, "");
+      }
+    });
+  });
+}
+
+Shops.getNewstList = function getNewstList(index, limit, callback) {
+  db.collection('shops',function(err, collection){
+    if(err){
+      return callback(err);
+    }
+    var query = {
+      index: index, 
+      $or: [{expire: {$gte: new Date()}},{expire: {$lt: new Date("2000-01-01")}}]
+    };
+    collection.find(query).sort({date:-1}).limit(parseInt(limit)).toArray(function(err, docs){
+      if(err){
+        callback(err, null);
+      }
+      if (docs!=null) {
+        var shops = [];
+        docs.forEach(function(doc, index){
+          shops.push({uid: doc._id, date: doc.date});
+        });
+        callback(null, shops);
       } else {
         callback(null, "");
       }

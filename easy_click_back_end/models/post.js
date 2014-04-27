@@ -200,38 +200,12 @@ Post.getbyUsername = function getbyUsername(username, callback) {
   });
 };
 
-Post.getNewstDate = function getNewstDate(uid, callback) {
-  db.collection('posts', function(err, collection){
-    if (err) {
-      return callback(err, null);
-    }
-    if(uid=="") {
-      var query = {};
-    } else {
-      var oid = new require('mongodb').ObjectID(uid);
-      var query = {
-        _id: oid
-      };
-    }
-    collection.find(query).sort({date:-1}).limit(1).toArray(function(err, doc){
-      if (err) {
-        callback(err, null);
-      }
-      if (doc[0]!=null) {
-        callback(null, doc[0].date);
-      } else {
-        callback(null, "");
-      }
-    });
-  });
-}
-
 Post.getNewstList = function getNewstList(limit, callback) {
   db.collection('posts',function(err, collection){
     if(err){
       return callback(err);
     }
-    collection.find().sort({date:-1}).limit(limit).toArray(function(err, docs){
+    collection.find().sort({date:-1}).limit(parseInt(limit)).toArray(function(err, docs){
       if(err){
         callback(err, null);
       }

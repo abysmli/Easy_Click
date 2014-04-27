@@ -155,7 +155,7 @@ debug:
       [dex] Using Pre-Dexed classes-9fbd03102743fd33083d555d0bce0597.jar <- /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/CordovaLib/ant-build/classes.jar
       [dex] Found modified input file
       [dex] Converting compiled files and external libraries into /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/ant-build/classes.dex...
-       [dx] Merged dex A (34 defs/60.1KiB) with dex B (205 defs/312.6KiB). Result is 239 defs/451.1KiB. Took 0.8s
+       [dx] Merged dex A (34 defs/60.1KiB) with dex B (205 defs/312.6KiB). Result is 239 defs/451.1KiB. Took 1.0s
 
 -crunch:
    [crunch] Crunching PNG Files in source dir: /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/res
@@ -189,7 +189,7 @@ debug:
 debug:
 
 BUILD SUCCESSFUL
-Total time: 9 seconds
+Total time: 8 seconds
 [36m[phonegap][39m successfully compiled Android app
 [36m[phonegap][39m trying to install app onto device
 Buildfile: /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/build.xml
@@ -348,7 +348,7 @@ debug:
       [dex] Using Pre-Dexed classes-9fbd03102743fd33083d555d0bce0597.jar <- /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/CordovaLib/ant-build/classes.jar
       [dex] Found modified input file
       [dex] Converting compiled files and external libraries into /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/ant-build/classes.dex...
-       [dx] Merged dex A (34 defs/60.1KiB) with dex B (205 defs/312.6KiB). Result is 239 defs/451.1KiB. Took 0.9s
+       [dx] Merged dex A (34 defs/60.1KiB) with dex B (205 defs/312.6KiB). Result is 239 defs/451.1KiB. Took 1.0s
 
 -crunch:
    [crunch] Crunching PNG Files in source dir: /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/res
