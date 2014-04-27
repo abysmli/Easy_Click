@@ -1160,6 +1160,13 @@ module.exports = function(app) {
     });
   });
 
+  app.post('/app_user_post_require_list', function(req, res) {
+    Posts.getbyList(req.body.list,function(err, lists){
+      console.log("app_user_post_require_list: "+utils.sizeOf(lists)/1000+" kByte Time: "+(new Date()).toLocaleTimeString());
+      res.json(lists);
+    });
+  });
+
   app.post('/app_user_post_post', utils.appcheckLogin);
   app.post('/app_user_post_post', function(req, res) {
     Posts.getbyUsername(req.session.user.name, function(err, posts) {

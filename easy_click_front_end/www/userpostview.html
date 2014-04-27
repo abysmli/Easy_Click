@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1" />
     <title>User Post</title>
     <link rel="stylesheet" href="resource/stylesheets/jquery.excoloSlider.css" />
     <link rel="stylesheet" href="resource/javascripts/jquery_mobile/jquery.mobile-1.4.0.min.css" />
@@ -74,10 +74,11 @@
         <script>
             var listSelector = "#post_list",
                 lastItemSelector = listSelector + " > div:last-child",
-                pullUpflag=false;
+                pullUpflag=false,
                 mSkip=15,
                 mLimit=9,
-                mKey=$('#search_input').val();
+                mKey=$('#search_input').val(),
+                local_posts=[];
 
             $(document).one("pageinit","#user_post_view_page", function( event ) {
                 $(".iscroll-wrapper", this).bind({
@@ -97,7 +98,6 @@
                     "<option value='D'>母婴 护理 彩妆 运动 户外</option>"+
                     "<option value='E'>美食 特产 文化 书籍 娱乐</option>"
                 );
-                //$("#user_post_view_page .iscroll-scroller").css("padding-top","5.6em");
                 $('#post_list').on('click', '.userpost_list a', function(){
                     sessionStorage.postuid = $(this).parent('div.userpost_list').attr('id');
                 });
@@ -105,6 +105,7 @@
                     $(this).parent('div.userpost_list').css({opacity:0.5}).animate({opacity:1},200);
                 });
                 if(localStorage.UserPostCatagory) {
+                    local_posts = JSON.parse(localStorage.UserPostCatagory);
                     getLocalContent();
                 }
                 checkUpdate();
@@ -224,37 +225,41 @@
                 gotPullUpData(event, data); 
             }
             function checkUpdate() {
-                /*
-                sendAjax('/app_user_post_newst_list', "", function(remotelist){
-                    var locallist=getLocalList();
+                sendAjax('/app_user_post_newst_list', "", function(mRemoteList){
+                    var mLocalList=getLocalList();
+                    var requireList = [];
+                    $.each(mRemoteList,function(key, _mRemoteList){
+                        if(($.grep(mLocalList, function(_mLocalList) { return _mLocalList.uid == _mRemoteList.uid; })==0) || ($.grep(mLocalList, function(_mLocalList) { return (_mLocalList.uid == _mRemoteList.uid)&&(_mLocalList.date != _mRemoteList.date); })!=0)) {
+                            requireList.push(_mRemoteList.uid);
+                        }
+                    });
+                    if(requireList.length!=0) {
+                        var data = {
+                            list: requireList
+                        };                       
+                        sendAjax('/app_user_post_require_list', data, function(lists){
+                            $.each(lists, function(key, _list){
+                                local_posts.push(_list);
+                                mLocalList.push({uid: _list.uid, date: _list.date});
+                            });
+                            var shift=0;                       
+                            $.each(mLocalList, function(key, _mLocalList){
+                                if($.grep(mRemoteList, function(_mRemoteList) { return _mLocalList.uid == _mRemoteList.uid; })==0) {
+                                    local_posts.splice(key-(shift++),1);
+                                }
+                            });
+                            local_posts.sort(function(a,b){return Date.parse(b.date)-Date.parse(a.date)});
+                            local_posts=removeDuplicateObject(local_posts);
+                            $('#post_list').html("");
+                            $.each(local_posts, insertUserPostCatagory);
+                            $(".iscroll-wrapper").iscrollview("refresh");
+                            localStorage.UserPostCatagory = JSON.stringify(local_posts);
+                            $('.userpostview_floatingBarsG').hide();
 
-                var array1=[1,2,3,4,7,9,10,13,15,16];
-                var array2=[5,6,1,2,3,4,9,10,13,15];
-                for(var i=array2.length-1;i>=0;--i)
-                {
-                    if(remotelist.indexOf(array2[i])<0) {
-                        array1.unshift(array2[i]);
-                    }
-                }
-                alert(array1);
-                $.each(locallist, function(key, _locallist){
-                    if(array2.indexOf(_array1)<0) {
-                        array1.splice(key,1);
-                    }
-                });
-                alert(array1);
-
-                },function(jqXHR, textStatus, errorThrown){
-                    $('.userpostview_floatingBarsG').hide();
-                    displayNetworkError('#user_post_view_page');
-                });*/
-
-                var data = {
-                    uid: ""
-                };
-                sendAjax('/app_user_post_newst_date', data, function(newst_date){
-                    if(newst_date != localStorage.UserPostCatagoryCheckDate) {
-                        getRemoteContent(newst_date);
+                        },function(jqXHR, textStatus, errorThrown){
+                            $('.userpostview_floatingBarsG').hide();
+                            displayNetworkError('#user_post_view_page');
+                        });
                     }
                 },function(jqXHR, textStatus, errorThrown){
                     $('.userpostview_floatingBarsG').hide();
@@ -282,13 +287,12 @@
             }
             function getLocalContent() {
                 $('.userpostview_floatingBarsG').hide();
-                $.each(posts, insertUserPostCatagory);
+                $.each(local_posts, insertUserPostCatagory);
                 $(".iscroll-wrapper").iscrollview("refresh");
             }
             function getLocalList() {
-                var posts = JSON.parse(localStorage.UserPostCatagory);
                 var postlist=[];
-                $.each(posts,function(key, post){
+                $.each(local_posts,function(key, post){
                     postlist.push({uid: post.uid, date: post.date})
                 });
                 return postlist;

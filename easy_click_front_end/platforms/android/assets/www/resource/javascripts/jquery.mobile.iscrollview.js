@@ -1288,9 +1288,9 @@ function jqmIscrollviewRemoveLayerXYProps(e) {
       this.options.wrapperAdd;                // User-supplied fudge-factor if needed
     
     /*added by liyuan*/
-    if(device.platform=="iOS") {
+    /*if(device.platform=="iOS") {
       newWrapperHeight-=20;
-    };
+    };*/
     
     this.$wrapper.css("height", newWrapperHeight);
     this._expandScrollerToFillWrapper();

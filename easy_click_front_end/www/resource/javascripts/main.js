@@ -15,12 +15,24 @@ $(document).on("pageinit", ".page_body", function(event) {
   $("body").on( "swiperight", function(event) {
     history.go(-1);
   });
+  /*
   $("body").on( "swipeleft", function(event) {
     history.go(1);
-  });
+  });*/
 });
+
+function removeDuplicateObject(arr) {
+  var tempArr = [];
+  $.each(arr, function(key, _arr){
+    if($.grep(tempArr, function(_tempArr) { return _arr.uid == _tempArr.uid; })==0) {
+      tempArr.push(_arr);
+    }
+  });
+  return tempArr;
+}
+
 function sendAjax(url, data, success, error) {
-  $.ajax({
+  var xhr = $.ajax({
     url: 'http://'+localStorage.mURL+url,
     type:'POST',
     timeout: 20000,

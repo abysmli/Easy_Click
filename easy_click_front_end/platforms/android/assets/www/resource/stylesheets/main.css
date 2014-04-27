@@ -113,7 +113,15 @@ body  * {
 }
 
 .ui-select .ui-btn {
-	background-color: #E0ECF8;
+	background-color: #7cbedf;
+    color: #fff;
+    text-shadow: none;
+}
+
+.ui-select .ui-btn:hover {
+	background-color: #7cbedf;
+    color: #fff;
+    text-shadow: none;
 }
 
 /*---------- news_ul_li ------------*/

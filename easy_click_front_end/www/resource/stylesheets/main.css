@@ -118,6 +118,12 @@ body  * {
     text-shadow: none;
 }
 
+.ui-select .ui-btn:hover {
+	background-color: #7cbedf;
+    color: #fff;
+    text-shadow: none;
+}
+
 /*---------- news_ul_li ------------*/
 #news_page .ui-content {
     padding: 0 !important;

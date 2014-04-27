@@ -99,6 +99,39 @@ Post.getAll = function getAll(mTags, mSkip, mLimit, callback) {
   });
 };
 
+Post.getbyList = function getbyList(mList, callback) {
+  db.collection('posts', function(err, collection) {
+    if (err) {
+      return callback(err);
+    }
+    mList.forEach(function(list, index){
+      var oid = new require('mongodb').ObjectID(list);
+      mList[index]=oid;
+    });
+    var query = {
+      _id: {$in: mList}
+    };
+    collection.find(query).sort({
+      date: -1
+    }).toArray(function(err, docs) {
+      if (err) {
+        callback(err, null);
+      }
+      if(docs!=null) {
+        var posts = [];
+        docs.forEach(function(doc, index) {
+          var post = new postview(doc.username, doc.title, doc.date, doc.prevtext, doc.prevtext2, doc.previmg, doc._id);
+          posts.push(post);
+        });
+        callback(null, posts);
+      } else {
+        callback(null, "");
+      }
+    });
+  });
+};
+
+
 Post.getbyUid = function getbyUid(uid, callback) {
   db.collection('posts', function(err, collection) {
     if (err) {
