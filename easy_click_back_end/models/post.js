@@ -222,6 +222,32 @@ Post.getNewstList = function getNewstList(limit, callback) {
   });
 }
 
+Post.getNewstDate = function getNewstDate(db, uid, callback) {
+  db.collection('posts', function(err, collection){
+    if (err) {
+      return callback(err);
+    }
+    if(uid=="") {
+      var query = {};
+    } else {
+      var oid = new require('mongodb').ObjectID(uid);
+      var query = {
+        _id: oid
+      };
+    }
+    collection.find(query).sort({date:-1}).limit(1).toArray(function(err, doc){
+      if (err) {
+        callback(err, null);
+      }
+      if (doc[0]!=null) {
+        callback(null, doc[0].date);
+      } else {
+        callback(null, []);
+      }
+    });
+  });
+}
+
 Post.remove = function remove(callback) {
   db.collection('posts', function(err, collection) {
     if (err) {

@@ -162,6 +162,32 @@ News.getbyList = function getbyList(mList, callback) {
   });
 };
 
+News.getNewstDate = function getNewstDate(db, uid, callback) {
+  db.collection('news', function(err, collection){
+    if (err) {
+      return callback(err);
+    }
+    if(uid=="") {
+      var query = {};
+    } else {
+      var oid = new require('mongodb').ObjectID(uid);
+      var query = {
+        _id: oid
+      };
+    }
+    collection.find(query).sort({date:-1}).limit(1).toArray(function(err, doc){
+      if (err) {
+        callback(err, null);
+      }
+      if (doc[0]!=null) {
+        callback(null, doc[0].date);
+      } else {
+        callback(null, []);
+      }
+    });
+  });
+}
+
 News.prototype.modifybyUid = function modifybyUid(uid, callback) {
   var news = {
     index: this.index,

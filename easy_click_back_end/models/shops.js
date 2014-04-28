@@ -215,6 +215,32 @@ Shops.getbyList = function getbyList(mList, callback) {
   });
 };
 
+Shops.getNewstDate = function getNewstDate(db, index, uid, callback) {
+  db.collection('shops', function(err, collection){
+    if (err) {
+      return callback(err);
+    }
+    if(uid=="") {
+      var query = {index: index};
+    } else {
+      var oid = new require('mongodb').ObjectID(uid);
+      var query = {
+        _id: oid
+      };
+    }
+    collection.find(query).sort({date:-1}).limit(1).toArray(function(err, doc){
+      if (err) {
+        callback(err, null);
+      }
+      if (doc[0]!=null) {
+        callback(null, doc[0].date);
+      } else {
+        callback(null, []);
+      }
+    });
+  });
+}
+
 Shops.getbyUid = function getbyUid(uid, callback) {
   db.collection('shops', function(err, collection) {
     if (err) {

@@ -1117,7 +1117,7 @@ module.exports = function(app) {
   });
 
   //################################################# background routing############################################
-  var counter=0;
+
   app.post('/app_information_catagory', function(req, res){
     Shops.getList_expire(req.body.index, req.body.tags, req.body.skip, req.body.limit, function(err, shops) {
       res.json(shops);
@@ -1154,6 +1154,15 @@ module.exports = function(app) {
     });
   });
 
+  app.post('/app_information_newst_date', function(req, res) {
+    Shops.getNewstDate(mongodb, req.body.index, req.body.uid, function(err, date){
+      res.json(date);
+      if(app.settings.env=="development") {
+        console.log("app_information_newst_date: "+parseInt(res.get('Content-Length'))/1024+" kByte Time: "+(new Date()).toLocaleTimeString());  
+      }
+    });
+  });
+
   app.post('/app_user_post_view', function(req, res) {
     Posts.getAll(req.body.tags, req.body.skip, req.body.limit, function(err, posts) {
       res.json(posts);
@@ -1177,6 +1186,15 @@ module.exports = function(app) {
       res.json(lists);
       if(app.settings.env=="development") {
         console.log("app_user_post_require_list: "+parseInt(res.get('Content-Length'))/1024+" kByte Time: "+(new Date()).toLocaleTimeString());  
+      }
+    });
+  });
+
+  app.post('/app_user_post_newst_date', function(req, res) {
+    Posts.getNewstDate(mongodb, req.body.uid,function(err, date){
+      res.json(date);
+      if(app.settings.env=="development") {
+        console.log("app_user_post_newst_date: "+parseInt(res.get('Content-Length'))/1024+" kByte Time: "+(new Date()).toLocaleTimeString());  
       }
     });
   });
@@ -1264,6 +1282,15 @@ module.exports = function(app) {
     });
   });
 
+  app.post('/app_news_newst_date', function(req, res) {
+    News.getNewstDate(mongodb, req.body.uid,function(err, date){
+      res.json(date);
+      if(app.settings.env=="development") {
+        console.log("app_news_newst_date: "+parseInt(res.get('Content-Length'))/1024+" kByte Time: "+(new Date()).toLocaleTimeString());  
+      }
+    });
+  });
+
   app.post('/app_learning', function(req, res){
     Learn.getbyIndex(req.body.index, function(err, learns) {      
       res.json(learns);
@@ -1296,6 +1323,15 @@ module.exports = function(app) {
       res.json(lists);
       if(app.settings.env=="development") {
         console.log("app_learning_require_list: "+parseInt(res.get('Content-Length'))/1024+" kByte Time: "+(new Date()).toLocaleTimeString());  
+      }
+    });
+  });
+
+  app.post('/app_learning_newst_date', function(req, res) {
+    Learn.getNewstDate(mongodb, req.body.index, req.body.uid,function(err, date){
+      res.json(date);
+      if(app.settings.env=="development") {
+        console.log("app_learning_newst_date: "+parseInt(res.get('Content-Length'))/1024+" kByte Time: "+(new Date()).toLocaleTimeString());  
       }
     });
   });
