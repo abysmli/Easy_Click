@@ -82,7 +82,7 @@
                     mLocalList.push({uid: _list.uid, date: _list.date});
                 });
                 eliminateElement(mLocalList, mRemoteList);
-                local_learnings.sort(function(a,b){return Date.parse(b.date)-Date.parse(a.date)});
+                local_learnings.sort(function(a,b){return Date.parse(a.date)-Date.parse(b.date)});
                 local_learnings=removeDuplicateObject(local_learnings);
             }
 
