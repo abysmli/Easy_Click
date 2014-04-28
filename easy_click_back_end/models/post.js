@@ -222,7 +222,7 @@ Post.getNewstList = function getNewstList(limit, callback) {
   });
 }
 
-Post.getNewstDate = function getNewstDate(db, uid, callback) {
+Post.getNewstDate = function getNewstDate(uid, callback) {
   db.collection('posts', function(err, collection){
     if (err) {
       return callback(err);

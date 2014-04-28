@@ -200,7 +200,7 @@ Learn.getNewstList = function getNewstList(index, callback) {
   });
 }
 
-Learn.getNewstDate = function getNewstDate(db, index, uid, callback) {
+Learn.getNewstDate = function getNewstDate(index, uid, callback) {
   db.collection('learning', function(err, collection){
     if (err) {
       return callback(err);

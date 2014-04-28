@@ -162,7 +162,7 @@ News.getbyList = function getbyList(mList, callback) {
   });
 };
 
-News.getNewstDate = function getNewstDate(db, uid, callback) {
+News.getNewstDate = function getNewstDate(uid, callback) {
   db.collection('news', function(err, collection){
     if (err) {
       return callback(err);

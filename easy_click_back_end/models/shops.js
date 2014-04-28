@@ -215,7 +215,7 @@ Shops.getbyList = function getbyList(mList, callback) {
   });
 };
 
-Shops.getNewstDate = function getNewstDate(db, index, uid, callback) {
+Shops.getNewstDate = function getNewstDate(index, uid, callback) {
   db.collection('shops', function(err, collection){
     if (err) {
       return callback(err);

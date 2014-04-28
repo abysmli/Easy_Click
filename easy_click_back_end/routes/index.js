@@ -1155,7 +1155,7 @@ module.exports = function(app) {
   });
 
   app.post('/app_information_newst_date', function(req, res) {
-    Shops.getNewstDate(mongodb, req.body.index, req.body.uid, function(err, date){
+    Shops.getNewstDate(req.body.index, req.body.uid, function(err, date){
       res.json(date);
       if(app.settings.env=="development") {
         console.log("app_information_newst_date: "+parseInt(res.get('Content-Length'))/1024+" kByte Time: "+(new Date()).toLocaleTimeString());  
@@ -1191,7 +1191,7 @@ module.exports = function(app) {
   });
 
   app.post('/app_user_post_newst_date', function(req, res) {
-    Posts.getNewstDate(mongodb, req.body.uid,function(err, date){
+    Posts.getNewstDate(req.body.uid,function(err, date){
       res.json(date);
       if(app.settings.env=="development") {
         console.log("app_user_post_newst_date: "+parseInt(res.get('Content-Length'))/1024+" kByte Time: "+(new Date()).toLocaleTimeString());  
@@ -1283,7 +1283,7 @@ module.exports = function(app) {
   });
 
   app.post('/app_news_newst_date', function(req, res) {
-    News.getNewstDate(mongodb, req.body.uid,function(err, date){
+    News.getNewstDate(req.body.uid,function(err, date){
       res.json(date);
       if(app.settings.env=="development") {
         console.log("app_news_newst_date: "+parseInt(res.get('Content-Length'))/1024+" kByte Time: "+(new Date()).toLocaleTimeString());  
@@ -1328,7 +1328,7 @@ module.exports = function(app) {
   });
 
   app.post('/app_learning_newst_date', function(req, res) {
-    Learn.getNewstDate(mongodb, req.body.index, req.body.uid,function(err, date){
+    Learn.getNewstDate(req.body.index, req.body.uid,function(err, date){
       res.json(date);
       if(app.settings.env=="development") {
         console.log("app_learning_newst_date: "+parseInt(res.get('Content-Length'))/1024+" kByte Time: "+(new Date()).toLocaleTimeString());  
