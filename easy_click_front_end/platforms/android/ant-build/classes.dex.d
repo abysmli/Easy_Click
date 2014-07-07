@@ -1,9 +1,9 @@
 /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/ant-build/classes.dex : \
-/home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/ant-build/classes/com/jdyd1688/easyclick/Easy_Click.class \
 /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/ant-build/classes/com/jdyd1688/easyclick/BuildConfig.class \
 /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/ant-build/classes/com/jdyd1688/easyclick/R$drawable.class \
 /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/ant-build/classes/com/jdyd1688/easyclick/R$string.class \
 /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/ant-build/classes/com/jdyd1688/easyclick/R$attr.class \
+/home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/ant-build/classes/com/jdyd1688/easyclick/EasyClick.class \
 /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/ant-build/classes/com/jdyd1688/easyclick/R.class \
 /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/ant-build/classes/com/jdyd1688/easyclick/R$xml.class \
 /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/ant-build/classes/org/apache/cordova/device/Device.class \
@@ -24,13 +24,4 @@
 /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/ant-build/classes/org/apache/cordova/camera/CameraLauncher.class \
 /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/ant-build/classes/org/apache/cordova/camera/FileHelper.class \
 /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/ant-build/classes/org/apache/cordova/camera/ExifHelper.class \
-/home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/ant-build/classes/de/appplant/cordova/plugin/localnotification/Restore.class \
-/home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/ant-build/classes/de/appplant/cordova/plugin/localnotification/LocalNotification$4.class \
-/home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/ant-build/classes/de/appplant/cordova/plugin/localnotification/ReceiverActivity.class \
-/home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/ant-build/classes/de/appplant/cordova/plugin/localnotification/LocalNotification.class \
-/home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/ant-build/classes/de/appplant/cordova/plugin/localnotification/Options.class \
-/home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/ant-build/classes/de/appplant/cordova/plugin/localnotification/LocalNotification$3.class \
-/home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/ant-build/classes/de/appplant/cordova/plugin/localnotification/Receiver.class \
-/home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/ant-build/classes/de/appplant/cordova/plugin/localnotification/LocalNotification$1.class \
-/home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/ant-build/classes/de/appplant/cordova/plugin/localnotification/LocalNotification$2.class \
 /home/abysmli/workspace/easy_click/easy_click_front_end/platforms/android/ant-build/dexedLibs/classes-9fbd03102743fd33083d555d0bce0597.jar \

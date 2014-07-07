@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <widget id="com.jdyd1688.easyclick" 
-        version="1.2" 
+        version="1.2.0" 
         xmlns="http://www.w3.org/ns/widgets" 
         xmlns:gap="http://phonegap.com/ns/1.0">
     <name>简单一点</name>
@@ -26,7 +26,7 @@
     <feature name="StatusBar">
         <param name="ios-package" value="CDVStatusBar" onload="true" />
     </feature>
-    <preference name="phonegap-version" value="3.4.0" />
+    <preference name="phonegap-version" value="3.5.0" />
     <preference name="permissions" value="none" />
     <preference name="orientation" value="portrait" />
     <preference name="target-device" value="universal" />
@@ -52,7 +52,6 @@
     <icon gap:density="xxhdpi" gap:platform="android" src="resource/icon/android/icon-144-xxhdpi.png" />
     <icon gap:platform="blackberry" src="resource/icon/blackberry/icon-80.png" />
     <icon gap:platform="blackberry" gap:state="hover" src="resource/icon/blackberry/icon-80.png" />
-
     <icon gap:platform="ios" height="120" src="resource/icon/ios/icon-120.png" width="120" />
     <icon gap:platform="ios" height="76" src="resource/icon/ios/icon-76.png" width="76" />
     <icon gap:platform="ios" height="152" src="resource/icon/ios/icon-152.png" width="152" />

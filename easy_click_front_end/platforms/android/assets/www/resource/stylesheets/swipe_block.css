@@ -1,0 +1,14 @@
+.swipe_block {
+	position: relative;
+	left:0;
+	height: 3em;
+	border-bottom: 1px solid black; 
+}
+
+.swipe_sub_block {
+	display: inline-block;
+	text-align: center;
+	width: 18em;
+	height: 3em;
+	border: 1px solid black; 
+}

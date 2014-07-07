@@ -5,13 +5,13 @@
     <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1" />
     <title>Post</title>
     <link rel="stylesheet" href="resource/stylesheets/jquery.excoloSlider.css" />
-    <link rel="stylesheet" href="resource/javascripts/jquery_mobile/jquery.mobile-1.4.0.min.css" />
+    <link rel="stylesheet" href="resource/javascripts/jquery_mobile/jquery.mobile-1.4.3.min.css" />
     <link rel="stylesheet" href="resource/stylesheets/jquery.mobile.iscrollview.css" />
     <link rel="stylesheet" href="resource/stylesheets/jquery.mobile.iscrollview-pull.css" />
     <link rel="stylesheet" href="resource/stylesheets/main.css" />
-    <script src="phonegap.js"></script>
-    <script src="resource/javascripts/jquery-2.0.3.min.js"></script>
-    <script src="resource/javascripts/jquery_mobile/jquery.mobile-1.4.0.min.js"></script>
+    <script src="cordova.js"></script>
+    <script src="resource/javascripts/jquery-2.1.1.min.js"></script>
+    <script src="resource/javascripts/jquery_mobile/jquery.mobile-1.4.3.min.js"></script>
     <script src="resource/javascripts/jquery.excoloSlider.js"></script>
     <script src="resource/javascripts/iscroll.js"></script>
     <script src="resource/javascripts/jquery.mobile.iscrollview.js"></script>
@@ -40,24 +40,24 @@
                 <label for="file_upload">
                     图片上传：
                 </label>
-                <button data-icon="plus" id="add_images">添加图片</button>
-                <button data-icon="eye" id="prev_images">预览图片</button>
-                <input id="post_button" type="button" data-theme="b" data-icon="edit" data-iconpos="left" value="投递">
+                <button data-shadow="false" data-icon="plus" id="add_images">添加图片</button>
+                <button data-shadow="false" data-icon="eye" id="prev_images">预览图片</button>
+                <input id="post_button" type="button" data-theme="b" data-icon="edit" data-iconpos="left" data-shadow="false" value="投递">
             </div>
             <div id="add_images_block">
-                <button onclick="capturePhoto();" data-icon="camera" style="color:#007ab7 !important;">拍照</button>
-                <button onclick="getPhoto();" data-icon="grid" style="color:#007ab7 !important;">选取照片</button>
-                <button id="cancel_add_image" data-icon="delete" style="color:#007ab7 !important;">取消</button>
+                <button onclick="capturePhoto();" data-icon="camera" data-shadow="false" style="color:#007ab7 !important;">拍照</button>
+                <button onclick="getPhoto();" data-icon="grid" data-shadow="false" style="color:#007ab7 !important;">选取照片</button>
+                <button id="cancel_add_image" data-icon="delete" data-shadow="false" style="color:#007ab7 !important;">取消</button>
             </div>
             <div id="prev_images_block">
                 <div id="prev_images_block_inner" class="ui-grid-b">
                 </div>
                 <div class="ui-grid-a">
                     <div class="ui-block-a">
-                        <a id="empty_prev_images_block" data-role="button" style="color:#c7243a !important;">清空</a>
+                        <a id="empty_prev_images_block" data-role="button" data-shadow="false" style="color:#c7243a !important;">清空</a>
                     </div>
                     <div class="ui-block-b">
-                        <a id="close_prev_images_block" data-role="button">关闭</a>
+                        <a id="close_prev_images_block" data-role="button" data-shadow="false" >关闭</a>
                     </div>
                 </div>
             </div>

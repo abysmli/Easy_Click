@@ -8,13 +8,6 @@ module.exports = [
         ]
     },
     {
-        "file": "plugins/org.apache.cordova.inappbrowser/www/inappbrowser.js",
-        "id": "org.apache.cordova.inappbrowser.inappbrowser",
-        "clobbers": [
-            "window.open"
-        ]
-    },
-    {
         "file": "plugins/org.apache.cordova.camera/www/CameraConstants.js",
         "id": "org.apache.cordova.camera.Camera",
         "clobbers": [
@@ -43,20 +36,19 @@ module.exports = [
         ]
     },
     {
-        "file": "plugins/de.appplant.cordova.plugin.local-notification/www/local-notification.js",
-        "id": "de.appplant.cordova.plugin.local-notification.LocalNotification",
+        "file": "plugins/org.apache.cordova.inappbrowser/www/inappbrowser.js",
+        "id": "org.apache.cordova.inappbrowser.inappbrowser",
         "clobbers": [
-            "plugin.notification.local"
+            "window.open"
         ]
     }
 ];
 module.exports.metadata = 
 // TOP OF METADATA
 {
-    "org.apache.cordova.device": "0.2.8",
-    "org.apache.cordova.inappbrowser": "0.3.3",
-    "org.apache.cordova.camera": "0.2.8",
-    "de.appplant.cordova.plugin.local-notification": "0.7.4"
+    "org.apache.cordova.device": "0.2.10",
+    "org.apache.cordova.camera": "0.3.0",
+    "org.apache.cordova.inappbrowser": "0.5.0"
 }
 // BOTTOM OF METADATA
 });

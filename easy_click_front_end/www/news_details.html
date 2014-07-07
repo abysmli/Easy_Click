@@ -5,13 +5,13 @@
     <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1" />
     <title>News</title>
     <link rel="stylesheet" href="resource/stylesheets/jquery.excoloSlider.css" />
-    <link rel="stylesheet" href="resource/javascripts/jquery_mobile/jquery.mobile-1.4.0.min.css" />
+    <link rel="stylesheet" href="resource/javascripts/jquery_mobile/jquery.mobile-1.4.3.min.css" />
     <link rel="stylesheet" href="resource/stylesheets/jquery.mobile.iscrollview.css" />
     <link rel="stylesheet" href="resource/stylesheets/jquery.mobile.iscrollview-pull.css" />
     <link rel="stylesheet" href="resource/stylesheets/main.css" />
-    <script src="phonegap.js"></script>
-    <script src="resource/javascripts/jquery-2.0.3.min.js"></script>
-    <script src="resource/javascripts/jquery_mobile/jquery.mobile-1.4.0.min.js"></script>
+    <script src="cordova.js"></script>
+    <script src="resource/javascripts/jquery-2.1.1.min.js"></script>
+    <script src="resource/javascripts/jquery_mobile/jquery.mobile-1.4.3.min.js"></script>
     <script src="resource/javascripts/jquery.excoloSlider.js"></script>
     <script src="resource/javascripts/iscroll.js"></script>
     <script src="resource/javascripts/jquery.mobile.iscrollview.js"></script>
@@ -171,13 +171,17 @@
                             "<div style='display:block; margin: 0.5em 0 0 0; border-bottom: 1px solid #e6e6e6'></div>"+
                             "<pre style='letter-spacing: 0.05em;'>"+news.content+"</pre>"+
                         "</div>"+
-                    "</div>"/*+
-                    "<a id='refresh_news_details' style='color:#0086ab; float:right; text-decoration: underline; font-size: 0.7em; margin-right:1em; margin-top:0.5em; margin-bottom:1.5em;' href='#'>查看本页有无更新</a>"*/
+                    "</div>"+
+                    "<a id='see_comments' style='color:#0086ab; float:right; text-decoration: underline; font-size: 0.7em; margin-right:1em; margin-top:0.5em; margin-bottom:1.5em;' href='#comments.html' data-transition='slide' >查看评论</a>"
                 );
                 $('#news_details_content').fadeIn('fast');
-                $('.news_details_floatingBarsG').hide();                
+                $('.news_details_floatingBarsG').hide();
+                $('#see_comments').click(function(){
+                    sessionStorage.commentuid = sessionStorage.newsuid;
+                    sessionStorage.commenthandler = "news";
+                    $.mobile.changePage( "comments.html", { transition: "slide" });
+                });
             }
-
         </script>
         <div id="floatingCirclesG" class="news_details_floatingBarsG">
             <div class="f_circleG" id="frotateG_01"></div>

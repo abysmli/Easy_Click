@@ -110,7 +110,20 @@ function removeCache() {
   $('#user_post_view_page').remove();
 }
 
+function getDateString(date) {
+  var commentdate = new Date(date);
+  var currentdate = new Date();
+  if(commentdate.getFullYear()==currentdate.getFullYear()&&commentdate.getMonth()==currentdate.getMonth()&&commentdate.getDate()==currentdate.getDate()) {
+    return commentdate.getHours()+":"+commentdate.getMinutes();
+  } else if (commentdate.getFullYear()==currentdate.getFullYear()&&commentdate.getMonth()==currentdate.getMonth()&&(currentdate.getDate()-commentdate.getDate()==1)) {
+    return "昨天";
+  } else {
+    return commentdate.toLocaleDateString();
+  }
+}
+
 function clearbufferAction() {
+  localStorage.removeItem('certificate');
   localStorage.removeItem('informationFindJobCatagory');
   localStorage.removeItem('informationFindHouseCatagory');
   localStorage.removeItem('informationMoveHouseCatagory');

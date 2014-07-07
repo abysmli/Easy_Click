@@ -8,6 +8,7 @@ var User = require('../models/user.js');
 var Messages = require('../models/message.js');
 var Learn = require('../models/learning.js');
 var Modules = require('../models/modules.js');
+var Comments = require('../models/comment.js');
 var util = require('util');
 var async = require('async');
 var utils = require('../utils/utils.js');
@@ -1336,6 +1337,34 @@ module.exports = function(app) {
     });
   });
 
+  app.post('/app_comments', function(req, res){
+    Comments.getbyId(req.body.handler, req.body.id, function(err, comments){
+      res.json(comments);
+      if(app.settings.env=="development") {
+        console.log("app_comments: "+parseInt(res.get('Content-Length'))/1024+" kByte Time: "+(new Date()).toLocaleTimeString());  
+      }
+    });
+  });
+
+  app.post('/app_add_comments', function(req, res){
+    var comment = new Comments(req.body.handler, req.body.id, req.session.user.name, req.body.content);
+    comment.save(function(err) {
+      if (err) {
+        var data = {
+          result: "error",
+          message: err
+        };
+        res.json(data);
+      } else {
+        var data = {
+          result: "success",
+          message: "操作成功"
+        };
+        res.json(data);
+      }
+    });
+  });
+
   app.post('/app_post', utils.appcheckLogin);
   app.post('/app_post', function(req, res) {
     var post = new Posts_buffer(req.session.user.name, req.body.location, req.body.content, req.body.contact, req.body.price, false, req.body.image);
@@ -1388,6 +1417,9 @@ module.exports = function(app) {
         };
         req.session.user = user;
         res.json(data);
+        if(app.settings.env=="development") {
+          console.log("User "+req.session.user.name+" login at "+(new Date()).toLocaleTimeString());  
+        }
       }
     });
   });
@@ -1438,6 +1470,9 @@ module.exports = function(app) {
   });
 
   app.post('/app_logout', function(req, res) {
+    if(app.settings.env=="development") {
+      console.log("User "+req.session.user.name+" logout at "+(new Date()).toLocaleTimeString());  
+    }
     req.session.user = null;
   });
 }
