@@ -19,8 +19,8 @@
 			this.options = typeof this.options !== 'undefined' ? this.options : this.default_option;
 			var options = this.options;
 			base.width(this.elements.length*options.sub_width);
-			this.offset = parseInt(this.options.sub_width*1.5-window.outerWidth/2);
-			this._offset = parseInt((window.outerWidth-this.options.sub_width)/2);
+			this.offset = parseInt(this.options.sub_width*1.5-$(window).width()/2);
+			this._offset = parseInt(($(window).width()-this.options.sub_width)/2);
 			$.each(this.elements, function(key, element){
 				var _color;
 				key%2 ? _color="#A9D0F5" : _color="#BCF5A9";
