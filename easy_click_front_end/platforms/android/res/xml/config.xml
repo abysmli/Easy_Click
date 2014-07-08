@@ -28,7 +28,7 @@
     <feature name="StatusBar">
         <param name="ios-package" onload="true" value="CDVStatusBar" />
     </feature>
-    <preference name="phonegap-version" value="3.5.0" />
+    <preference name="phonegap-version" value="3.4.0" />
     <preference name="permissions" value="none" />
     <preference name="orientation" value="portrait" />
     <preference name="target-device" value="universal" />

@@ -10,7 +10,6 @@
     <link rel="stylesheet" href="resource/stylesheets/jquery.mobile.iscrollview-pull.css" />
     <link rel="stylesheet" href="resource/stylesheets/swipe_block.css" />
     <link rel="stylesheet" href="resource/stylesheets/main.css" />
-    <script src="cordova.js"></script>
     <script src="resource/javascripts/jquery-2.1.1.min.js"></script>
     <script src="resource/javascripts/jquery_mobile/jquery.mobile-1.4.3.min.js"></script>
     <script src="resource/javascripts/jquery.excoloSlider.js"></script>
@@ -39,29 +38,42 @@
         <div class="swipe_block" style="padding-top:2.7em;">
 
         </div>
-
         <script>
             var ors;
             
-            document.addEventListener("deviceready", onDeviceReady_test_catagory, false);
+            //document.addEventListener("deviceready", onDeviceReady_test_catagory, false);
 
-            //onDeviceReady_test_catagory();
+            onDeviceReady_test_catagory();
 
             function onDeviceReady_test_catagory(){
                 $("div#test_page").off( "swiperight", swiperight);
                 $("div#test_page").off( "swipeleft", swipeleft);
-                var elements = ["test1","test2","test3","test4","test5","test6"];
-                ors = $('.swipe_block').swipe_block(elements);
+                var elements = [
+                  {index: "所有分类", value: "A"},
+                  {index: "料理店 居酒屋 饮食类", value: "B"},
+                  {index: "整体 足裹 オイル 美容美发", value: "C"},
+                  {index: "清店 アロマ エステ 其它", value: "D"},
+                  {index: "スナック クラブ パブ 其它", value: "E"},
+                  {index: "清扫 工厂 工地 工事类", value: "F"},
+                  {index: "会社商贸 经营业务 事务办公", value: "G"},
+                  {index: "计算机 网络 电子技术类", value: "H"},
+                  {index: "驾驶 运送 搬运 投递 户外", value: "I"},
+                  {index: "生活 服务 家政 介护 福祉", value: "J"},
+                  {index: "只做周末 周两三天 短期工作", value: "K"},
+                  {index: "可就职 可办签证", value: "L"},
+                  {index: "招学员 培训", value: "M"},
+                  {index: "综合 其它", value: "Z"}];
+                ors = $('.swipe_block').swipe_block(elements,{sub_width: 300});
                 $("div#test_page").on( "swiperight", swiperight);
                 $("div#test_page").on( "swipeleft", swipeleft);
             }
 
             function swiperight() {
-                ors.prev();
+                console.log(ors.prev().getValue());
             }
 
             function swipeleft() {
-                ors.next();
+                console.log(ors.next().getValue());
             }
         </script>
     </div>

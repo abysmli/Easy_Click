@@ -1,14 +1,27 @@
-.swipe_block {
+div.swipe_block {
 	position: relative;
 	left:0;
 	height: 3em;
 	border-bottom: 1px solid black; 
 }
 
-.swipe_sub_block {
+div.swipe_sub_block {
 	display: inline-block;
 	text-align: center;
-	width: 18em;
 	height: 3em;
-	border: 1px solid black; 
+}
+
+div.swipe_sub_block p{
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+div.swipe_slide_block {
+	position: absolute;
+	bottom:0;
+	height: 0.5em;
+	background-color: black;
+	opacity: 0.5;
+	z-index: 2500;
 }

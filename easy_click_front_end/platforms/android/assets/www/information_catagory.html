@@ -36,29 +36,6 @@
             <h3>资讯</h3>
         </div>
         <div class="swipe_block" style="padding-top:2.7em;"></div>
-        <div class="search_block">
-            <form>
-                <div class="ui-field-contain">
-                    <select id="key_selector" onchange="changeSelector()" data-icon="search" data-mini="true">
-                        <option value="" selected="selected">查看所有分类</option>
-                        <option value='A'>料理店 居酒屋 饮食类</option>
-                        <option value='B'>整体 足裹 オイル 美容美发</option>
-                        <option value='C'>清店 アロマ エステ 其它</option>
-                        <option value='D'>スナック クラブ パブ 其它</option>
-                        <option value='E'>清扫 工厂 工地 工事类</option>
-                        <option value='F'>会社商贸 经营业务 事务办公</option>
-                        <option value='G'>计算机 网络 电子技术类</option>
-                        <option value='H'>驾驶 运送 搬运 投递 户外</option>
-                        <option value='I'>生活 服务 家政 介护 福祉</option>
-                        <option value='J'>只做周末 周两三天 短期工作</option>
-                        <option value='K'>可就职 可办签证</option>
-                        <option value='L'>招学员 培训</option>
-                        <option value='Z'>综合 其它</option>
-                    </select>
-                </div>
-            </form>
-        </div>
-        <div style="height:5.3em; display:block;" data-iscroll-fixed=""></div>
         <div data-iscroll="" data-role="content">
             <div class="iscroll-pulldown">
                 <span class="iscroll-pull-icon"></span>
@@ -87,9 +64,8 @@
                 mSkip=15,
                 mLimit=9,
                 mKey=$('#search_input').val(),
-                local_shops=[];
-
-            var ors;
+                local_shops=[],
+                swipe = {};
 
             $(document).one("pageinit","#information_catagory_page", function( event ) {
                 $(".iscroll-wrapper", this).bind({
@@ -110,24 +86,22 @@
                 $('#information_catagory').on('click', '.information_list a', function(){
                     sessionStorage.uid = $(this).parent('div.information_list').attr('id');
                 });
-                var elements = ["test1","test2","test3","test4","test5","test6"];
-                ors = $('.swipe_block').swipe_block(elements);
+                swipe = $('.swipe_block').swipe_block(checkIndex());
                 $("div#information_catagory_page").on( "swiperight", swiperight);
                 $("div#information_catagory_page").on( "swipeleft", swipeleft);
-                checkIndex();
+                checkUpdate();
             }
 
             function swiperight() {
-                ors.prev();
+                changeSelector(swipe.prev().getValue());
             }
 
             function swipeleft() {
-                ors.next();
+                changeSelector(swipe.next().getValue());
             }
 
-            function changeSelector() {
-                mKey=$('#key_selector').val();
-                $('#information_catagory').html("");
+            function changeSelector(mKey) {
+                $('#information_catagory').html("").hide();
                 $('.information_catagory_floatingBarsG').show();
                 var data = {
                     index: sessionStorage.index,
@@ -143,7 +117,8 @@
                     }
                     $('.information_catagory_floatingBarsG').hide();
                     mSkip=15;
-                    $(".iscroll-wrapper").iscrollview("refresh").iscrollview("scrollTo", 0, 50, false);
+                    $(".iscroll-wrapper").iscrollview("scrollTo", 0, 0, 0, false).iscrollview("refresh");
+                    $('#information_catagory').fadeIn('slow');
                 },function(jqXHR, textStatus, errorThrown){
                     $('.information_catagory_floatingBarsG').hide();
                     displayNetworkError('#information_catagory_page');
@@ -152,35 +127,34 @@
             }
 
             function checkIndex() {
+                var elements = [];
                 if(sessionStorage.index=="find_job"){
-                    $('#key_selector').html('').append(
-                       "<option id='key_selector_all' value='' selected='selected'>查看所有分类</option>"+
-                       "<option value='A'>料理店 居酒屋 饮食类</option>"+
-                       "<option value='B'>整体 足裹 オイル 美容美发</option>"+
-                       "<option value='C'>清店 アロマ エステ 其它</option>"+
-                       "<option value='D'>スナック クラブ パブ 其它</option>"+
-                       "<option value='E'>清扫 工厂 工地 工事类</option>"+
-                       "<option value='F'>会社商贸 经营业务 事务办公</option>"+
-                       "<option value='G'>计算机 网络 电子技术类</option>"+
-                       "<option value='H'>驾驶 运送 搬运 投递 户外</option>"+
-                       "<option value='I'>生活 服务 家政 介护 福祉</option>"+
-                       "<option value='J'>只做周末 周两三天 短期工作</option>"+
-                       "<option value='K'>可就职 可办签证</option>"+
-                       "<option value='L'>招学员 培训</option>"+
-                       "<option value='Z'>综合 其它</option>"
-                       );
+                    elements = [
+                        {index: "所有分类", value: ""},
+                        {index: "料理店 居酒屋 饮食类", value: "A"},
+                        {index: "整体 足裹 オイル 美容美发", value: "B"},
+                        {index: "清店 アロマ エステ 其它", value: "C"},
+                        {index: "スナック クラブ パブ 其它", value: "D"},
+                        {index: "清扫 工厂 工地 工事类", value: "E"},
+                        {index: "会社商贸 经营业务 事务办公", value: "F"},
+                        {index: "计算机 网络 电子技术类", value: "G"},
+                        {index: "驾驶 运送 搬运 投递 户外", value: "H"},
+                        {index: "生活 服务 家政 介护 福祉", value: "I"},
+                        {index: "只做周末 周两三天 短期工作", value: "J"},
+                        {index: "可就职 可办签证", value: "K"},
+                        {index: "招学员 培训", value: "L"},
+                        {index: "综合 其它", value: "M"}];
                     if(localStorage.informationFindJobCatagory) {
                         local_shops = JSON.parse(localStorage.informationFindJobCatagory);
                         getLocalContent();
                     }
                 } else if(sessionStorage.index=="find_house") {
-                    $('#key_selector').html('').append(
-                        "<option value='' selected='selected'>查看所有分类</option>"+
-                        "<option value='A'>各种精品寮、公寓</option>"+
-                        "<option value='B'>商用房源</option>"+
-                        "<option value=‘C’>売却物件</option>"+
-                        "<option value=‘D’>不动产会社</option>"
-                    );
+                    elements = [
+                        {index: "所有分类", value: ""},
+                        {index: "各种精品寮、公寓", value: "A"},
+                        {index: "商用房源", value: "B"},
+                        {index: "売却物件", value: "C"},
+                        {index: "不动产会社", value: "D"}];
                     if(localStorage.informationFindHouseCatagory) {
                         local_shops = JSON.parse(localStorage.informationFindHouseCatagory);
                         getLocalContent();
@@ -195,6 +169,14 @@
                         "<option value='E'>空调拆装 维修保养 新机贩卖</option>"+
                         "<option value='F'>工事 地陪导游 翻译 其它</option>"
                     );
+                    elements = [
+                        {index: "所有分类", value: ""},
+                        {index: "大小搬家", value: "A"},
+                        {index: "用车 包车 货运", value: "B"},
+                        {index: "深夜用车 24小时用车", value: "C"},
+                        {index: "回收处理 新品、中古品贩卖", value: "D"},
+                        {index: "空调拆装 维修保养 新机贩卖", value: "E"},
+                        {index: "工事 地陪导游 翻译 其它", value: "F"}];                 
                     if(localStorage.informationMoveHouseCatagory) {
                         local_shops = JSON.parse(localStorage.informationMoveHouseCatagory);
                         getLocalContent();
@@ -214,6 +196,19 @@
                         "<option value='K'>医疗 保健 风水 开运 教会</option>"+
                         "<option value='L'>综合服务 综合商贸 综合业务</option>"
                     );
+                    elements = [
+                        {index: "所有分类", value: ""},
+                        {index: "餐饮 KTV 美容美发 物产生活", value: "A"},
+                        {index: "各种店铺转让", value: "B"},
+                        {index: "店铺用品相关", value: "C"},
+                        {index: "广告印刷 看板网页 菜单制作", value: "D"},
+                        {index: "各种内外工事", value: "E"},
+                        {index: "电脑网络 手机点卡 电子器材", value: "F"},
+                        {index: "保证人", value: "H"},
+                        {index: "婚介交友", value: "I"},
+                        {index: "学校驾校 文化团体 公益组织", value: "J"},
+                        {index: "医疗 保健 风水 开运 教会", value: "K"},
+                        {index: "综合服务 综合商贸 综合业务", value: "L"}];                        
                     if(localStorage.informationBusinessCatagory) {
                         local_shops = JSON.parse(localStorage.informationBusinessCatagory);
                         getLocalContent();
@@ -226,23 +221,28 @@
                         "<option value='C'>旅行社业务 地接业务</option>"+
                         "<option value='D'>代办各国签证</option>"
                     );
+                    elements = [
+                        {index: "所有分类", value: ""},
+                        {index: "各地机票", value: "A"},
+                        {index: "紧急出票 24小时出票", value: "B"},
+                        {index: "旅行社业务 地接业务", value: "C"},
+                        {index: "代办各国签证", value: "D"}];   
                     if(localStorage.informationTicketCatagory) {
                         local_shops = JSON.parse(localStorage.informationTicketCatagory);
                         getLocalContent();
                     }                    
                 } else {
-                    $('#key_selector').html('').append(
-                        "<option value='' selected='selected'>查看所有分类</option>"+
-                        "<option value='A'>法律业务</option>"+
-                        "<option value='B'>会计业务</option>"+
-                        "<option value='C'>其它业务</option"
-                    );
+                    elements = [
+                        {index: "所有分类", value: ""},
+                        {index: "法律业务", value: "A"},
+                        {index: "会计业务", value: "B"},
+                        {index: "其它业务", value: "C"}];                       
                     if(localStorage.informationLawCatagory) {
                         local_shops = JSON.parse(localStorage.informationLawCatagory);
                         getLocalContent();
                     }
                 }
-                checkUpdate();
+                return elements;
             }
             
             function insertInformationCatagory(key, shop) {
